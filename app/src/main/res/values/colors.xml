@@ -21,4 +21,11 @@
 
     <!-- TextInput background -->
     <color name="ti_bg">#F7F8FF</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="register_primary">#30B6F0</color>
+    <color name="register_primary_variant">#4CC4FF</color>
+    <color name="register_card_background">#FFFFFFFF</color>
+    <color name="register_button_background">#FFFFFFFF</color>
 </resources>

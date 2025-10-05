@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">iNet Mobile</string>
+<!--    <string name="app_name">iNet Mobile</string>-->
     <string name="brand">NSi</string>
     <string name="login_title">Welcome Back</string>
     <string name="login_sub">Masukkan detail akun Anda di bawah</string>
@@ -10,4 +10,9 @@
     <string name="or_with">atau masuk dengan</string>
     <string name="no_account">Belum punya akun? </string>
     <string name="register">Registrasi</string>
+
+    <string name="app_name">NSI</string>
+    <string name="register_logo_desc">Logo registrasi sementara</string>
+    <string name="login_logo_desc">Logo login sementara</string>
+    <string name="password_toggle_desc">Tampilkan atau sembunyikan kata sandi</string>
 </resources>
