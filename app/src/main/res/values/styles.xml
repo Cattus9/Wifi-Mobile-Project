@@ -1,0 +1,7 @@
+<resources>
+    <!-- Hanya satu kali didefinisikan -->
+    <style name="ShapeAppearance.App.LargeRound"
+        parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerSize">16dp</item>
+    </style>
+</resources>

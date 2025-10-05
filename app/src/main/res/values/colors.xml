@@ -1,0 +1,18 @@
+<resources>
+    <color name="clrTextPrimary">#1B2559</color>
+    <color name="clrTextSecondary">#7A8097</color>
+
+    <color name="btnStart">#6C63FF</color>
+    <color name="btnEnd">#8A7CFF</color>
+    <color name="btnPressedStart">#5D3DFD</color>
+    <color name="btnPressedEnd">#8A7CFF</color>
+
+    <color name="chipLink">#5662F6</color>
+    <color name="divider">#E6E8F0</color>
+    <color name="dividerText">#9AA0B4</color>
+
+    <!-- Gradient background screen -->
+    <color name="gradStart">#5B7CFA</color>
+    <color name="gradCenter">#6AA8FF</color>
+    <color name="gradEnd">#7ED6FF</color>
+</resources>

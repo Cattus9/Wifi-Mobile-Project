@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">iNet Mobile</string>
+    <string name="brand">NSi</string>
+    <string name="login_title">Welcome Back</string>
+    <string name="login_sub">Masukkan detail akun Anda di bawah</string>
+    <string name="hint_user">Username atau ID</string>
+    <string name="hint_pass">Password</string>
+    <string name="btn_signin">Sign in</string>
+    <string name="btn_forgot">Lupa Password?</string>
+    <string name="or_with">atau masuk dengan</string>
+    <string name="no_account">Belum punya akun? </string>
+    <string name="register">Registrasi</string>
+</resources>
