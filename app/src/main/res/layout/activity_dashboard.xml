@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login_gradient"
+    android:background="@color/register_primary"
     android:fitsSystemWindows="true"
     tools:context=".DashboardActivity">
 
@@ -14,7 +14,7 @@
         android:id="@+id/dashboardToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@color/register_primary"
         android:minHeight="56dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
