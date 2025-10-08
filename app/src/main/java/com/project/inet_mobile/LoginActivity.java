@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Here you would normally authenticate with your server
         // For now, we'll just show a success message
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
         startActivity(intent);
         finish();
     }

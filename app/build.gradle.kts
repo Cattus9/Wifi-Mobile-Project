@@ -38,6 +38,14 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.activity)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.fragment)
+    implementation(libs.fragment.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.recyclerview)
+    implementation(libs.viewpager2)
 
     // Optional KTX libraries (it's good practice to add these to your libs.versions.toml as well, but this will work)
     implementation("androidx.core:core-ktx:1.13.1")
@@ -51,3 +59,4 @@ dependencies {
 
 
 }
+

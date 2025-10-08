@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate back to login activity
-                Intent intent = new Intent(RegisterActivity.this, LoginTestActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
         
         // Here you would normally send the data to your server
         // For now, we'll just finish the activity and return to login
-        Intent intent = new Intent(RegisterActivity.this, LoginTestActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

@@ -5,5 +5,7 @@
         <item name="android:navigationBarColor">@android:color/white</item>
         <item name="colorPrimary">@color/btnStart</item>
         <item name="colorPrimaryContainer">@color/btnEnd</item>
+        <!-- Force light theme and prevent dark mode -->
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 </resources>
