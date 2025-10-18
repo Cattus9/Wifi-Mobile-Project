@@ -28,4 +28,5 @@
     <color name="register_primary_variant">#4CC4FF</color>
     <color name="register_card_background">#FFFFFFFF</color>
     <color name="register_button_background">#FFFFFFFF</color>
+    <color name="clrAccent">#FF9800</color>
 </resources>

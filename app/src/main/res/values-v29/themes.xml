@@ -6,6 +6,6 @@
         <item name="colorPrimary">@color/btnStart</item>
         <item name="colorPrimaryContainer">@color/btnEnd</item>
         <!-- Force light theme and prevent dark mode -->
-        <!-- android:forceDarkAllowed is only available for API 29+, so it's moved to values-v29 folder -->
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 </resources>
