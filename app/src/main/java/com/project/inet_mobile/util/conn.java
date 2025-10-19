@@ -142,7 +142,7 @@ public class conn {
                 try {
                     String endpoint = SUPABASE_URL + "/rest/v1/service_packages"
                             + "?select=id,name,description,speed,price"
-                            + "&order=id.asc&limit=3";
+                            + "&order=id.asc";
 
                     java.net.URL url = new java.net.URL(endpoint);
                     java.net.HttpURLConnection connHttp = (java.net.HttpURLConnection) url.openConnection();

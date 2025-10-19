@@ -3,28 +3,39 @@ package com.project.inet_mobile.ui.packages;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView; // Tambahkan ini
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.project.inet_mobile.R;
+import com.project.inet_mobile.Paket; // Tambahkan ini
+import com.project.inet_mobile.PaketAdapter; // Tambahkan ini
 import com.project.inet_mobile.util.conn;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
+import java.util.ArrayList; // Tambahkan ini
+import java.util.List; // Tambahkan ini
 import java.util.Locale;
 
 public class PaketFragment extends Fragment {
 
-    // refs card 1
-    private TextView tvName1, tvDesc1, tvPrice1;
-    // refs card 2
-    private TextView tvName2, tvDesc2, tvPrice2;
-    // refs card 3
-    private TextView tvName3, tvDesc3, tvPrice3;
+    // refs card 1 - Hapus karena tidak digunakan lagi
+    // private TextView tvName1, tvDetail1, tvPrice1;
+    // refs card 2 - Hapus karena tidak digunakan lagi
+    // private TextView tvName2, tvDetail2, tvPrice2;
+    // private TextView badgePopuler2; // opsional: untuk badge "POPULER"
+    // refs card 3 - Hapus karena tidak digunakan lagi
+    // private TextView tvName3, tvDetail3, tvPrice3;
+
+    // Tambahkan RecyclerView dan Adapter
+    private RecyclerView recyclerViewPaket;
+    private PaketAdapter paketAdapter;
 
     public PaketFragment() {
         super(R.layout.fragment_paket);
@@ -34,18 +45,21 @@ public class PaketFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // init views
-        tvName1  = view.findViewById(R.id.tvPaketName1);
-        tvDesc1  = view.findViewById(R.id.tvPaketDesc1);
-        tvPrice1 = view.findViewById(R.id.tvPaketPrice1);
+        // Inisialisasi RecyclerView
+        recyclerViewPaket = view.findViewById(R.id.recyclerViewPaket);
 
-        tvName2  = view.findViewById(R.id.tvPaketName2);
-        tvDesc2  = view.findViewById(R.id.tvPaketDesc2);
-        tvPrice2 = view.findViewById(R.id.tvPaketPrice2);
+        // Buat adapter dengan list kosong dan listener (listener bisa null jika tidak digunakan untuk sekarang)
+        paketAdapter = new PaketAdapter(new ArrayList<>(), new PaketAdapter.OnPaketClickListener() {
+            @Override
+            public void onPaketClick(Paket paket) {
+                // Tangani klik paket di sini jika diperlukan
+                // Contoh: Toast.makeText(getContext(), "Klik: " + paket.getNama(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        tvName3  = view.findViewById(R.id.tvPaketName3);
-        tvDesc3  = view.findViewById(R.id.tvPaketDesc3);
-        tvPrice3 = view.findViewById(R.id.tvPaketPrice3);
+        // Atur LayoutManager dan Adapter
+        recyclerViewPaket.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewPaket.setAdapter(paketAdapter);
 
         // ambil data dari Supabase via conn
         loadPackages();
@@ -65,9 +79,14 @@ public class PaketFragment extends Fragment {
             public void onError(String error) {
                 if (getActivity() == null) return;
                 getActivity().runOnUiThread(() -> {
-                    tvName1.setText("Gagal memuat paket");
-                    tvDesc1.setText(error);
-                    tvPrice1.setText("-");
+                    // Kita tidak lagi menggunakan TextView statis.
+                    // Anda bisa menangani error di sini, misalnya dengan Toast.
+                    // Atau biarkan adapter kosong jika gagal.
+                    // Contoh:
+                    // Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_LONG).show();
+
+                    // Untuk sekarang, kita kosongkan agar tidak terjadi error.
+                    // RecyclerView akan menampilkan list kosong jika adapter kosong.
                 });
             }
         });
@@ -75,30 +94,25 @@ public class PaketFragment extends Fragment {
 
     private void bindToCards(JSONArray arr) {
         NumberFormat rupiah = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
+        List<Paket> paketList = new ArrayList<>();
 
-        // card 1
-        if (arr.length() >= 1) {
-            JSONObject o = arr.optJSONObject(0);
-            tvName1.setText(ns(o.optString("name")));
-            tvDesc1.setText(buildDesc(o.optString("speed"), o.optString("description")));
-            tvPrice1.setText(formatRupiah(rupiah, o));
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject o = arr.optJSONObject(i);
+            if (o != null) {
+                String name = ns(o.optString("name"));
+                String desc = buildDesc(o.optString("speed"), o.optString("description"));
+                String price = formatRupiah(rupiah, o);
+                // Asumsikan field boolean untuk populer adalah "is_popular" di database
+                // Ganti "is_popular" jika nama field berbeda
+                boolean isPopuler = o.optBoolean("is_popular", false);
+
+                Paket paket = new Paket(name, desc, price, isPopuler);
+                paketList.add(paket);
+            }
         }
 
-        // card 2
-        if (arr.length() >= 2) {
-            JSONObject o = arr.optJSONObject(1);
-            tvName2.setText(ns(o.optString("name")));
-            tvDesc2.setText(buildDesc(o.optString("speed"), o.optString("description")));
-            tvPrice2.setText(formatRupiah(rupiah, o));
-        }
-
-        // card 3
-        if (arr.length() >= 3) {
-            JSONObject o = arr.optJSONObject(2);
-            tvName3.setText(ns(o.optString("name")));
-            tvDesc3.setText(buildDesc(o.optString("speed"), o.optString("description")));
-            tvPrice3.setText(formatRupiah(rupiah, o));
-        }
+        // Update adapter dengan data baru
+        paketAdapter.updateData(paketList);
     }
 
     private String buildDesc(String speed, String description) {
@@ -110,7 +124,6 @@ public class PaketFragment extends Fragment {
     }
 
     private String formatRupiah(NumberFormat nf, JSONObject o) {
-        // Supabase numeric bisa dikembalikan sebagai number (double) atau string—kita handle dua-duanya
         String priceStr = o.optString("price", null);
         if (priceStr != null && !priceStr.isEmpty()) {
             try {
