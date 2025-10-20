@@ -29,4 +29,8 @@
     <color name="register_card_background">#FFFFFFFF</color>
     <color name="register_button_background">#FFFFFFFF</color>
     <color name="clrAccent">#FF9800</color>
+
+    <!-- Fragement background -->
+
+    <color name="fragmentColor">#f0f7fc</color>
 </resources>
