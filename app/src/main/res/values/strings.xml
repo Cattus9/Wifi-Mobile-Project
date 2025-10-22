@@ -11,6 +11,8 @@
     <string name="no_account">Belum punya akun? </string>
     <string name="register">Registrasi</string>
 
+    <!-- Header String -->
+
     <string name="app_name">NSI</string>
     <string name="register_logo_desc">Logo registrasi sementara</string>
     <string name="login_logo_desc">Logo login sementara</string>
