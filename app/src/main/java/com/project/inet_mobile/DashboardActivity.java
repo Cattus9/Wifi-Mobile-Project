@@ -39,14 +39,21 @@ public class DashboardActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.dashboardToolbar);
         toolbar.setTitle("");
 
-        View root = findViewById(R.id.dashboardRoot);
-        ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+        // Apply window insets ke toolbar
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
         });
 
+        // Apply window insets ke bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.dashboardBottomNav);
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(0, 0, 0, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switchFragment(item.getItemId());
             return true;

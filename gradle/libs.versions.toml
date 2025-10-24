@@ -12,6 +12,7 @@ appcompat = "1.7.1"
 material = "1.13.0"
 activity = "1.11.0"
 constraintlayout = "2.2.1"
+swiperefreshlayout = "1.1.0"
 
 [libraries]
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }
@@ -29,6 +30,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
