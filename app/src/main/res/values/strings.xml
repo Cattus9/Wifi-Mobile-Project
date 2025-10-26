@@ -17,4 +17,17 @@
     <string name="register_logo_desc">Logo registrasi sementara</string>
     <string name="login_logo_desc">Logo login sementara</string>
     <string name="password_toggle_desc">Tampilkan atau sembunyikan kata sandi</string>
+    <string name="riwayat_card_total_bayar">Total Terbayar (Tahun ini)</string>
+    <string name="riwayat_placeholder_currency">Rp 0</string>
+    <string name="riwayat_label_no_payment">Belum ada pembayaran</string>
+    <string name="riwayat_label_unavailable">Tidak tersedia</string>
+    <string name="riwayat_label_paid_month">Lunas: %1$s</string>
+    <string name="riwayat_paid_transaction_count">%1$d transaksi</string>
+    <string name="riwayat_status_active">Aktif</string>
+    <string name="riwayat_status_pending">Menunggu Aktivasi</string>
+    <string name="riwayat_pembayaran">Riwayat Pembayaran</string>
+    <string name="status_saat_ini">Status Saat ini</string>
+    <string name="tunggakan">Tunggakan</string>
+    <string name="riwayat">Riwayat</string>
+    <string name="no_data">Belum ada data untuk ditampilkan</string>
 </resources>
