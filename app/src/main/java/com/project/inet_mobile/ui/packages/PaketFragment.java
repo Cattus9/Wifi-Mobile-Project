@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.project.inet_mobile.R;
@@ -138,11 +137,6 @@ public class PaketFragment extends Fragment {
                     if (data != null && data.length() > 0) {
                         bindToCards(data);
                         showData();
-
-                        // Tampilkan toast sukses saat refresh
-                        if (paketAdapter.getItemCount() > 0) {
-                            Toast.makeText(getContext(), "Data berhasil diperbarui", Toast.LENGTH_SHORT).show();
-                        }
                     } else {
                         showError("Tidak ada paket tersedia");
                     }
@@ -215,7 +209,6 @@ public class PaketFragment extends Fragment {
             }
         }
 
-        // Update adapter dengan data baru
         paketAdapter.updateData(paketList);
     }
 
@@ -281,7 +274,6 @@ public class PaketFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Cancel timeout saat fragment di-destroy untuk mencegah memory leak
         cancelTimeout();
     }
 }
