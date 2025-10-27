@@ -17,6 +17,15 @@ public class conn {
     private static final String PREFS_NAME = "SupabaseAuth";
     private static final String KEY_ACCESS_TOKEN = "access_token";
 
+    // Public accessors for constants
+    public static String getSupabaseUrl() {
+        return SUPABASE_URL;
+    }
+
+    public static String getSupabaseKey() {
+        return SUPABASE_KEY;
+    }
+
     public interface AuthCallback {
         void onSuccess(String accessToken);
         void onError(String error);
@@ -42,6 +51,11 @@ public class conn {
     private static void saveAccessToken(Context context, String token) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(KEY_ACCESS_TOKEN, token).apply();
+    }
+
+    // Sign in with direct authentication for plain text passwords (debug mode)
+    public static void signInCustom(Context context, String email, String password, AuthCallback callback) {
+        new PlainTextAuthTask(context, email, password, callback).execute();
     }
 
     // Clear session (logout)
@@ -86,8 +100,14 @@ public class conn {
                 os.write(credentials.toString().getBytes("UTF-8"));
                 os.close();
 
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
+                int responseCode = connection.getResponseCode();
+                BufferedReader reader;
+                if (responseCode >= 200 && responseCode < 300) {
+                    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                } else {
+                    reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                }
+
                 StringBuilder result = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -95,7 +115,11 @@ public class conn {
                 }
                 reader.close();
 
-                return result.toString();
+                if (responseCode >= 200 && responseCode < 300) {
+                    return result.toString();
+                } else {
+                    return null;
+                }
 
             } catch (Exception e) {
                 exception = e;
@@ -106,7 +130,12 @@ public class conn {
         @Override
         protected void onPostExecute(String result) {
             if (exception != null) {
-                callback.onError(exception.getMessage());
+                callback.onError("Network error: " + exception.getMessage());
+                return;
+            }
+
+            if (result == null) {
+                callback.onError("Authentication failed - invalid credentials or server error");
                 return;
             }
 
@@ -119,6 +148,101 @@ public class conn {
 
                 callback.onSuccess(accessToken);
 
+            } catch (Exception e) {
+                callback.onError("Failed to parse response: " + e.getMessage());
+            }
+        }
+    }
+    
+    // Plain text authentication task for direct database comparison (debug mode)
+    private static class PlainTextAuthTask extends AsyncTask<Void, Void, String> {
+        private Context context;
+        private String email;
+        private String password;
+        private AuthCallback callback;
+        private Exception exception;
+
+        PlainTextAuthTask(Context context, String email, String password, AuthCallback callback) {
+            this.context = context;
+            this.email = email;
+            this.password = password;
+            this.callback = callback;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                // Direct query to users table with plain text password comparison
+                String encodedEmail = java.net.URLEncoder.encode(email, "UTF-8");
+                String encodedPassword = java.net.URLEncoder.encode(password, "UTF-8");
+                String endpoint = SUPABASE_URL + "/rest/v1/users" +
+                        "?select=id,email,customer_id" +
+                        "&email=eq." + encodedEmail +
+                        "&password=eq." + encodedPassword;
+
+                URL url = new URL(endpoint);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("apikey", SUPABASE_KEY);
+                connection.setRequestProperty("Authorization", "Bearer " + SUPABASE_KEY);
+                connection.setRequestProperty("Accept", "application/json");
+
+                int responseCode = connection.getResponseCode();
+                java.io.BufferedReader reader;
+                if (responseCode >= 200 && responseCode < 300) {
+                    reader = new java.io.BufferedReader(new java.io.InputStreamReader(connection.getInputStream()));
+                } else {
+                    reader = new java.io.BufferedReader(new java.io.InputStreamReader(connection.getErrorStream()));
+                }
+
+                StringBuilder result = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                reader.close();
+
+                if (responseCode >= 200 && responseCode < 300) {
+                    return result.toString();
+                } else {
+                    return null;
+                }
+
+            } catch (Exception e) {
+                exception = e;
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (exception != null) {
+                callback.onError("Network error: " + exception.getMessage());
+                return;
+            }
+
+            if (result == null) {
+                callback.onError("Email atau password salah");
+                return;
+            }
+
+            try {
+                org.json.JSONArray array = new org.json.JSONArray(result);
+                if (array.length() > 0) {
+                    org.json.JSONObject userData = array.getJSONObject(0);
+                    String userId = userData.optString("id");
+                    
+                    if (userId != null && !userId.isEmpty()) {
+                        // Save token
+                        saveAccessToken(context, userId);
+                        callback.onSuccess(userId);
+                    } else {
+                        callback.onError("Login response does not contain user ID");
+                    }
+                } else {
+                    callback.onError("Email atau password salah");
+                }
             } catch (Exception e) {
                 callback.onError("Failed to parse response: " + e.getMessage());
             }
@@ -149,9 +273,12 @@ public class conn {
                     connHttp.setRequestMethod("GET");
                     connHttp.setRequestProperty("apikey", SUPABASE_KEY);
 
-                    // pakai access token jika ada (user login). jika kosong, pakai anon key
+                    // Use access token if valid JWT format, otherwise use anon key
                     String token = getAccessToken(context);
-                    if (token == null || token.isEmpty()) token = SUPABASE_KEY;
+                    // Check if token looks like a JWT (has dots separating header.payload.signature)
+                    if (token == null || token.isEmpty() || !token.contains(".") || token.split("\\.").length != 3) {
+                        token = SUPABASE_KEY; // Use anon key if not a valid JWT
+                    }
                     connHttp.setRequestProperty("Authorization", "Bearer " + token);
                     connHttp.setRequestProperty("Accept", "application/json");
 
