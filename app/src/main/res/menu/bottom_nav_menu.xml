@@ -6,15 +6,15 @@
         android:title="Beranda" />
     <item
         android:id="@+id/navigation_paket"
-        android:icon="@android:drawable/ic_menu_agenda"
+        android:icon="@drawable/ic_nav_package"
         android:title="Paket" />
     <item
         android:id="@+id/navigation_pembayaran"
-        android:icon="@android:drawable/ic_menu_send"
+        android:icon="@drawable/ic_nav_payment"
         android:title="Pembayaran" />
     <item
         android:id="@+id/navigation_riwayat"
-        android:icon="@android:drawable/ic_menu_recent_history"
+        android:icon="@drawable/ic_nav_history"
         android:title="Riwayat" />
     <item
         android:id="@+id/navigation_akun"

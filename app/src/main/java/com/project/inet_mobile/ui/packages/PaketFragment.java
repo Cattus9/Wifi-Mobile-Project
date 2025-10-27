@@ -204,12 +204,33 @@ public class PaketFragment extends Fragment {
                 String price = formatRupiah(rupiah, o);
                 boolean isPopuler = o.optBoolean("is_popular", false);
 
-                Paket paket = new Paket(name, desc, price, isPopuler);
+                // TAMBAHAN: Ambil duration dari JSON
+                String duration = formatDuration(o.optString("duration", ""));
+
+                // Gunakan constructor baru yang include duration
+                Paket paket = new Paket(name, desc, price, isPopuler, duration);
                 paketList.add(paket);
             }
         }
 
         paketAdapter.updateData(paketList);
+    }
+    private String formatDuration(String duration) {
+        if (duration == null || duration.isEmpty()) {
+            return "";
+        }
+
+        // Jika duration dalam format angka (misalnya "30")
+        try {
+            int days = Integer.parseInt(duration);
+            if (days == 1) {
+                return "1 Day";
+            }
+            return days + " Days";
+        } catch (NumberFormatException e) {
+            // Jika sudah dalam format string yang benar, return as is
+            return duration;
+        }
     }
 
     // Method untuk show/hide views

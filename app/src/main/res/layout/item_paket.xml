@@ -2,78 +2,92 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="0dp"
-    android:layout_marginTop="0dp"
-    android:layout_marginEnd="0dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="12dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="false"
-    app:cardBackgroundColor="@android:color/white"
-    app:strokeColor="@color/clrAccent"
-    app:strokeWidth="2dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:background="@drawable/bg_package_gradient">
+        android:padding="20dp"
+        tools:ignore="ExtraText">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Package Name -->
+        <TextView
+            android:id="@+id/tvItemPaketName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="4dp">
+            android:textColor="#1A1A1A"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvItemPaketName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/clrTextPrimary"
-                android:textStyle="bold"
-                android:textSize="16sp" />
-
-            <!-- Badge POPULER - Tidak akan muncul jika tidak populer -->
-            <TextView
-                android:id="@+id/tvItemBadgePopuler"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_badge_populer"
-                android:text="POPULER"
-                android:textColor="@android:color/white"
-                android:textSize="9sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
-                android:gravity="center"
-                android:layout_marginStart="6dp"
-                android:drawableStart="@drawable/ic_star"
-                android:drawablePadding="2dp"
-                android:visibility="gone" />
-        </LinearLayout>
-
+        <!-- Package Description -->
         <TextView
             android:id="@+id/tvItemPaketDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/clrTextSecondary"
-            android:textSize="11sp" />
+            android:layout_marginTop="4dp"
+            android:textColor="#666666"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvItemPaketName" />
 
+        <!-- Duration -->
         <TextView
-            android:id="@+id/tvItemPaketPrice"
+            android:id="@+id/tvItemPaketDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/clrAccent"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvItemPaketDetail" />
+
+        <!-- Price -->
+        <TextView
+            android:id="@+id/tvItemPaketPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="#090909"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textSize="18sp" />
-    </LinearLayout>
+            app:layout_constraintEnd_toStartOf="@id/btnBeli"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvItemPaketDuration" />
+
+        <!-- Button Beli -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBeli"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:text="Beli"
+            android:textColor="#070707"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="#FFFFFF"
+            app:cornerRadius="21dp"
+            app:strokeColor="#070707"
+            app:strokeWidth="1.5dp"
+            app:rippleColor="#40CCCCCC"
+            app:layout_constraintBottom_toBottomOf="@id/tvItemPaketPrice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvItemPaketPrice" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </com.google.android.material.card.MaterialCardView>

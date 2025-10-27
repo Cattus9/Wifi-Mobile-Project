@@ -6,13 +6,24 @@ public class Paket {
     private String detail;
     private String harga;
     private boolean isPopuler;
+    private String duration; // FIELD BARU
 
-    // Constructor
+    // Constructor lama (untuk backward compatibility)
     public Paket(String nama, String detail, String harga, boolean isPopuler) {
         this.nama = nama;
         this.detail = detail;
         this.harga = harga;
         this.isPopuler = isPopuler;
+        this.duration = "";
+    }
+
+    // Constructor baru dengan duration
+    public Paket(String nama, String detail, String harga, boolean isPopuler, String duration) {
+        this.nama = nama;
+        this.detail = detail;
+        this.harga = harga;
+        this.isPopuler = isPopuler;
+        this.duration = duration;
     }
 
     // Getter dan Setter
@@ -46,5 +57,13 @@ public class Paket {
 
     public void setPopuler(boolean populer) {
         isPopuler = populer;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }
