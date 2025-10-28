@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+    <shape >
+        <!-- Gradasi ungu ke violet -->
+        <gradient
+            android:type="linear"
+            android:angle="135"
+            android:startColor="#A566FF"
+            android:endColor="#7A5EFF" />
+
+        <!-- Sudut melengkung -->
+        <corners android:radius="16dp" />
+
+        <!-- Sedikit bayangan -->
+        <padding android:bottom="6dp" android:top="6dp" />
+    </shape>
+    </item>
+
+</selector>
