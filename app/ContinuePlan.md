@@ -24,3 +24,4 @@
    - Setelah UI konsisten, lanjutkan implementasi ViewModel + repository Supabase untuk Riwayat sebelum berpindah ke fitur Pembayaran/Akun.
 
 Catatan ini dimaksudkan sebagai referensi singkat ketika sesi dilanjutkan pada terminal/lingkungan berbeda.
+- Catatan: Tidak perlu menampilkan Perangkat & Koneksi pada profil karena aplikasi belum mendukung fitur tersebut.

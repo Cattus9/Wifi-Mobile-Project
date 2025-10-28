@@ -33,11 +33,20 @@
     <!-- Fragement background -->
 
     <color name="fragmentColor">#f0f7fc</color>
-    <color name="fragment_surface">#FFFFFFFF</color>
+    <color name="fragment_surface">#f5f7f7</color>
     <color name="status_paid_bg">#1ABC9C</color>
     <color name="status_overdue_bg">#E53935</color>
     <color name="status_draft_bg">#FFB300</color>
     <color name="status_text_dark">#0D0F25</color>
     <color name="chip_lunas_bg">#D4F8D3</color>
     <color name="chip_lunas_text">#1C7C4D</color>
+    <color name="logout_button_background">#FFE5E5</color>
+    <color name="logout_button_text">#D32F2F</color>
+    <color name="profile_icon_bg_primary">#E3F3FF</color>
+    <color name="profile_icon_bg_secondary">#E5F7F1</color>
+    <color name="profile_icon_bg_support">#FFEBDD</color>
+    <color name="profile_badge_bg">#E8F0FF</color>
+    <color name="profile_badge_text_primary">#2F55C7</color>
+    <color name="profile_badge_text_secondary">#2E7D32</color>
+    <color name="profile_badge_text_support">#D66A16</color>
 </resources>
