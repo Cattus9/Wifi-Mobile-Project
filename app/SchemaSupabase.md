@@ -44,11 +44,15 @@ ON UPDATE CASCADE
 -- users
 CREATE TABLE users (
 id BIGINT PRIMARY KEY DEFAULT nextval('users_id_seq'),
+auth_user_id UUID NOT NULL,
 customer_id BIGINT,
 email TEXT NOT NULL UNIQUE,
-password TEXT NOT NULL,
 role user_role NOT NULL DEFAULT 'customer',
 created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+CONSTRAINT fk_users_auth_user
+FOREIGN KEY (auth_user_id)
+REFERENCES auth.users(id)
+ON DELETE CASCADE,
 CONSTRAINT fk_users_customer
 FOREIGN KEY (customer_id)
 REFERENCES customers(id)
@@ -132,6 +136,7 @@ diunggah_pada TIMESTAMPTZ NOT NULL DEFAULT NOW()
 -- Indexes for performance
 CREATE INDEX idx_customers_service_package_id ON customers(service_package_id);
 CREATE INDEX idx_users_customer_id ON users(customer_id);
+CREATE UNIQUE INDEX idx_users_auth_user_id ON users(auth_user_id);
 CREATE INDEX idx_invoices_customer_id ON invoices(customer_id);
 CREATE INDEX idx_tickets_customer_id ON tickets(customer_id);
 CREATE INDEX idx_tickets_status_prioritas ON tickets(status, prioritas);

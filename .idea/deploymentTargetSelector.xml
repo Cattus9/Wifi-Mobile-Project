@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="Inet-Mobile">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-10-27T22:43:07.632316400Z">
+        <DropdownSelection timestamp="2025-10-28T10:33:53.507869200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=5a36a956" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\arahm\.android\avd\Medium_Phone.avd" />
             </handle>
           </Target>
         </DropdownSelection>

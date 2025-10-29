@@ -33,10 +33,10 @@
             android:id="@+id/profileCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="112dp"
+            android:layout_marginTop="101dp"
             android:background="@drawable/fragment_card"
             android:paddingStart="20dp"
-            android:paddingTop="60dp"
+            android:paddingTop="52dp"
             android:paddingEnd="20dp"
             android:paddingBottom="32dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +67,7 @@
                     android:id="@+id/profileEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:fontFamily="@font/poppins"
                     android:text="user.email@example.com"
                     android:textColor="@color/clrTextSecondary"
@@ -79,7 +79,7 @@
                 android:id="@+id/profileSectionsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="18dp"
                 android:fontFamily="@font/poppins"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -90,7 +90,7 @@
                     android:id="@+id/cardIdentitasPaket"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/bg_card_profil"
                     android:orientation="vertical"
                     android:padding="20dp">
@@ -110,7 +110,7 @@
                             android:importantForAccessibility="no"
                             android:padding="8dp"
                             android:src="@drawable/ic_wifi_tethering_24px"
-                            android:tint="@color/register_primary" />
+                            app:tint="@color/register_primary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -150,8 +150,8 @@
                             android:fontFamily="@font/poppins"
                             android:text="Aktif"
                             android:textColor="@color/profile_badge_text_primary"
-                            android:textStyle="bold"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -212,7 +212,7 @@
                             android:importantForAccessibility="no"
                             android:padding="8dp"
                             android:src="@drawable/ic_person_24px"
-                            android:tint="@color/profile_badge_text_secondary" />
+                            app:tint="@color/profile_badge_text_secondary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -253,8 +253,8 @@
                             android:fontFamily="@font/poppins"
                             android:text="#88920123"
                             android:textColor="@color/profile_badge_text_secondary"
-                            android:textStyle="bold"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -324,7 +324,7 @@
                             android:importantForAccessibility="no"
                             android:padding="8dp"
                             android:src="@drawable/ic_support_agent_24px"
-                            android:tint="@color/profile_badge_text_support" />
+                            app:tint="@color/profile_badge_text_support" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -365,8 +365,8 @@
                             android:fontFamily="@font/poppins"
                             android:text="2 aktif"
                             android:textColor="@color/profile_badge_text_support"
-                            android:textStyle="bold"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -408,15 +408,15 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:minHeight="56dp"
+                    android:layout_marginTop="36dp"
                     android:backgroundTint="@color/logout_button_background"
-                    app:cornerRadius="14dp"
                     android:fontFamily="@font/poppins"
+                    android:minHeight="56dp"
                     android:text="Logout"
                     android:textAllCaps="false"
-                    android:textStyle="bold"
                     android:textColor="@color/logout_button_text"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp"
                     app:icon="@drawable/ic_logout_24px"
                     app:iconGravity="textStart"
                     app:iconPadding="12dp"
