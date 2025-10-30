@@ -45,46 +45,11 @@ public class conn {
 
             @Override
             protected JSONArray doInBackground(Void... voids) {
-                HttpURLConnection connHttp = null;
                 try {
-                    String endpoint = SUPABASE_URL + "/rest/v1/service_packages"
-                            + "?select=id,name,description,speed,price,duration,is_popular,quota,phone,original_price"
-                            + "&order=id.asc";
-
-                    URL url = new URL(endpoint);
-                    connHttp = (HttpURLConnection) url.openConnection();
-                    connHttp.setRequestMethod("GET");
-                    connHttp.setRequestProperty("apikey", SUPABASE_KEY);
-
-                    String bearerToken = resolveBearerToken(context);
-                    connHttp.setRequestProperty("Authorization", "Bearer " + bearerToken);
-                    connHttp.setRequestProperty("Accept", "application/json");
-
-                    int code = connHttp.getResponseCode();
-                    BufferedReader reader;
-                    if (code >= 200 && code < 300) {
-                        reader = new BufferedReader(new InputStreamReader(connHttp.getInputStream()));
-                    } else {
-                        reader = new BufferedReader(new InputStreamReader(connHttp.getErrorStream()));
-                    }
-
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) sb.append(line);
-                    reader.close();
-
-                    if (code >= 200 && code < 300) {
-                        return new JSONArray(sb.toString());
-                    } else {
-                        throw new RuntimeException("HTTP " + code + ": " + sb);
-                    }
-                } catch (Exception e) {
-                    ex = e;
+                    return fetchPackagesInternal(context, true);
+                } catch (Exception primary) {
+                    ex = primary;
                     return null;
-                } finally {
-                    if (connHttp != null) {
-                        connHttp.disconnect();
-                    }
                 }
             }
 
@@ -97,6 +62,53 @@ public class conn {
                 }
             }
         }.execute();
+    }
+
+    private static JSONArray fetchPackagesInternal(Context context, boolean preferSession) throws Exception {
+        String endpoint = SUPABASE_URL + "/rest/v1/service_packages"
+                + "?select=*"
+                + "&order=id.asc";
+
+        String token = preferSession ? resolveBearerToken(context) : SUPABASE_KEY;
+        boolean usingAnon = token == null || token.isEmpty() || token.equals(SUPABASE_KEY);
+
+        HttpURLConnection connHttp = null;
+        try {
+            URL url = new URL(endpoint);
+            connHttp = (HttpURLConnection) url.openConnection();
+            connHttp.setRequestMethod("GET");
+            connHttp.setRequestProperty("apikey", SUPABASE_KEY);
+            connHttp.setRequestProperty("Authorization", "Bearer " + (token == null ? SUPABASE_KEY : token));
+            connHttp.setRequestProperty("Accept", "application/json");
+
+            int code = connHttp.getResponseCode();
+            BufferedReader reader;
+            if (code >= 200 && code < 300) {
+                reader = new BufferedReader(new InputStreamReader(connHttp.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(connHttp.getErrorStream()));
+            }
+
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) sb.append(line);
+            reader.close();
+
+            if (code >= 200 && code < 300) {
+                return new JSONArray(sb.toString());
+            }
+
+            // Jika token session tidak valid (401/403), fallback ke anon key satu kali
+            if (!usingAnon && (code == 401 || code == 403 || code == 400)) {
+                return fetchPackagesInternal(context, false);
+            }
+
+            throw new RuntimeException("HTTP " + code + ": " + sb);
+        } finally {
+            if (connHttp != null) {
+                connHttp.disconnect();
+            }
+        }
     }
 
     private static String resolveBearerToken(Context context) {
