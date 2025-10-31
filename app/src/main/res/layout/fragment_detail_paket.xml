@@ -8,50 +8,62 @@
     android:background="@color/register_primary"
     tools:context=".util.DetailPaketFragment">
 
-    <!-- AppBar -->
+    <!-- AppBar dengan CollapsingToolbarLayout -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:background="@color/register_primary"
+        android:fitsSystemWindows="true"
+        app:elevation="4dp">
 
-        <!-- Toolbar -->
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="Detail Paket"
-            app:titleTextColor="@android:color/white" />
-
-        <!-- Title Section -->
-        <LinearLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="10dp">
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/register_primary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:statusBarScrim="@color/register_primary"
+            app:titleEnabled="false">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Title Section yang akan collapse -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Detail Paket Internet"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="?attr/actionBarSize"
+                android:paddingBottom="16dp"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.5">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:alpha="0.9"
-                android:text="Informasi lengkap paket yang Anda pilih"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
 
-        </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:alpha="0.9"
+                    android:text="Informasi lengkap paket yang Anda pilih"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <!-- Toolbar yang akan tetap terlihat (pinned) -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:title="Detail Paket"
+                app:titleTextColor="@android:color/white" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -577,7 +589,6 @@
                 android:textColor="#212121"
                 android:textSize="22sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -591,8 +602,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             app:backgroundTint="#009BFD"
-            app:cornerRadius="26dp"
-             />
+            app:cornerRadius="26dp" />
 
     </LinearLayout>
 

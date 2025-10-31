@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonLogin;
     private TextView textViewRegister;
     private LottieAnimationView loadingAnimation;
+    private CardView cardLoadingAnimation;
+    private View overlayBackground;
 
     private SharedPreferences sharedPreferences;
     private TokenStorage tokenStorage;
@@ -74,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewRegister = findViewById(R.id.textViewRegister);
         loadingAnimation = findViewById(R.id.loadingAnimation);
+        cardLoadingAnimation = findViewById(R.id.cardLoadingAnimation);
+        overlayBackground = findViewById(R.id.overlayBackground);
     }
 
     private void setListeners() {
@@ -185,13 +191,21 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoading(boolean show) {
         if (show) {
-            loadingAnimation.setVisibility(android.view.View.VISIBLE);
+            // Tampilkan CardView loading dan overlay
+            cardLoadingAnimation.setVisibility(View.VISIBLE);
+            overlayBackground.setVisibility(View.VISIBLE);
+
+            // Disable semua input
             buttonLogin.setEnabled(false);
             editTextLoginEmail.setEnabled(false);
             editTextLoginPassword.setEnabled(false);
             textViewRegister.setEnabled(false);
         } else {
-            loadingAnimation.setVisibility(android.view.View.GONE);
+            // Sembunyikan CardView loading dan overlay
+            cardLoadingAnimation.setVisibility(View.GONE);
+            overlayBackground.setVisibility(View.GONE);
+
+            // Enable kembali semua input
             buttonLogin.setEnabled(true);
             editTextLoginEmail.setEnabled(true);
             editTextLoginPassword.setEnabled(true);

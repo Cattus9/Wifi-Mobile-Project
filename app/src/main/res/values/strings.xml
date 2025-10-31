@@ -1,5 +1,5 @@
 <resources>
-<!--    <string name="app_name">iNet Mobile</string>-->
+    <!--    <string name="app_name">iNet Mobile</string>-->
     <string name="brand">NSi</string>
     <string name="login_title">Welcome Back</string>
     <string name="login_sub">Masukkan detail akun Anda di bawah</string>

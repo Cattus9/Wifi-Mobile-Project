@@ -118,6 +118,9 @@ public class DetailPaketFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // PENTING: Sembunyikan bottom navbar saat masuk ke detail
+        hideBottomNavigation();
+
         // Initialize views
         initViews(view);
 
@@ -393,21 +396,36 @@ public class DetailPaketFragment extends Fragment {
         }
 
         // TODO: Navigate to checkout/payment fragment
-        // Example:
-        // Bundle bundle = new Bundle();
-        // bundle.putString("paket_id", paketId);
-        // bundle.putString("paket_name", paketName);
-        // bundle.putString("paket_price", paketPrice);
-        //
-        // CheckoutFragment checkoutFragment = new CheckoutFragment();
-        // checkoutFragment.setArguments(bundle);
-        //
-        // if (getActivity() != null) {
-        //     getActivity().getSupportFragmentManager()
-        //         .beginTransaction()
-        //         .replace(R.id.fragment_container, checkoutFragment)
-        //         .addToBackStack(null)
-        //         .commit();
-        // }
+    }
+
+    /**
+     * Sembunyikan Bottom Navigation saat masuk detail paket
+     */
+    private void hideBottomNavigation() {
+        if (getActivity() != null) {
+            View bottomNav = getActivity().findViewById(R.id.dashboardBottomNav);
+            if (bottomNav != null) {
+                bottomNav.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    /**
+     * Tampilkan Bottom Navigation saat keluar dari detail paket
+     */
+    private void showBottomNavigation() {
+        if (getActivity() != null) {
+            View bottomNav = getActivity().findViewById(R.id.dashboardBottomNav);
+            if (bottomNav != null) {
+                bottomNav.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // PENTING: Tampilkan kembali bottom navbar saat keluar dari detail
+        showBottomNavigation();
     }
 }
