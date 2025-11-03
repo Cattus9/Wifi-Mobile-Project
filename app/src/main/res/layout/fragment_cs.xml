@@ -45,7 +45,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/berandaPrimaryCard"
-            android:layout_width="407dp"
+            android:layout_width="410dp"
             android:layout_height="625dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/fragment_card"
@@ -66,39 +66,6 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_nama"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Nama Lengkap">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/input_nama"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_alamat"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="Alamat">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/input_alamat"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="top"
-                        android:inputType="textMultiLine"
-                        android:minLines="2" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_laporan"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -112,28 +79,43 @@
                         android:layout_height="wrap_content"
                         android:gravity="top"
                         android:inputType="textMultiLine"
-                        android:minLines="4" />
+                        android:minLines="15" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_tanggal"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="Tanggal"
-                    app:endIconDrawable="@drawable/ic_baseline_calendar_today_24"
-                    app:endIconMode="custom">
+                    android:layout_height="55dp"
+                    app:cardCornerRadius="25dp"
+                    android:layout_marginTop="24dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/input_tanggal"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:inputType="none" />
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:background="@drawable/gradient_ungu">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <ImageView
+                            android:id="@+id/whatsApp"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_wa"
+                            tools:ignore="MissingConstraints"/>
+
+                        <TextView
+                            android:id="@+id/whatsAppText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+62 891-0094-9432"
+                            android:textColor="@android:color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            tools:layout_editor_absoluteX="100dp"
+                            tools:layout_editor_absoluteY="5dp"
+                            tools:ignore="MissingConstraints"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
                 <Button
                     android:id="@+id/button_kirim"

@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-10-28T12:10:26.958242500Z">
+        <DropdownSelection timestamp="2025-10-29T07:22:26.421160900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Toshiba\.android\avd\Pixel_9_Pro.avd" />
@@ -14,6 +14,9 @@
         <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="FormLaporanActivity">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="iNet">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
