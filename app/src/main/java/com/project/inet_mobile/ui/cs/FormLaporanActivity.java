@@ -25,10 +25,10 @@ public class FormLaporanActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_cs);
 
         // Inisialisasi Views
-        inputNama = findViewById(R.id.input_nama);
-        inputAlamat = findViewById(R.id.input_alamat);
+//        inputNama = findViewById(R.id.input_nama);
+//        inputAlamat = findViewById(R.id.input_alamat);
         inputLaporan = findViewById(R.id.input_laporan);
-        inputTanggal = findViewById(R.id.input_tanggal);
+//        inputTanggal = findViewById(R.id.input_tanggal);
         buttonKirim = findViewById(R.id.button_kirim);
 
         // Inisialisasi Kalender
