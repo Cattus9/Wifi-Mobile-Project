@@ -75,7 +75,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/gradient_ungu"
+                            android:background="@drawable/bg_profile_background"
                             android:padding="20dp">
 
                             <TextView
@@ -93,7 +93,7 @@
                                 android:id="@+id/tv_package_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/rounded_price_tag"
+                                android:background="@color/register_primary"
                                 android:paddingStart="12dp"
                                 android:paddingTop="4dp"
                                 android:paddingEnd="12dp"
