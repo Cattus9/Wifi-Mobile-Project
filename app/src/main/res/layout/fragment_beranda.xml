@@ -205,7 +205,11 @@
                             android:layout_marginRight="5dp"
                             app:cardCornerRadius="12dp"
                             app:cardElevation="2dp"
-                            app:cardUseCompatPadding="true">
+                            app:cardUseCompatPadding="true"
+
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -240,7 +244,11 @@
                             android:layout_marginRight="5dp"
                             app:cardCornerRadius="12dp"
                             app:cardElevation="2dp"
-                            app:cardUseCompatPadding="true">
+                            app:cardUseCompatPadding="true"
+
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -275,8 +283,11 @@
                             android:layout_marginLeft="5dp"
                             app:cardCornerRadius="12dp"
                             app:cardElevation="2dp"
-                            app:cardUseCompatPadding="true">
+                            app:cardUseCompatPadding="true"
 
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
