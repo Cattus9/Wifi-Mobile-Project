@@ -16,9 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.project.inet_mobile.Paket;
 import com.project.inet_mobile.R;
+import com.project.inet_mobile.ui.payment.PembayaranFragment;
 
 public class DetailPaketFragment extends Fragment {
 
@@ -388,14 +390,15 @@ public class DetailPaketFragment extends Fragment {
     }
 
     private void handleBuyAction() {
-        // Show confirmation or navigate to checkout
-        if (getContext() != null) {
-            Toast.makeText(getContext(),
-                    "Membeli paket: " + paketName,
-                    Toast.LENGTH_SHORT).show();
-        }
+        // Navigate to PembayaranFragment
+        if (getActivity() != null) {
+            PembayaranFragment pembayaranFragment = new PembayaranFragment();
 
-        // TODO: Navigate to checkout/payment fragment
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.dashboardFragmentContainer, pembayaranFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     /**

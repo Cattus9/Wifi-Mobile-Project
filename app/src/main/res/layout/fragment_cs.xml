@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/poppins"
             android:text="Customer Service"
@@ -45,8 +45,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/berandaPrimaryCard"
-            android:layout_width="410dp"
-            android:layout_height="625dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/fragment_card"
             android:padding="0dp"
@@ -93,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="5dp"
-                        android:background="@drawable/gradient_ungu">
+                        android:background="@drawable/ocean_blue">
 
                         <ImageView
                             android:id="@+id/whatsApp"

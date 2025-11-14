@@ -54,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         tokenStorage = new TokenStorage(getApplicationContext());
         authRepository = new AuthRepository(new SupabaseAuthService(conn.getSupabaseUrl(), conn.getSupabaseKey()));
 
-        if (isUserLoggedIn() && hasValidSession()) {
+        // Hanya cek SharedPreferences, tanpa validasi session expired
+        if (isUserLoggedIn()) {
             navigateToDashboard();
             return;
         }
@@ -150,11 +151,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isUserLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
-    }
-
-    private boolean hasValidSession() {
-        AuthSession session = tokenStorage.getSession();
-        return session != null && !session.isExpired();
     }
 
     private void saveLoginSession(String userId, String userName, String userEmail) {

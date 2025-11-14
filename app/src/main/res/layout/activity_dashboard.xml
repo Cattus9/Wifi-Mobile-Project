@@ -14,7 +14,7 @@
         android:id="@+id/dashboardToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/register_primary"
+        android:background="@drawable/gradient_blue"
         android:minHeight="0dp"
         android:paddingStart="0dp"
         android:paddingEnd="0dp"

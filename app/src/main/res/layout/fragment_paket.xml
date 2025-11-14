@@ -27,12 +27,12 @@
     <LinearLayout
         android:id="@+id/headerSection"
         android:layout_width="0dp"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="30dp"
+        android:paddingStart="20dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/paketToolbar">
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="Pilih Paket Internet"
             android:textColor="@android:color/white"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -76,8 +76,7 @@
                 android:id="@+id/whiteArea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_white_rounded_top"
-                android:minHeight="600dp">
+                android:background="@drawable/bg_white_rounded_top">
 
                 <!-- RecyclerView untuk menampilkan data paket (TIDAK SCROLLABLE) -->
                 <androidx.recyclerview.widget.RecyclerView
@@ -85,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="0dp"
-                    android:paddingTop="45dp"
+                    android:paddingTop="24dp"
                     android:paddingEnd="0dp"
                     android:paddingBottom="32dp"
                     android:nestedScrollingEnabled="false"
