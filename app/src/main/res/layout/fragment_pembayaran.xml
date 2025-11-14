@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/register_primary"
     tools:context=".ui.account.AkunFragment">
-<<<<<<< HEAD
-=======
 
     <ImageView
         android:id="@+id/backIcon"
@@ -21,39 +19,17 @@
         app:tint="@color/fragmentColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
->>>>>>> Wawa
 
     <TextView
-        android:fontFamily="@font/poppins"
         android:id="@+id/pembayaranTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-=======
         android:layout_marginStart="16dp"
         android:fontFamily="@font/poppins"
->>>>>>> Wawa
         android:text="Pembayaran"
         android:textColor="@color/fragmentColor"
         android:textSize="24sp"
         android:textStyle="bold"
-<<<<<<< HEAD
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/fragment_card"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-=======
         app:layout_constraintStart_toEndOf="@id/backIcon"
         app:layout_constraintTop_toTopOf="@id/backIcon"
         app:layout_constraintBottom_toBottomOf="@id/backIcon" />
@@ -68,7 +44,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
->>>>>>> Wawa
         app:layout_constraintTop_toBottomOf="@+id/pembayaranTitle">
 
         <ScrollView
@@ -81,17 +56,6 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-<<<<<<< HEAD
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="300dp"
-                    android:layout_height="200dp"
-                    android:layout_margin="15dp">
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-=======
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
@@ -475,7 +439,6 @@
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
->>>>>>> Wawa
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
