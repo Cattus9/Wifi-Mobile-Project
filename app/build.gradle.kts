@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.viewpager2)
 
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
 
     // Optional KTX libraries (it's good practice to add these to your libs.versions.toml as well, but this will work)
     implementation("androidx.core:core-ktx:1.13.1")
