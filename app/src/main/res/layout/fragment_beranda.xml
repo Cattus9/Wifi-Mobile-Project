@@ -464,7 +464,7 @@
                                     android:layout_height="50dp"
                                     android:layout_marginTop="10dp"
                                     android:contentDescription="Jatuh Tempo"
-                                    android:src="@drawable/ic_calendar" />
+                                    android:src="@drawable/ic_calendary" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -524,7 +524,7 @@
                                     android:layout_height="50dp"
                                     android:layout_marginTop="10dp"
                                     android:contentDescription="Tagihan"
-                                    android:src="@drawable/ic_tagihan" />
+                                    android:src="@drawable/ic_tagihany" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -585,7 +585,7 @@
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
                                     android:contentDescription="Online"
-                                    android:src="@drawable/ic_hotline" />
+                                    android:src="@drawable/ic_cally" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
