@@ -120,9 +120,6 @@ public class DetailPaketFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // PENTING: Sembunyikan bottom navbar saat masuk ke detail
-        hideBottomNavigation();
-
         // Initialize views
         initViews(view);
 
@@ -426,9 +423,21 @@ public class DetailPaketFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        // Sembunyikan bottom navbar setiap kali fragment menjadi aktif
+        hideBottomNavigation();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Tampilkan kembali bottom navbar saat fragment tidak aktif
+        showBottomNavigation();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // PENTING: Tampilkan kembali bottom navbar saat keluar dari detail
-        showBottomNavigation();
     }
 }

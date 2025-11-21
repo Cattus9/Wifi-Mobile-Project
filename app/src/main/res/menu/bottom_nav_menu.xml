@@ -9,10 +9,6 @@
         android:icon="@drawable/ic_nav_package"
         android:title="Paket" />
     <item
-        android:id="@+id/navigation_pembayaran"
-        android:icon="@drawable/ic_nav_payment"
-        android:title="Pembayaran" />
-    <item
         android:id="@+id/navigation_riwayat"
         android:icon="@drawable/ic_nav_history"
         android:title="Riwayat" />

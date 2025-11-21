@@ -176,8 +176,6 @@ public class DashboardActivity extends AppCompatActivity {
             return new PaketFragment();
         } else if (itemId == R.id.navigation_riwayat) {
             return new RiwayatFragment();
-        } else if (itemId == R.id.navigation_pembayaran) {
-            return new PembayaranFragment();
         } else if (itemId == R.id.navigation_akun) {
             return new AkunFragment();
         }

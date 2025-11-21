@@ -9,10 +9,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.project.inet_mobile.databinding.FragmentBerandaBinding; // Impor class binding
+import com.project.inet_mobile.ui.payment.PembayaranFragment;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -34,8 +37,30 @@ public class BerandaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Panggil fungsi-fungsi untuk mengatur tampilan
+        setupDynamicGreeting();
         setupDynamicDate();
         setupClickListeners();
+    }
+
+    /**
+     * Mengatur greeting dinamis berdasarkan waktu saat ini.
+     */
+    private void setupDynamicGreeting() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        String greeting;
+        if (hour >= 0 && hour < 11) {
+            greeting = "Selamat Pagi👋";
+        } else if (hour >= 11 && hour < 15) {
+            greeting = "Selamat Siang👋";
+        } else if (hour >= 15 && hour < 18) {
+            greeting = "Selamat Sore👋";
+        } else {
+            greeting = "Selamat Malam👋";
+        }
+
+        binding.berandaTitle.setText(greeting);
     }
 
     /**
@@ -47,6 +72,8 @@ public class BerandaFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", new Locale("id", "ID"));
         String currentDate = dateFormat.format(new Date());
 
+        // Set tanggal ke TextView menggunakan binding
+        binding.berandaDate.setText(currentDate);
     }
 
     /**
@@ -57,8 +84,7 @@ public class BerandaFragment extends Fragment {
 
         // --- Menu Cepat ---
         binding.cardPembayaran.setOnClickListener(v -> {
-            // TODO: Tambahkan logika untuk pindah ke halaman Pembayaran
-            showToast("Membuka menu Pembayaran...");
+            navigateToPembayaran();
         });
 
         binding.cardCs.setOnClickListener(v -> {
@@ -91,6 +117,20 @@ public class BerandaFragment extends Fragment {
     private void showToast(String message) {
         if (getContext() != null) {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Navigasi ke PembayaranFragment
+     */
+    private void navigateToPembayaran() {
+        if (getActivity() != null) {
+            PembayaranFragment pembayaranFragment = new PembayaranFragment();
+
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(com.project.inet_mobile.R.id.dashboardFragmentContainer, pembayaranFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 
