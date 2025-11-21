@@ -190,24 +190,29 @@
                             android:textStyle="bold" />
 
                         <!-- QRIS Option -->
-                        <androidx.cardview.widget.CardView
+                        <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cardQris"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
-                            app:cardBackgroundColor="@android:color/white"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:checkable="true"
+                            app:cardBackgroundColor="@color/payment_method_card_bg"
                             app:cardCornerRadius="12dp"
                             app:cardElevation="0dp"
-                            app:strokeColor="#E0E0E0"
-                            app:strokeWidth="1dp">
+                            app:checkedIcon="@drawable/ic_payment_check"
+                            app:checkedIconMargin="12dp"
+                            app:checkedIconSize="20dp"
+                            app:checkedIconTint="@color/register_primary"
+                            app:strokeColor="@color/payment_method_card_stroke"
+                            app:strokeWidth="2dp">
 
                             <LinearLayout
                                 android:id="@+id/btnQris"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:padding="16dp">
@@ -229,35 +234,33 @@
                                     android:textColor="#2C3E50"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:contentDescription="Lanjutkan"
-                                    android:src="@drawable/ic_chevron_right"
-                                    app:tint="#9E9E9E" />
                             </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                        </com.google.android.material.card.MaterialCardView>
 
                         <!-- Bank BRI -->
-                        <androidx.cardview.widget.CardView
+                        <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cardBankBRI"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
-                            app:cardBackgroundColor="@android:color/white"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:checkable="true"
+                            app:cardBackgroundColor="@color/payment_method_card_bg"
                             app:cardCornerRadius="12dp"
                             app:cardElevation="0dp"
-                            app:strokeColor="#E0E0E0"
-                            app:strokeWidth="1dp">
+                            app:checkedIcon="@drawable/ic_payment_check"
+                            app:checkedIconMargin="12dp"
+                            app:checkedIconSize="20dp"
+                            app:checkedIconTint="@color/register_primary"
+                            app:strokeColor="@color/payment_method_card_stroke"
+                            app:strokeWidth="2dp">
 
                             <LinearLayout
                                 android:id="@+id/btnBankBRI"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:padding="16dp">
@@ -279,35 +282,33 @@
                                     android:textColor="#2C3E50"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:contentDescription="Lanjutkan"
-                                    android:src="@drawable/ic_chevron_right"
-                                    app:tint="#9E9E9E" />
                             </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                        </com.google.android.material.card.MaterialCardView>
 
                         <!-- Bank BCA -->
-                        <androidx.cardview.widget.CardView
+                        <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cardBankBCA"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
-                            app:cardBackgroundColor="@android:color/white"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:checkable="true"
+                            app:cardBackgroundColor="@color/payment_method_card_bg"
                             app:cardCornerRadius="12dp"
                             app:cardElevation="0dp"
-                            app:strokeColor="#E0E0E0"
-                            app:strokeWidth="1dp">
+                            app:checkedIcon="@drawable/ic_payment_check"
+                            app:checkedIconMargin="12dp"
+                            app:checkedIconSize="20dp"
+                            app:checkedIconTint="@color/register_primary"
+                            app:strokeColor="@color/payment_method_card_stroke"
+                            app:strokeWidth="2dp">
 
                             <LinearLayout
                                 android:id="@+id/btnBankBCA"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:padding="16dp">
@@ -329,34 +330,32 @@
                                     android:textColor="#2C3E50"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:contentDescription="Lanjutkan"
-                                    android:src="@drawable/ic_chevron_right"
-                                    app:tint="#9E9E9E" />
                             </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                        </com.google.android.material.card.MaterialCardView>
 
                         <!-- Bank Mandiri -->
-                        <androidx.cardview.widget.CardView
+                        <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cardBankMandiri"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@android:color/white"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:checkable="true"
+                            app:cardBackgroundColor="@color/payment_method_card_bg"
                             app:cardCornerRadius="12dp"
                             app:cardElevation="0dp"
-                            app:strokeColor="#E0E0E0"
-                            app:strokeWidth="1dp">
+                            app:checkedIcon="@drawable/ic_payment_check"
+                            app:checkedIconMargin="12dp"
+                            app:checkedIconSize="20dp"
+                            app:checkedIconTint="@color/register_primary"
+                            app:strokeColor="@color/payment_method_card_stroke"
+                            app:strokeWidth="2dp">
 
                             <LinearLayout
                                 android:id="@+id/btnBankMandiri"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:focusable="true"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:padding="16dp">
@@ -378,15 +377,8 @@
                                     android:textColor="#2C3E50"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:contentDescription="Lanjutkan"
-                                    android:src="@drawable/ic_chevron_right"
-                                    app:tint="#9E9E9E" />
                             </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                        </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -538,5 +530,4 @@
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

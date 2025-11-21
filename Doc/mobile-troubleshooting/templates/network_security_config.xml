@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Network Security Configuration for Android
+
+  LOCATION: app/src/main/res/xml/network_security_config.xml
+
+  PURPOSE: Whitelist ngrok domains untuk development
+
+  USAGE: Reference this file in AndroidManifest.xml:
+  <application android:networkSecurityConfig="@xml/network_security_config">
+-->
+<network-security-config>
+
+    <!-- Allow ngrok domains for development -->
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Ngrok free tier domains -->
+        <domain includeSubdomains="true">ngrok-free.dev</domain>
+        <domain includeSubdomains="true">ngrok-free.app</domain>
+        <domain includeSubdomains="true">ngrok.app</domain>
+        <domain includeSubdomains="true">ngrok.io</domain>
+    </domain-config>
+
+    <!-- Trust system certificates for HTTPS -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+
+    <!--
+    PRODUCTION CONFIG (uncomment when deploying):
+
+    <domain-config>
+        <domain includeSubdomains="true">yourdomain.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+    -->
+
+</network-security-config>
