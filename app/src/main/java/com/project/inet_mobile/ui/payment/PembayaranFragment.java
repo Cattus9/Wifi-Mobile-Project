@@ -107,14 +107,22 @@ public class PembayaranFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        hideBottomNavigation();
         if (awaitingStatusAfterSnap && activePaymentId != null) {
             pollPaymentStatus();
         }
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        showBottomNavigation();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
+        showBottomNavigation();
         if (ongoingCall != null && !ongoingCall.isCanceled()) {
             ongoingCall.cancel();
         }
@@ -129,6 +137,14 @@ public class PembayaranFragment extends Fragment {
         tvDeadline = root.findViewById(R.id.tvDeadline);
         tvSnapStatus = root.findViewById(R.id.tvSnapStatus);
         snapProgressBar = root.findViewById(R.id.snapProgressBar);
+        View backIcon = root.findViewById(R.id.backIcon);
+        if (backIcon != null) {
+            backIcon.setOnClickListener(v -> {
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
+            });
+        }
         btnSnapPay.setOnClickListener(v -> initiateCheckout());
         updatePayButtonState();
     }
@@ -385,12 +401,14 @@ public class PembayaranFragment extends Fragment {
                 awaitingStatusAfterSnap = false;
 
                 if (!response.isSuccessful() || response.body() == null) {
+                    updateStatus("Status pembayaran tidak tersedia");
                     showToast("Gagal memeriksa status pembayaran");
                     return;
                 }
 
                 ApiResponse<PaymentStatusResponseData> body = response.body();
                 if (!body.isSuccess() || body.getData() == null) {
+                    updateStatus("Status pembayaran tidak tersedia");
                     showToast(body.getMessage() != null ? body.getMessage() : "Status tidak tersedia");
                     return;
                 }
@@ -403,6 +421,7 @@ public class PembayaranFragment extends Fragment {
                                   @NonNull Throwable t) {
                 if (!call.isCanceled()) {
                     setLoadingState(false, null);
+                    updateStatus("Status pembayaran tidak tersedia");
                     showToast("Tidak dapat memeriksa status: " + t.getMessage());
                 }
             }
@@ -470,6 +489,20 @@ public class PembayaranFragment extends Fragment {
         if (snapProgressBar != null) {
             snapProgressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
         }
+        if (loading && currentInvoiceDetail == null) {
+            if (tvTotalPembayaran != null) {
+                tvTotalPembayaran.setText("Memuat...");
+            }
+            if (tvNoInvoice != null) {
+                tvNoInvoice.setText("-");
+            }
+            if (tvItemDescription != null) {
+                tvItemDescription.setText("");
+            }
+            if (tvDeadline != null) {
+                tvDeadline.setText("-");
+            }
+        }
         if (statusMessage != null) {
             updateStatus(statusMessage);
         }
@@ -526,25 +559,6 @@ public class PembayaranFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Sembunyikan bottom navbar setiap kali fragment menjadi aktif
-        hideBottomNavigation();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // Tampilkan kembali bottom navbar saat fragment tidak aktif
-        showBottomNavigation();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-}
     interface InvoiceListCallback {
         void onFound(long foundInvoiceId);
 
@@ -552,3 +566,4 @@ public class PembayaranFragment extends Fragment {
 
         void onError(String message);
     }
+}
