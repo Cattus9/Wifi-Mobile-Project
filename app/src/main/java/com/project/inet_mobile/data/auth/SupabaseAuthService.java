@@ -71,6 +71,49 @@ public class SupabaseAuthService {
         }
     }
 
+    /**
+     * Refresh Supabase session menggunakan refresh_token.
+     */
+    public AuthSession refreshSession(String refreshToken) throws AuthException {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("refresh_token", refreshToken);
+
+            Request request = new Request.Builder()
+                    .url(baseUrl + "/auth/v1/token?grant_type=refresh_token")
+                    .post(RequestBody.create(body.toString(), MEDIA_TYPE_JSON))
+                    .header("apikey", apiKey)
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            Response response = httpClient.newCall(request).execute();
+            String raw = response.body() != null ? response.body().string() : "";
+            if (!response.isSuccessful()) {
+                throw buildAuthException(response.code(), raw);
+            }
+
+            JSONObject json = new JSONObject(raw);
+            String accessToken = json.optString("access_token", "");
+            String newRefreshToken = json.optString("refresh_token", refreshToken);
+            long expiresIn = json.optLong("expires_in", 3600L);
+            String tokenType = json.optString("token_type", "bearer");
+
+            JSONObject userObj = json.optJSONObject("user");
+            String authUserId = userObj != null ? userObj.optString("id", "") : "";
+
+            if (accessToken == null || accessToken.isEmpty() || authUserId == null || authUserId.isEmpty()) {
+                throw new AuthException(response.code(), "Respons refresh tidak lengkap dari server");
+            }
+
+            long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
+            return new AuthSession(accessToken, newRefreshToken, expiresAtMillis, tokenType, authUserId);
+        } catch (JSONException e) {
+            throw new AuthException("Gagal mem-parsing respons refresh", e);
+        } catch (IOException e) {
+            throw new AuthException("Koneksi ke server gagal: " + e.getMessage(), e);
+        }
+    }
+
     public UserProfile fetchUserProfile(AuthSession session) throws AuthException {
         try {
             HttpUrl url = HttpUrl.parse(baseUrl + "/rest/v1/users");

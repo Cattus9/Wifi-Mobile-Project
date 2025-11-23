@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.project.inet_mobile.data.auth.AuthSession;
+import com.project.inet_mobile.data.auth.SupabaseAuthService;
 import com.project.inet_mobile.data.session.TokenStorage;
 
 import org.json.JSONObject;
@@ -27,9 +28,11 @@ public class AuthInterceptor implements Interceptor {
 
     private static final String TAG = "AUTH_DEBUG";
     private final TokenStorage tokenStorage;
+    private final SupabaseAuthService authService;
 
-    public AuthInterceptor(TokenStorage tokenStorage) {
+    public AuthInterceptor(TokenStorage tokenStorage, SupabaseAuthService authService) {
         this.tokenStorage = tokenStorage;
+        this.authService = authService;
     }
 
     @Nullable
@@ -64,6 +67,9 @@ public class AuthInterceptor implements Interceptor {
                 .header("Content-Type", "application/json");
 
         AuthSession session = currentSession();
+        if (session == null) {
+            session = tryRefreshSession();
+        }
         if (session != null) {
             String tokenType = session.getTokenType() != null ? session.getTokenType() : "Bearer";
             String authHeader = tokenType + " " + session.getAccessToken();
@@ -74,6 +80,25 @@ public class AuthInterceptor implements Interceptor {
         }
 
         return chain.proceed(builder.build());
+    }
+
+    @Nullable
+    private synchronized AuthSession tryRefreshSession() {
+        AuthSession current = tokenStorage.getSession();
+        if (current == null || current.getRefreshToken() == null || current.getRefreshToken().isEmpty()) {
+            Log.e(TAG, "❌ Cannot refresh – no refresh token stored");
+            return null;
+        }
+        try {
+            Log.d(TAG, "🔄 Attempting to refresh Supabase session");
+            AuthSession refreshed = authService.refreshSession(current.getRefreshToken());
+            tokenStorage.saveSession(refreshed);
+            Log.d(TAG, "✅ Refresh success. New expiry: " + new Date(refreshed.getExpiresAtMillis()));
+            return refreshed;
+        } catch (Exception ex) {
+            Log.e(TAG, "❌ Refresh failed: " + ex.getMessage());
+            return null;
+        }
     }
 
     private String previewToken(@Nullable String token) {

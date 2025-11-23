@@ -103,6 +103,8 @@ public class PaymentHistoryItem {
         PAID("PAID"),
         OVERDUE("OVERDUE"),
         DRAFT("DRAFT"),
+        PENDING("PENDING"),
+        CANCELLED("CANCELLED"),
         UNKNOWN("UNKNOWN");
 
         private final String label;
@@ -121,6 +123,10 @@ public class PaymentHistoryItem {
 
         public boolean isOverdue() {
             return this == OVERDUE;
+        }
+
+        public boolean isPending() {
+            return this == PENDING;
         }
 
         @NonNull

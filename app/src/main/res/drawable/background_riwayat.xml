@@ -2,12 +2,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
     <shape >
-        <!-- Gradasi ungu ke violet -->
+        <!-- Gradasi biru lembut agar konsisten dengan tema lain -->
         <gradient
             android:type="linear"
             android:angle="135"
-            android:startColor="#A566FF"
-            android:endColor="#7A5EFF" />
+            android:startColor="#2FB5ED"
+            android:endColor="#1A9BD6" />
 
         <!-- Sudut melengkung -->
         <corners android:radius="16dp" />

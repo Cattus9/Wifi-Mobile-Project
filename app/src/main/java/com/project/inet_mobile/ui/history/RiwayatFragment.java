@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.view.ViewGroup;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -30,8 +31,10 @@ public class RiwayatFragment extends Fragment {
     private TextView txtInvoiceCount;
     private TextView txtStatus;
     private TextView txtTunggakan;
+    private View chipContainer;
 
     private RiwayatAdapter riwayatAdapter;
+    private final List<PaymentHistoryItem> fullData = new ArrayList<>();
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
 
     public RiwayatFragment() {
@@ -55,6 +58,8 @@ public class RiwayatFragment extends Fragment {
         txtInvoiceCount = view.findViewById(R.id.txtInvoiceCount);
         txtStatus = view.findViewById(R.id.txtStatus);
         txtTunggakan = view.findViewById(R.id.txtTunggakan);
+        chipContainer = view.findViewById(R.id.chipContainer);
+        setupFilterChips();
     }
 
     private void setupRecyclerView() {
@@ -68,9 +73,11 @@ public class RiwayatFragment extends Fragment {
     private void loadDummyHistory() {
         showLoading(true);
         List<PaymentHistoryItem> dummyData = createDummyData();
+        fullData.clear();
+        fullData.addAll(dummyData);
         bindSummary(dummyData);
-        riwayatAdapter.submitList(dummyData);
-        showEmpty(dummyData.isEmpty());
+        riwayatAdapter.submitList(new ArrayList<>(dummyData));
+        showEmpty(dummyData.size() <= 1); // header-only means empty
         showLoading(false);
     }
 
@@ -195,6 +202,50 @@ public class RiwayatFragment extends Fragment {
     private void showEmpty(boolean isEmpty) {
         emptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
         recyclerView.setVisibility(isEmpty ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    private void setupFilterChips() {
+        if (!(chipContainer instanceof ViewGroup)) return;
+        ViewGroup container = (ViewGroup) chipContainer;
+        container.removeAllViews();
+        addChip(container, "all", "Semua", true);
+        addChip(container, "paid", "Lunas", false);
+        addChip(container, "pending", "Pending", false);
+        addChip(container, "overdue", "Overdue", false);
+        addChip(container, "cancelled", "Batal", false);
+    }
+
+    private void addChip(ViewGroup container, String key, String label, boolean checked) {
+        View chipView = getLayoutInflater().inflate(R.layout.view_filter_chip, container, false);
+        if (chipView instanceof com.google.android.material.chip.Chip) {
+            com.google.android.material.chip.Chip chip = (com.google.android.material.chip.Chip) chipView;
+            chip.setText(label);
+            chip.setTag(key);
+            chip.setChecked(checked);
+            chip.setOnClickListener(v -> applyFilter((String) v.getTag()));
+        }
+        container.addView(chipView);
+    }
+
+    private void applyFilter(@NonNull String key) {
+        List<PaymentHistoryItem> filtered = new ArrayList<>();
+        for (PaymentHistoryItem item : fullData) {
+            if (matchesFilter(item, key)) {
+                filtered.add(item);
+            }
+        }
+        bindSummary(filtered);
+        riwayatAdapter.submitList(filtered);
+        showEmpty(filtered.isEmpty());
+    }
+
+    private boolean matchesFilter(PaymentHistoryItem item, String key) {
+        if ("all".equalsIgnoreCase(key)) return true;
+        if ("paid".equalsIgnoreCase(key)) return item.getStatus().isPaid();
+        if ("overdue".equalsIgnoreCase(key)) return item.getStatus().isOverdue();
+        if ("pending".equalsIgnoreCase(key)) return item.getStatus().isPending();
+        if ("cancelled".equalsIgnoreCase(key)) return PaymentHistoryItem.InvoiceStatus.CANCELLED == item.getStatus();
+        return true;
     }
 
     private String formatCurrency(double amount) {

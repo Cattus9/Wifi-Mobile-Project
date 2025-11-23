@@ -1,5 +1,7 @@
 package com.project.inet_mobile;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
@@ -34,6 +36,7 @@ public class DashboardActivity extends AppCompatActivity {
     private final SparseArray<String> fragmentTags = new SparseArray<>();
     private Fragment currentFragment;
     private int currentItemId = View.NO_ID;
+    private BottomNavigationView bottomNavigationView;
 
     // LinkedList untuk menyimpan history navigasi
     private LinkedList<Integer> navigationHistory = new LinkedList<>();
@@ -55,7 +58,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         // Apply window insets ke bottom navigation
-        BottomNavigationView bottomNavigationView = findViewById(R.id.dashboardBottomNav);
+        bottomNavigationView = findViewById(R.id.dashboardBottomNav);
         ViewCompat.setOnApplyWindowInsetsListener(bottomNavigationView, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(0, 0, 0, systemBars.bottom);
@@ -118,6 +121,8 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
             bottomNavigationView.setSelectedItemId(R.id.navigation_beranda);
         }
+
+        handleDeepLink(getIntent());
     }
 
     private void switchFragment(int itemId, boolean addToHistory) {
@@ -189,6 +194,40 @@ public class DashboardActivity extends AppCompatActivity {
             fragmentTags.put(itemId, tag);
         }
         return tag;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleDeepLink(intent);
+    }
+
+    private void handleDeepLink(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        Uri data = intent.getData();
+        if (data == null) {
+            return;
+        }
+        if ("inet".equalsIgnoreCase(data.getScheme()) && "payment-result".equalsIgnoreCase(data.getHost())) {
+            openPembayaranFromDeepLink();
+        }
+    }
+
+    private void openPembayaranFromDeepLink() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment pembayaranFragment = new PembayaranFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.dashboardFragmentContainer, pembayaranFragment, "payment_deeplink");
+        transaction.addToBackStack("payment_deeplink");
+        transaction.commit();
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_beranda);
+        }
     }
 
     @Override

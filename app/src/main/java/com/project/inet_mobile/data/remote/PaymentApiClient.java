@@ -2,7 +2,9 @@ package com.project.inet_mobile.data.remote;
 
 import android.content.Context;
 
+import com.project.inet_mobile.data.auth.SupabaseAuthService;
 import com.project.inet_mobile.data.session.TokenStorage;
+import com.project.inet_mobile.util.conn;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,12 +22,13 @@ public class PaymentApiClient {
 
     public PaymentApiClient(Context context) {
         TokenStorage storage = new TokenStorage(context.getApplicationContext());
+        SupabaseAuthService authService = new SupabaseAuthService(conn.getSupabaseUrl(), conn.getSupabaseKey());
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new AuthInterceptor(storage))
+                .addInterceptor(new AuthInterceptor(storage, authService))
                 .addInterceptor(loggingInterceptor)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

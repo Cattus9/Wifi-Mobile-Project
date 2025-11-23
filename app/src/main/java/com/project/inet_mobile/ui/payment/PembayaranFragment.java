@@ -1,6 +1,7 @@
 package com.project.inet_mobile.ui.payment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.fragment.app.Fragment;
 
+import androidx.cardview.widget.CardView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.project.inet_mobile.R;
@@ -48,8 +50,10 @@ public class PembayaranFragment extends Fragment {
     private TextView tvNoInvoice;
     private TextView tvItemDescription;
     private TextView tvDeadline;
+    private TextView tvStatusLabel;
     private TextView tvSnapStatus;
     private ProgressBar snapProgressBar;
+    private CardView statusBannerCard;
 
     private PaymentRemoteDataSource paymentDataSource;
     private TokenStorage tokenStorage;
@@ -135,8 +139,10 @@ public class PembayaranFragment extends Fragment {
         tvNoInvoice = root.findViewById(R.id.tvNoInvoice);
         tvItemDescription = root.findViewById(R.id.tvItem);
         tvDeadline = root.findViewById(R.id.tvDeadline);
+        tvStatusLabel = root.findViewById(R.id.tvStatusLabel);
         tvSnapStatus = root.findViewById(R.id.tvSnapStatus);
         snapProgressBar = root.findViewById(R.id.snapProgressBar);
+        statusBannerCard = root.findViewById(R.id.cardStatusBanner);
         View backIcon = root.findViewById(R.id.backIcon);
         if (backIcon != null) {
             backIcon.setOnClickListener(v -> {
@@ -438,10 +444,8 @@ public class PembayaranFragment extends Fragment {
         String status = payment.getStatus();
         if ("settlement".equalsIgnoreCase(status)) {
             updateStatus("Pembayaran berhasil. Terima kasih!");
-            if (currentInvoiceDetail != null) {
-                currentInvoiceDetail = null;
-            }
-            updatePayButtonState();
+            // Refresh invoice agar status berubah menjadi paid dan tombol dinonaktifkan
+            requestInvoiceDetail(invoiceId);
         } else if ("pending".equalsIgnoreCase(status)) {
             updateStatus("Pembayaran masih menunggu. Cek instruksi Midtrans.");
         } else if ("expire".equalsIgnoreCase(status) || "cancel".equalsIgnoreCase(status)) {
@@ -464,11 +468,14 @@ public class PembayaranFragment extends Fragment {
         if (tvItemDescription != null) {
             tvItemDescription.setText(detail.getDescription());
         }
-        if (tvDeadline != null) {
-            tvDeadline.setText(detail.getDueDate());
-        }
+        updateStatusBanner(detail);
 
-        if (!detail.isCanPay()) {
+        String status = detail.getStatus();
+        boolean isIssued = "issued".equalsIgnoreCase(status);
+        if (!isIssued) {
+            updateStatus(getStatusMessage(status));
+            btnSnapPay.setEnabled(false);
+        } else if (!detail.isCanPay()) {
             updateStatus("Invoice ini tidak dapat dibayar");
             btnSnapPay.setEnabled(false);
         } else {
@@ -515,7 +522,7 @@ public class PembayaranFragment extends Fragment {
 
     private void updatePayButtonState() {
         if (btnSnapPay != null) {
-            boolean canPay = currentInvoiceDetail != null && currentInvoiceDetail.isCanPay();
+            boolean canPay = isInvoicePayable();
             btnSnapPay.setEnabled(!isLoading() && selectedCard != null && canPay);
         }
     }
@@ -528,6 +535,88 @@ public class PembayaranFragment extends Fragment {
 
     private void showToast(@NonNull String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean isInvoicePayable() {
+        return currentInvoiceDetail != null
+                && currentInvoiceDetail.isCanPay()
+                && "issued".equalsIgnoreCase(currentInvoiceDetail.getStatus());
+    }
+
+    private String getStatusMessage(@Nullable String status) {
+        if (status == null) {
+            return "Status pembayaran tidak tersedia";
+        }
+        switch (status.toLowerCase()) {
+            case "paid":
+                return "Tagihan sudah lunas";
+            case "overdue":
+                return "Tagihan kedaluwarsa";
+            case "cancelled":
+                return "Tagihan dibatalkan";
+            case "draft":
+                return "Tagihan belum diterbitkan";
+            default:
+                return "Status pembayaran: " + status;
+        }
+    }
+
+    private void updateStatusBanner(@NonNull InvoiceDetailResponseData detail) {
+        String status = detail.getStatus();
+        // Default colors: warning yellow
+        int bgColor = Color.parseColor("#FFF9C4");
+        int textColor = Color.parseColor("#F57F17");
+
+        if ("paid".equalsIgnoreCase(status)) {
+            bgColor = Color.parseColor("#E8F5E9");
+            textColor = Color.parseColor("#1B5E20");
+            String paidAt = detail.getPaidAt();
+            setStatusBannerContent("Tagihan sudah dibayar",
+                    (paidAt != null && !paidAt.isEmpty()) ? paidAt : "Terima kasih");
+            applyStatusBannerColors(bgColor, textColor);
+            return;
+        }
+
+        if ("overdue".equalsIgnoreCase(status)) {
+            bgColor = Color.parseColor("#FFF3E0");
+            textColor = Color.parseColor("#E65100");
+            setStatusBannerContent("Tagihan kedaluwarsa", detail.getDueDate());
+            applyStatusBannerColors(bgColor, textColor);
+            return;
+        }
+
+        if ("cancelled".equalsIgnoreCase(status)) {
+            bgColor = Color.parseColor("#ECEFF1");
+            textColor = Color.parseColor("#37474F");
+            setStatusBannerContent("Tagihan dibatalkan", "-");
+            applyStatusBannerColors(bgColor, textColor);
+            return;
+        }
+
+        // Default: issued/draft
+        setStatusBannerContent("Selesaikan pembayaran sebelum", detail.getDueDate());
+        applyStatusBannerColors(bgColor, textColor);
+    }
+
+    private void setStatusBannerContent(String title, String value) {
+        if (tvStatusLabel != null) {
+            tvStatusLabel.setText(title);
+        }
+        if (tvDeadline != null) {
+            tvDeadline.setText(value);
+        }
+    }
+
+    private void applyStatusBannerColors(int bgColor, int textColor) {
+        if (statusBannerCard != null) {
+            statusBannerCard.setCardBackgroundColor(bgColor);
+        }
+        if (tvStatusLabel != null) {
+            tvStatusLabel.setTextColor(textColor);
+        }
+        if (tvDeadline != null) {
+            tvDeadline.setTextColor(textColor);
+        }
     }
 
     private String formatCurrency(double amount) {
