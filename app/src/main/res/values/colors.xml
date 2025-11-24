@@ -49,4 +49,6 @@
     <color name="profile_badge_text_primary">#2F55C7</color>
     <color name="profile_badge_text_secondary">#2E7D32</color>
     <color name="profile_badge_text_support">#D66A16</color>
+    <color name="chip_selected_bg">#EAE4FF</color>
+    <color name="chip_selected_text">#622AFF</color>
 </resources>

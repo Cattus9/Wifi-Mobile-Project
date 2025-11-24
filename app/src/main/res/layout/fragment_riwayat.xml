@@ -29,7 +29,7 @@
         android:id="@+id/riwayatContentCard"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/fragment_card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,10 +40,10 @@
             android:id="@+id/summaryHighlight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="12dp"
             android:background="@drawable/background_riwayat"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -55,7 +55,9 @@
                 android:text="@string/riwayat_card_total_bayar"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/txtNominal"
@@ -66,7 +68,9 @@
                 android:textColor="@color/white"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/poppinssemibold" />
+                android:fontFamily="@font/poppinssemibold"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,15 +90,19 @@
                     android:paddingBottom="6dp"
                     android:text="@string/riwayat_label_no_payment"
                     android:textColor="@color/chip_lunas_text"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
 
-                <TextView
-                    android:id="@+id/txtInvoiceCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="@string/tunggakan"
-                    android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/txtInvoiceCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/tunggakan"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:ellipsize="end" />
             </LinearLayout>
 
             <LinearLayout
@@ -126,14 +134,19 @@
                             android:layout_height="wrap_content"
                             android:text="@string/status_saat_ini"
                             android:textColor="@color/clrTextPrimary"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
 
                         <TextView
                             android:id="@+id/txtStatus"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/riwayat_label_unavailable"
-                            android:textColor="@color/clrTextPrimary" />
+                            android:textColor="@color/clrTextPrimary"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -159,14 +172,18 @@
                             android:layout_height="wrap_content"
                             android:text="@string/tunggakan"
                             android:textColor="@color/clrTextPrimary"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
 
                         <TextView
                             android:id="@+id/txtTunggakan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/riwayat_placeholder_currency"
-                            android:textColor="@color/clrTextPrimary" />
+                            android:textColor="@color/clrTextPrimary"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
@@ -176,9 +193,9 @@
             android:id="@+id/riwayatSectionTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:text="@string/riwayat_pembayaran"
             android:textColor="@color/clrTextPrimary"
             android:textSize="18sp"
@@ -191,9 +208,9 @@
             android:id="@+id/filterScroll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -210,21 +227,41 @@
                 android:paddingBottom="4dp" />
         </HorizontalScrollView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerRiwayat"
+        <FrameLayout
+            android:id="@+id/listContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:clipToPadding="false"
-            android:paddingBottom="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:minHeight="@dimen/riwayat_list_min_height"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/filterScroll"
-            tools:listitem="@layout/item_riwayat_pembayaran" />
+            app:layout_constraintTop_toBottomOf="@id/filterScroll">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRiwayat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="6dp"
+                tools:listitem="@layout/item_riwayat_pembayaran" />
+
+            <TextView
+                android:id="@+id/riwayatEmptyView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/no_data"
+                android:gravity="center"
+                android:textColor="@color/clrTextSecondary"
+                android:visibility="gone" />
+
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
@@ -232,21 +269,6 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/riwayatContentCard"
-        app:layout_constraintEnd_toEndOf="@id/riwayatContentCard"
-        app:layout_constraintStart_toStartOf="@id/riwayatContentCard"
-        app:layout_constraintTop_toTopOf="@id/riwayatContentCard" />
-
-    <TextView
-        android:id="@+id/riwayatEmptyView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/no_data"
-        android:textAlignment="center"
-        android:textColor="@color/clrTextSecondary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/riwayatContentCard"
         app:layout_constraintEnd_toEndOf="@id/riwayatContentCard"

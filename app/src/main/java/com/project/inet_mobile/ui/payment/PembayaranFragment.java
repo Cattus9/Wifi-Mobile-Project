@@ -124,6 +124,12 @@ public class PembayaranFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        showBottomNavigation();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         showBottomNavigation();
@@ -444,7 +450,11 @@ public class PembayaranFragment extends Fragment {
         String status = payment.getStatus();
         if ("settlement".equalsIgnoreCase(status)) {
             updateStatus("Pembayaran berhasil. Terima kasih!");
-            // Refresh invoice agar status berubah menjadi paid dan tombol dinonaktifkan
+            // Mark invoice as paid locally to prevent re-checkout, then refresh from server
+            if (currentInvoiceDetail != null) {
+                currentInvoiceDetail = new InvoiceDetailResponseDataWrapper(currentInvoiceDetail, "paid", false);
+            }
+            updatePayButtonState();
             requestInvoiceDetail(invoiceId);
         } else if ("pending".equalsIgnoreCase(status)) {
             updateStatus("Pembayaran masih menunggu. Cek instruksi Midtrans.");
@@ -535,6 +545,46 @@ public class PembayaranFragment extends Fragment {
 
     private void showToast(@NonNull String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Wrapper sederhana untuk menandai invoice sudah paid secara lokal
+     * sebelum refresh dari server, supaya tombol tidak aktif dan status berubah.
+     */
+    private static class InvoiceDetailResponseDataWrapper extends InvoiceDetailResponseData {
+        private final InvoiceDetailResponseData delegate;
+        private final String overrideStatus;
+        private final boolean overrideCanPay;
+
+        InvoiceDetailResponseDataWrapper(InvoiceDetailResponseData delegate, String status, boolean canPay) {
+            this.delegate = delegate;
+            this.overrideStatus = status;
+            this.overrideCanPay = canPay;
+        }
+
+        @Override
+        public String getStatus() {
+            return overrideStatus;
+        }
+
+        @Override
+        public boolean isCanPay() {
+            return overrideCanPay;
+        }
+
+        // Delegate other getters
+        @Override public long getInvoiceId() { return delegate.getInvoiceId(); }
+        @Override public String getInvoiceNumber() { return delegate.getInvoiceNumber(); }
+        @Override public String getMonthLabel() { return delegate.getMonthLabel(); }
+        @Override public double getAmount() { return delegate.getAmount(); }
+        @Override public String getDueDate() { return delegate.getDueDate(); }
+        @Override public String getDescription() { return delegate.getDescription(); }
+        @Override public String getCreatedAt() { return delegate.getCreatedAt(); }
+        @Override public String getPaidAt() { return delegate.getPaidAt(); }
+        @Override public boolean isOverdue() { return delegate.isOverdue(); }
+        @Override public CustomerInfo getCustomer() { return delegate.getCustomer(); }
+        @Override public java.util.List<PaymentMethod> getPaymentMethods() { return delegate.getPaymentMethods(); }
+        @Override public LatestPayment getLatestPayment() { return delegate.getLatestPayment(); }
     }
 
     private boolean isInvoicePayable() {

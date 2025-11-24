@@ -19,12 +19,12 @@
     <string name="password_toggle_desc">Tampilkan atau sembunyikan kata sandi</string>
     <string name="riwayat_card_total_bayar">Total Terbayar (Tahun ini)</string>
     <string name="riwayat_placeholder_currency">Rp 0</string>
-    <string name="riwayat_label_no_payment">Belum ada pembayaran</string>
-    <string name="riwayat_label_unavailable">Tidak tersedia</string>
+    <string name="riwayat_label_no_payment">Kamu belum memiliki riwayat pembayaran.</string>
+    <string name="riwayat_label_unavailable">Tidak ada status</string>
     <string name="riwayat_label_paid_month">Lunas: %1$s</string>
     <string name="riwayat_paid_transaction_count">%1$d transaksi</string>
     <string name="riwayat_status_active">Aktif</string>
-    <string name="riwayat_status_pending">Menunggu Aktivasi</string>
+    <string name="riwayat_status_pending">Menunggu pembayaran</string>
     <string name="riwayat_pembayaran">Riwayat Pembayaran</string>
     <string name="status_saat_ini">Status Saat ini</string>
     <string name="tunggakan">Tunggakan</string>
@@ -38,4 +38,5 @@
     <string name="logout_dialog_message">Apakah Anda yakin ingin keluar?</string>
     <string name="logout_dialog_cancel">Batal</string>
     <string name="logout_dialog_confirm">Keluar</string>
+    <string name="loading_generic">Memuat…</string>
 </resources>

@@ -242,4 +242,12 @@ public class DashboardActivity extends AppCompatActivity {
         }
         outState.putIntArray(KEY_NAVIGATION_HISTORY, historyArray);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        }
+    }
 }

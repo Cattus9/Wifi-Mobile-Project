@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -15,11 +16,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.inet_mobile.R;
+import com.project.inet_mobile.data.payment.PaymentRemoteDataSource;
+import com.project.inet_mobile.data.remote.dto.ApiResponse;
+import com.project.inet_mobile.data.remote.dto.InvoiceListResponseData;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RiwayatFragment extends Fragment {
 
@@ -36,6 +44,8 @@ public class RiwayatFragment extends Fragment {
     private RiwayatAdapter riwayatAdapter;
     private final List<PaymentHistoryItem> fullData = new ArrayList<>();
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
+    private PaymentRemoteDataSource paymentDataSource;
+    private boolean dataLoaded = false;
 
     public RiwayatFragment() {
         super(R.layout.fragment_riwayat);
@@ -46,7 +56,9 @@ public class RiwayatFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         setupRecyclerView();
-        loadDummyHistory();
+        paymentDataSource = new PaymentRemoteDataSource(requireContext());
+        dataLoaded = false;
+        loadHistoryFromApi();
     }
 
     private void initViews(View view) {
@@ -70,103 +82,111 @@ public class RiwayatFragment extends Fragment {
         recyclerView.setAdapter(riwayatAdapter);
     }
 
-    private void loadDummyHistory() {
+    private void loadHistoryFromApi() {
         showLoading(true);
-        List<PaymentHistoryItem> dummyData = createDummyData();
-        fullData.clear();
-        fullData.addAll(dummyData);
-        bindSummary(dummyData);
-        riwayatAdapter.submitList(new ArrayList<>(dummyData));
-        showEmpty(dummyData.size() <= 1); // header-only means empty
-        showLoading(false);
+        Call<ApiResponse<InvoiceListResponseData>> call = paymentDataSource.getInvoices(50, 0, null);
+        call.enqueue(new Callback<ApiResponse<InvoiceListResponseData>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<InvoiceListResponseData>> call,
+                                   @NonNull Response<ApiResponse<InvoiceListResponseData>> response) {
+                showLoading(false);
+                dataLoaded = true;
+                if (!response.isSuccessful() || response.body() == null || response.body().getData() == null) {
+                    showEmpty(true);
+                    bindSummaryPlaceholder();
+                    Toast.makeText(requireContext(), "Gagal memuat riwayat", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                List<InvoiceListResponseData.InvoiceItem> items = response.body().getData().getItems();
+                List<PaymentHistoryItem> mapped = mapInvoices(items);
+                fullData.clear();
+                fullData.addAll(mapped);
+                applyFilter("all");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<InvoiceListResponseData>> call,
+                                  @NonNull Throwable t) {
+                if (!call.isCanceled()) {
+                    showLoading(false);
+                    dataLoaded = true;
+                    showEmpty(true);
+                    bindSummaryPlaceholder();
+                    Toast.makeText(requireContext(), "Tidak dapat memuat riwayat: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    private List<PaymentHistoryItem> createDummyData() {
-        List<PaymentHistoryItem> items = new ArrayList<>();
+    private List<PaymentHistoryItem> mapInvoices(List<InvoiceListResponseData.InvoiceItem> items) {
+        List<PaymentHistoryItem> mapped = new ArrayList<>();
+        if (items == null) return mapped;
+        for (InvoiceListResponseData.InvoiceItem inv : items) {
+            PaymentHistoryItem.InvoiceStatus status = mapStatus(inv.getStatus());
+            @ColorInt int bg;
+            @ColorInt int textColor;
+            switch (status) {
+                case OVERDUE:
+                    bg = ContextCompat.getColor(requireContext(), R.color.status_overdue_bg);
+                    textColor = ContextCompat.getColor(requireContext(), R.color.white);
+                    break;
+                case DRAFT:
+                    bg = ContextCompat.getColor(requireContext(), R.color.status_draft_bg);
+                    textColor = ContextCompat.getColor(requireContext(), R.color.status_text_dark);
+                    break;
+                case PENDING:
+                    bg = ContextCompat.getColor(requireContext(), R.color.status_draft_bg);
+                    textColor = ContextCompat.getColor(requireContext(), R.color.status_text_dark);
+                    break;
+                case CANCELLED:
+                    bg = ContextCompat.getColor(requireContext(), R.color.status_draft_bg);
+                    textColor = ContextCompat.getColor(requireContext(), R.color.status_text_dark);
+                    break;
+                case PAID:
+                default:
+                    bg = ContextCompat.getColor(requireContext(), R.color.status_paid_bg);
+                    textColor = ContextCompat.getColor(requireContext(), R.color.white);
+                    break;
+            }
 
-        items.add(createItem(
-                "September 2024",
-                "12 Sep 2024",
-                "Transfer Bank",
-                "INV-2024-0912",
-                PaymentHistoryItem.InvoiceStatus.PAID,
-                350000
-        ));
-
-        items.add(createItem(
-                "Agustus 2024",
-                "10 Agu 2024",
-                "Virtual Account",
-                "INV-2024-0810",
-                PaymentHistoryItem.InvoiceStatus.PAID,
-                350000
-        ));
-
-        items.add(createItem(
-                "Juli 2024",
-                "11 Jul 2024",
-                "Kartu Kredit",
-                "INV-2024-0711",
-                PaymentHistoryItem.InvoiceStatus.OVERDUE,
-                350000
-        ));
-
-        items.add(createItem(
-                "Juni 2024",
-                "12 Jun 2024",
-                "Transfer Bank",
-                "INV-2024-0612",
-                PaymentHistoryItem.InvoiceStatus.DRAFT,
-                350000
-        ));
-
-        return items;
-    }
-
-    private PaymentHistoryItem createItem(
-            String monthLabel,
-            String paymentDate,
-            String method,
-            String invoice,
-            PaymentHistoryItem.InvoiceStatus status,
-            double amount
-    ) {
-        @ColorInt int bg;
-        @ColorInt int textColor;
-        switch (status) {
-            case OVERDUE:
-                bg = ContextCompat.getColor(requireContext(), R.color.status_overdue_bg);
-                textColor = ContextCompat.getColor(requireContext(), R.color.white);
-                break;
-            case DRAFT:
-                bg = ContextCompat.getColor(requireContext(), R.color.status_draft_bg);
-                textColor = ContextCompat.getColor(requireContext(), R.color.status_text_dark);
-                break;
-            case UNKNOWN:
-                bg = ContextCompat.getColor(requireContext(), R.color.status_draft_bg);
-                textColor = ContextCompat.getColor(requireContext(), R.color.status_text_dark);
-                break;
-            case PAID:
-            default:
-                bg = ContextCompat.getColor(requireContext(), R.color.status_paid_bg);
-                textColor = ContextCompat.getColor(requireContext(), R.color.white);
-                break;
+            String date = inv.getPaidAt() != null ? inv.getPaidAt() : inv.getDueDate();
+            mapped.add(new PaymentHistoryItem(
+                    inv.getMonthLabel() != null ? inv.getMonthLabel() : inv.getInvoiceNumber(),
+                    date != null ? date : "",
+                    "—",
+                    inv.getInvoiceNumber(),
+                    status,
+                    formatCurrency(inv.getAmount()),
+                    inv.getAmount(),
+                    textColor,
+                    bg
+            ));
         }
+        return mapped;
+    }
 
-        return new PaymentHistoryItem(
-                monthLabel,
-                paymentDate,
-                method,
-                invoice,
-                status,
-                formatCurrency(amount),
-                amount,
-                textColor,
-                bg
-        );
+    private PaymentHistoryItem.InvoiceStatus mapStatus(String statusRaw) {
+        if (statusRaw == null) return PaymentHistoryItem.InvoiceStatus.UNKNOWN;
+        switch (statusRaw.toLowerCase()) {
+            case "paid":
+                return PaymentHistoryItem.InvoiceStatus.PAID;
+            case "overdue":
+                return PaymentHistoryItem.InvoiceStatus.OVERDUE;
+            case "issued":
+                return PaymentHistoryItem.InvoiceStatus.PENDING;
+            case "cancelled":
+                return PaymentHistoryItem.InvoiceStatus.CANCELLED;
+            default:
+                return PaymentHistoryItem.InvoiceStatus.UNKNOWN;
+        }
     }
 
     private void bindSummary(List<PaymentHistoryItem> items) {
+        if (!dataLoaded) {
+            bindSummaryPlaceholder();
+            return;
+        }
+
         double totalPaid = 0;
         double outstanding = 0;
         String lastPaidMonth = "-";
@@ -194,14 +214,24 @@ public class RiwayatFragment extends Fragment {
         txtTunggakan.setText(formatCurrency(outstanding));
     }
 
+    private void bindSummaryPlaceholder() {
+        txtNominal.setText(formatCurrency(0));
+        txtBulanLunas.setText(getString(R.string.riwayat_label_no_payment));
+        txtInvoiceCount.setText(getString(R.string.riwayat_paid_transaction_count, 0));
+        txtStatus.setText(getString(R.string.loading_generic));
+        txtTunggakan.setText(formatCurrency(0));
+    }
+
     private void showLoading(boolean show) {
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.INVISIBLE : View.VISIBLE);
+        if (show) {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
     private void showEmpty(boolean isEmpty) {
         emptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(isEmpty ? View.INVISIBLE : View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     private void setupFilterChips() {
@@ -234,9 +264,10 @@ public class RiwayatFragment extends Fragment {
                 filtered.add(item);
             }
         }
-        bindSummary(filtered);
+        // Summary tetap berdasarkan seluruh data agar ukuran kartu stabil
+        bindSummary(fullData);
         riwayatAdapter.submitList(filtered);
-        showEmpty(filtered.isEmpty());
+        showEmpty(filtered.isEmpty() && dataLoaded);
     }
 
     private boolean matchesFilter(PaymentHistoryItem item, String key) {

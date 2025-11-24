@@ -129,6 +129,10 @@ public class PaymentHistoryItem {
             return this == PENDING;
         }
 
+        public boolean isCancelled() {
+            return this == CANCELLED;
+        }
+
         @NonNull
         public static InvoiceStatus fromRaw(@NonNull String rawStatus) {
             for (InvoiceStatus value : values()) {
