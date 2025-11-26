@@ -84,7 +84,8 @@ public class RiwayatAdapter extends ListAdapter<PaymentHistoryItem, RiwayatAdapt
 
         void bind(PaymentHistoryItem item) {
             tvPaymentTitle.setText("Pembayaran " + item.getMonthLabel());
-            tvPaymentMeta.setText(item.getMetaDescription());
+            // tampilkan tanggal + invoice saja agar ringkas
+            tvPaymentMeta.setText(item.getPaymentDate() + " • " + item.getInvoiceNumber());
             tvPaymentAmount.setText(item.getAmountFormatted());
             tvPaymentStatus.setText(item.getStatusLabel());
             tvPaymentStatus.setTextColor(item.getStatusTextColor());

@@ -29,7 +29,11 @@ import com.project.inet_mobile.data.remote.dto.InvoiceDetailResponseData;
 import com.project.inet_mobile.data.remote.dto.PaymentStatusResponseData;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -222,10 +226,29 @@ public class PembayaranFragment extends Fragment {
 
                     @Override
                     public void onNotFound() {
-                        setLoadingState(false, null);
-                        btnSnapPay.setEnabled(false);
-                        updateStatus("Tidak ada tagihan yang bisa dibayar");
-                        showToast("Tidak ada invoice issued/overdue");
+                        // Coba ambil invoice apa pun (misal sudah paid) supaya UI tetap informatif
+                        requestInvoiceList(null, new InvoiceListCallback() {
+                            @Override
+                            public void onFound(long foundInvoiceId) {
+                                invoiceId = foundInvoiceId;
+                                requestInvoiceDetail(foundInvoiceId);
+                            }
+
+                            @Override
+                            public void onNotFound() {
+                                setLoadingState(false, null);
+                                btnSnapPay.setEnabled(false);
+                                updateStatus("Tidak ada tagihan aktif. Semua tagihan sudah lunas.");
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                setLoadingState(false, null);
+                                btnSnapPay.setEnabled(false);
+                                updateStatus("Invoice tidak tersedia");
+                                showToast(message);
+                            }
+                        });
                     }
 
                     @Override
@@ -593,6 +616,28 @@ public class PembayaranFragment extends Fragment {
                 && "issued".equalsIgnoreCase(currentInvoiceDetail.getStatus());
     }
 
+    private String formatDate(String raw) {
+        if (raw == null || raw.isEmpty()) return "";
+        String[] patterns = {
+                "yyyy-MM-dd'T'HH:mm:ssXXX",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd"
+        };
+        for (String pattern : patterns) {
+            try {
+                SimpleDateFormat parser = new SimpleDateFormat(pattern, Locale.getDefault());
+                parser.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date date = parser.parse(raw);
+                if (date != null) {
+                    SimpleDateFormat out = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    return out.format(date);
+                }
+            } catch (ParseException ignore) {
+            }
+        }
+        return raw;
+    }
+
     private String getStatusMessage(@Nullable String status) {
         if (status == null) {
             return "Status pembayaran tidak tersedia";
@@ -621,8 +666,8 @@ public class PembayaranFragment extends Fragment {
             bgColor = Color.parseColor("#E8F5E9");
             textColor = Color.parseColor("#1B5E20");
             String paidAt = detail.getPaidAt();
-            setStatusBannerContent("Tagihan sudah dibayar",
-                    (paidAt != null && !paidAt.isEmpty()) ? paidAt : "Terima kasih");
+            setStatusBannerContent("Tagihan sudah lunas",
+                    (paidAt != null && !paidAt.isEmpty()) ? formatDate(paidAt) : "Terima kasih");
             applyStatusBannerColors(bgColor, textColor);
             return;
         }
@@ -644,7 +689,7 @@ public class PembayaranFragment extends Fragment {
         }
 
         // Default: issued/draft
-        setStatusBannerContent("Selesaikan pembayaran sebelum", detail.getDueDate());
+        setStatusBannerContent("Selesaikan pembayaran sebelum", formatDate(detail.getDueDate()));
         applyStatusBannerColors(bgColor, textColor);
     }
 

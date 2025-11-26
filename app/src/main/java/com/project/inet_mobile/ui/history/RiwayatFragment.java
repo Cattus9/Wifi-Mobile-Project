@@ -21,9 +21,13 @@ import com.project.inet_mobile.data.remote.dto.ApiResponse;
 import com.project.inet_mobile.data.remote.dto.InvoiceListResponseData;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -152,7 +156,7 @@ public class RiwayatFragment extends Fragment {
             String date = inv.getPaidAt() != null ? inv.getPaidAt() : inv.getDueDate();
             mapped.add(new PaymentHistoryItem(
                     inv.getMonthLabel() != null ? inv.getMonthLabel() : inv.getInvoiceNumber(),
-                    date != null ? date : "",
+                    date != null ? formatDate(date) : "",
                     "—",
                     inv.getInvoiceNumber(),
                     status,
@@ -163,6 +167,28 @@ public class RiwayatFragment extends Fragment {
             ));
         }
         return mapped;
+    }
+
+    private String formatDate(String raw) {
+        if (raw == null || raw.isEmpty()) return "";
+        String[] patterns = {
+                "yyyy-MM-dd'T'HH:mm:ssXXX",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd"
+        };
+        for (String pattern : patterns) {
+            try {
+                SimpleDateFormat parser = new SimpleDateFormat(pattern, Locale.getDefault());
+                parser.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date date = parser.parse(raw);
+                if (date != null) {
+                    SimpleDateFormat out = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    return out.format(date);
+                }
+            } catch (ParseException ignore) {
+            }
+        }
+        return raw;
     }
 
     private PaymentHistoryItem.InvoiceStatus mapStatus(String statusRaw) {
@@ -191,6 +217,8 @@ public class RiwayatFragment extends Fragment {
         double outstanding = 0;
         String lastPaidMonth = "-";
         int paidCount = 0;
+        int pendingCount = 0;
+        int overdueCount = 0;
 
         for (PaymentHistoryItem item : items) {
             PaymentHistoryItem.InvoiceStatus status = item.getStatus();
@@ -200,17 +228,32 @@ public class RiwayatFragment extends Fragment {
                 paidCount++;
             } else if (status.isOverdue()) {
                 outstanding += item.getAmountValue();
+                overdueCount++;
+            } else if (status.isPending()) {
+                pendingCount++;
             }
         }
 
         txtNominal.setText(formatCurrency(totalPaid));
-        String bulanTemplate = getString(R.string.riwayat_label_paid_month, lastPaidMonth);
-        String noPaymentLabel = getString(R.string.riwayat_label_no_payment);
-        txtBulanLunas.setText("-".equals(lastPaidMonth) ? noPaymentLabel : bulanTemplate);
+        if (paidCount > 0) {
+            String bulanTemplate = getString(R.string.riwayat_label_paid_month, lastPaidMonth);
+            txtBulanLunas.setText(bulanTemplate);
+        } else {
+            txtBulanLunas.setText(getString(R.string.riwayat_label_no_payment));
+        }
         txtInvoiceCount.setText(getString(R.string.riwayat_paid_transaction_count, paidCount));
-        txtStatus.setText(getString(paidCount > 0
-                ? R.string.riwayat_status_active
-                : R.string.riwayat_status_pending));
+
+        // Status transaksi ringkas
+        if (overdueCount > 0) {
+            txtStatus.setText(getString(R.string.riwayat_status_overdue, overdueCount));
+        } else if (pendingCount > 0) {
+            txtStatus.setText(getString(R.string.riwayat_status_pending_tx, pendingCount));
+        } else if (paidCount > 0) {
+            txtStatus.setText(getString(R.string.riwayat_status_paid_all));
+        } else {
+            txtStatus.setText(getString(R.string.riwayat_status_no_history));
+        }
+
         txtTunggakan.setText(formatCurrency(outstanding));
     }
 

@@ -35,7 +35,9 @@
             android:layout_marginTop="4dp"
             android:textColor="@color/clrTextSecondary"
             android:textSize="12sp"
-            tools:text="12 Jan 2024 • Transfer Bank • INV-2024-001" />
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="12 Jan 2024 • INV-2024-001" />
 
         <LinearLayout
             android:layout_width="match_parent"
