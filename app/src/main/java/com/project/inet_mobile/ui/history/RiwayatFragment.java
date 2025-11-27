@@ -38,6 +38,7 @@ public class RiwayatFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView emptyView;
+    private View emptyContainer;
     private TextView txtNominal;
     private TextView txtBulanLunas;
     private TextView txtInvoiceCount;
@@ -68,6 +69,7 @@ public class RiwayatFragment extends Fragment {
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerRiwayat);
         progressBar = view.findViewById(R.id.riwayatProgress);
+        emptyContainer = view.findViewById(R.id.riwayatEmptyContainer);
         emptyView = view.findViewById(R.id.riwayatEmptyView);
         txtNominal = view.findViewById(R.id.txtNominal);
         txtBulanLunas = view.findViewById(R.id.txtBulanLunas);
@@ -273,6 +275,9 @@ public class RiwayatFragment extends Fragment {
     }
 
     private void showEmpty(boolean isEmpty) {
+        if (emptyContainer != null) {
+            emptyContainer.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        }
         emptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
