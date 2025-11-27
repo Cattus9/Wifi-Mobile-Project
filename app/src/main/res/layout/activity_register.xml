@@ -1,199 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center">
+    <ScrollView
+        android:id="@+id/registerScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/bg_login_panel"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardRegisterLogo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:layout_gravity="center"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="60dp"
-            app:cardElevation="8dp">
-
-            <ImageView
-                android:id="@+id/imageViewLogo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="6dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_nsi"
-                android:contentDescription="@string/register_logo_desc" />
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Register"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Silakan masukkan data Anda untuk mendaftar"
-            android:textSize="14sp"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="32dp" />
-
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/register_card_background">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Registrasi"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Silakan masukkan data Anda untuk mendaftar"
+                android:textColor="#7A8097"
+                android:textSize="14sp" />
+
+            <!-- Name Field -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginBottom="12dp"
+                android:hint="Nama Lengkap"
+                app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="#F8F9FA"
+                app:boxStrokeColor="@color/register_primary"
+                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxCornerRadiusTopEnd="18dp"
+                app:boxCornerRadiusBottomStart="18dp"
+                app:boxCornerRadiusBottomEnd="18dp">
 
-                <!-- NIK Field -->
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="NIK (Nomor Induk Kependudukan)">
+                    android:inputType="textPersonName"
+                    android:textColor="#000000"
+                    android:padding="16dp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextNIK"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="16"
-                        android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <!-- Phone Number Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="No. Telepon"
+                app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="#F8F9FA"
+                app:boxStrokeColor="@color/register_primary"
+                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxCornerRadiusTopEnd="18dp"
+                app:boxCornerRadiusBottomStart="18dp"
+                app:boxCornerRadiusBottomEnd="18dp">
 
-                <!-- Name Field -->
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Nama Lengkap">
+                    android:inputType="phone"
+                    android:textColor="#000000"
+                    android:padding="16dp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <!-- Email Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="E-Mail"
+                app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="#F8F9FA"
+                app:boxStrokeColor="@color/register_primary"
+                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxCornerRadiusTopEnd="18dp"
+                app:boxCornerRadiusBottomStart="18dp"
+                app:boxCornerRadiusBottomEnd="18dp">
 
-                <!-- Phone Number Field -->
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="No. Telepon">
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000000"
+                    android:padding="16dp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <!-- Password Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="Password"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/register_primary"
+                app:endIconContentDescription="@string/password_toggle_desc"
+                app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="#F8F9FA"
+                app:boxStrokeColor="@color/register_primary"
+                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxCornerRadiusTopEnd="18dp"
+                app:boxCornerRadiusBottomStart="18dp"
+                app:boxCornerRadiusBottomEnd="18dp">
 
-                <!-- Email Field -->
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="E-Mail">
+                    android:inputType="textPassword"
+                    android:textColor="#000000"
+                    android:padding="16dp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <!-- Alamat Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:hint="Alamat"
+                app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="#F8F9FA"
+                app:boxStrokeColor="@color/register_primary"
+                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopStart="18dp"
+                app:boxCornerRadiusTopEnd="18dp"
+                app:boxCornerRadiusBottomStart="18dp"
+                app:boxCornerRadiusBottomEnd="18dp">
 
-                <!-- Password Field -->
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Password"
-                    app:endIconMode="password_toggle"
-                    app:endIconTint="@color/register_primary"
-                    app:endIconContentDescription="@string/password_toggle_desc">
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
+                    android:textColor="#000000"
+                    android:padding="16dp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/buttonRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Registrasi"
+                android:textAllCaps="false"
+                android:backgroundTint="#2FB5ED"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:padding="14dp"
+                app:cornerRadius="18dp"
+                android:elevation="4dp" />
 
-                <!-- Alamat Field -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Alamat">
+            <TextView
+                android:id="@+id/textViewLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Sudah punya akun? Login"
+                android:textColor="#2FB5ED"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
-                        android:lines="3"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"
-                        android:textColor="#000000" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
-            </LinearLayout>
+    </ScrollView>
 
-        </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/buttonRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Register"
-            android:textAllCaps="false"
-            android:backgroundTint="@color/register_button_background"
-            android:textColor="@color/register_primary"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp" />
-
-        <TextView
-            android:id="@+id/textViewLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Already have an account? Login"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="24dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground" />
-
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

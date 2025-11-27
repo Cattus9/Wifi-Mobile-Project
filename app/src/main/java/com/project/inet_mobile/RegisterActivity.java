@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        editTextNIK = findViewById(R.id.editTextNIK);
+//        editTextNIK = findViewById(R.id.editTextNIK);
         editTextName = findViewById(R.id.editTextName);
         editTextPhone = findViewById(R.id.editTextPhone);
         editTextEmail = findViewById(R.id.editTextEmail);
