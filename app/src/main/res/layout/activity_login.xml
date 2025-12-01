@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="76dp"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/bg_login_panel"
+        android:background="@drawable/bg_white_rounded_top"
         android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +72,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="34dp"
+                android:layout_marginBottom="12dp"
                 android:hint="Password"
                 app:boxBackgroundColor="#F8F9FA"
                 app:boxBackgroundMode="outline"
@@ -99,6 +99,20 @@
                     android:textColorHint="#999999" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textViewForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="Lupa Password?"
+                android:textColor="#2FB5ED"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonLogin"

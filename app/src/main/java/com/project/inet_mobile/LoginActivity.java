@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText editTextLoginEmail, editTextLoginPassword;
     private Button buttonLogin;
-    private TextView textViewRegister;
+    private TextView textViewRegister, textViewForgotPassword;
     private LottieAnimationView loadingAnimation;
     private CardView cardLoadingAnimation;
     private View overlayBackground;
@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextLoginPassword = findViewById(R.id.editTextLoginPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewRegister = findViewById(R.id.textViewRegister);
+        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
         loadingAnimation = findViewById(R.id.loadingAnimation);
         cardLoadingAnimation = findViewById(R.id.cardLoadingAnimation);
         overlayBackground = findViewById(R.id.overlayBackground);
@@ -88,6 +89,9 @@ public class LoginActivity extends AppCompatActivity {
         textViewRegister.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             finish();
+        });
+        textViewForgotPassword.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, AuthFlowActivity.class));
         });
     }
 

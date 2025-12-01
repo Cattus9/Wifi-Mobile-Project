@@ -34,3 +34,4 @@ swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefre
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }

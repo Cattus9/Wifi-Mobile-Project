@@ -41,6 +41,58 @@ public class AuthRepository {
         });
     }
 
+    public interface AuthCallback {
+        void onSuccess();
+        void onError(AuthException exception);
+    }
+
+    public void sendPasswordResetOtp(final String email, final AuthCallback callback) {
+        executorService.execute(() -> {
+            try {
+                authService.sendPasswordResetOtp(email);
+                mainHandler.post(callback::onSuccess);
+            } catch (AuthException ex) {
+                mainHandler.post(() -> callback.onError(ex));
+            } catch (Exception ex) {
+                AuthException wrapped = new AuthException("Terjadi kesalahan tak terduga: " + ex.getMessage(), ex);
+                mainHandler.post(() -> callback.onError(wrapped));
+            }
+        });
+    }
+
+    public interface VerifyOtpCallback {
+        void onSuccess(AuthSession session);
+        void onError(AuthException exception);
+    }
+
+    public void verifyOtp(final String email, final String token, final VerifyOtpCallback callback) {
+        executorService.execute(() -> {
+            try {
+                AuthSession session = authService.verifyOtp(email, token);
+                mainHandler.post(() -> callback.onSuccess(session));
+            } catch (AuthException ex) {
+                mainHandler.post(() -> callback.onError(ex));
+            } catch (Exception ex) {
+                AuthException wrapped = new AuthException("Terjadi kesalahan tak terduga: " + ex.getMessage(), ex);
+                mainHandler.post(() -> callback.onError(wrapped));
+            }
+        });
+    }
+
+    public void updateUserPassword(final String accessToken, final String newPassword, final AuthCallback callback) {
+        executorService.execute(() -> {
+            try {
+                authService.updateUserPassword(accessToken, newPassword);
+                mainHandler.post(callback::onSuccess);
+            } catch (AuthException ex) {
+                mainHandler.post(() -> callback.onError(ex));
+            } catch (Exception ex) {
+                AuthException wrapped = new AuthException("Terjadi kesalahan tak terduga: " + ex.getMessage(), ex);
+                mainHandler.post(() -> callback.onError(wrapped));
+            }
+        });
+    }
+
     public void shutdown() {
         executorService.shutdownNow();
     }
