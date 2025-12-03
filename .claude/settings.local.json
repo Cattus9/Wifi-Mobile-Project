@@ -3,7 +3,11 @@
     "allow": [
       "Bash(dir:*)",
       "Bash(findstr:*)",
-      "Bash(if not exist supabasemigrations mkdir supabasemigrations)"
+      "Bash(if not exist supabasemigrations mkdir supabasemigrations)",
+      "Bash(where psql)",
+      "Bash(if not exist supabasefunctionschange-package mkdir supabasefunctionschange-package)",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

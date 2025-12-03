@@ -23,6 +23,8 @@ public class SupabaseApiClient {
     private static SupabaseUserService supabaseUserService;
     private static SupabaseStorageService supabaseStorageService;
     private static SupabasePackagesService supabasePackagesService;
+    private static SupabaseChangePackageService supabaseChangePackageService;
+    private static com.project.inet_mobile.data.packages.CurrentPackageRepository.CurrentPackageService currentPackageService;
 
     public static void init(Context context) {
         if (retrofit == null) {
@@ -78,6 +80,26 @@ public class SupabaseApiClient {
             supabaseStorageService = retrofit.create(SupabaseStorageService.class);
         }
         return supabaseStorageService;
+    }
+
+    public static SupabaseChangePackageService getSupabaseChangePackageService() {
+        if (supabaseChangePackageService == null) {
+            if (retrofit == null) {
+                throw new IllegalStateException("SupabaseApiClient belum diinisialisasi. Panggil init() terlebih dahulu.");
+            }
+            supabaseChangePackageService = retrofit.create(SupabaseChangePackageService.class);
+        }
+        return supabaseChangePackageService;
+    }
+
+    public static com.project.inet_mobile.data.packages.CurrentPackageRepository.CurrentPackageService getCurrentPackageService() {
+        if (currentPackageService == null) {
+            if (retrofit == null) {
+                throw new IllegalStateException("SupabaseApiClient belum diinisialisasi. Panggil init() terlebih dahulu.");
+            }
+            currentPackageService = retrofit.create(com.project.inet_mobile.data.packages.CurrentPackageRepository.CurrentPackageService.class);
+        }
+        return currentPackageService;
     }
 
     // Anda bisa menambahkan service Supabase lainnya di sini jika diperlukan
