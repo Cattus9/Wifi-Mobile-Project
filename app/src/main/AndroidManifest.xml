@@ -47,6 +47,10 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".AuthFlowActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".DashboardActivity"
             android:exported="true">
             <intent-filter>

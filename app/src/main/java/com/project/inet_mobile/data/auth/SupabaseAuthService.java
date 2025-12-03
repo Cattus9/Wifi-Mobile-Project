@@ -183,6 +183,101 @@ public class SupabaseAuthService {
         }
     }
 
+    public void sendPasswordResetOtp(String email) throws AuthException {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("email", email);
+
+            Request request = new Request.Builder()
+                    .url(baseUrl + "/auth/v1/recover") // CORRECT ENDPOINT
+                    .post(RequestBody.create(body.toString(), MEDIA_TYPE_JSON))
+                    .header("apikey", apiKey)
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            Response response = httpClient.newCall(request).execute();
+            if (!response.isSuccessful()) {
+                String raw = response.body() != null ? response.body().string() : "";
+                throw buildAuthException(response.code(), raw);
+            }
+            // Success is indicated by a 2xx response code, body is empty.
+        } catch (JSONException e) {
+            throw new AuthException("Gagal membuat JSON request body", e);
+        } catch (IOException e) {
+            throw new AuthException("Koneksi ke server gagal: " + e.getMessage(), e);
+        }
+    }
+
+    public AuthSession verifyOtp(String email, String token) throws AuthException {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("type", "recovery");
+            body.put("email", email);
+            body.put("token", token);
+
+            Request request = new Request.Builder()
+                    .url(baseUrl + "/auth/v1/verify")
+                    .post(RequestBody.create(body.toString(), MEDIA_TYPE_JSON))
+                    .header("apikey", apiKey)
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            Response response = httpClient.newCall(request).execute();
+            String raw = response.body() != null ? response.body().string() : "";
+            if (!response.isSuccessful()) {
+                throw buildAuthException(response.code(), raw);
+            }
+
+            // A successful OTP verification returns a full session object
+            JSONObject json = new JSONObject(raw);
+            String accessToken = json.optString("access_token", "");
+            String refreshToken = json.optString("refresh_token", "");
+            long expiresIn = json.optLong("expires_in", 3600L);
+            String tokenType = json.optString("token_type", "bearer");
+
+            JSONObject userObj = json.optJSONObject("user");
+            String authUserId = userObj != null ? userObj.optString("id", "") : "";
+
+            if (accessToken == null || accessToken.isEmpty() || authUserId == null || authUserId.isEmpty()) {
+                throw new AuthException(response.code(), "Respons verifikasi OTP tidak lengkap");
+            }
+
+            long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
+            return new AuthSession(accessToken, refreshToken, expiresAtMillis, tokenType, authUserId);
+
+        } catch (JSONException e) {
+            throw new AuthException("Gagal mem-parsing respons verifikasi", e);
+        } catch (IOException e) {
+            throw new AuthException("Koneksi ke server gagal: " + e.getMessage(), e);
+        }
+    }
+
+    public void updateUserPassword(String accessToken, String newPassword) throws AuthException {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("password", newPassword);
+
+            Request request = new Request.Builder()
+                    .url(baseUrl + "/auth/v1/user")
+                    .put(RequestBody.create(body.toString(), MEDIA_TYPE_JSON))
+                    .header("apikey", apiKey)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+
+            Response response = httpClient.newCall(request).execute();
+
+            if (!response.isSuccessful()) {
+                String raw = response.body() != null ? response.body().string() : "";
+                throw buildAuthException(response.code(), raw);
+            }
+            // A 200 OK response with the user object is returned on success.
+        } catch (JSONException e) {
+            throw new AuthException("Gagal membuat JSON request body", e);
+        } catch (IOException e) {
+            throw new AuthException("Koneksi ke server gagal: " + e.getMessage(), e);
+        }
+    }
+
     private String buildAuthHeader(AuthSession session) {
         String tokenType = session.getTokenType() != null ? session.getTokenType() : "bearer";
         return capitalizeTokenType(tokenType) + " " + session.getAccessToken();

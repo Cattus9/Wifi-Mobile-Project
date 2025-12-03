@@ -21,15 +21,10 @@ import com.project.inet_mobile.R;
 import com.project.inet_mobile.Paket;
 import com.project.inet_mobile.PaketAdapter;
 import com.project.inet_mobile.util.DetailPaketFragment;
-import com.project.inet_mobile.util.conn;
+import com.project.inet_mobile.data.packages.ServicePackagesRepository;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class PaketFragment extends Fragment {
 
@@ -45,6 +40,7 @@ public class PaketFragment extends Fragment {
     private Runnable timeoutRunnable;
     private boolean isDataLoaded = false;
     private static final int TIMEOUT_DURATION = 10000; // 10 detik
+    private ServicePackagesRepository packagesRepository;
 
     public PaketFragment() {
         super(R.layout.fragment_paket);
@@ -64,6 +60,7 @@ public class PaketFragment extends Fragment {
 
         // Inisialisasi Handler untuk timeout
         timeoutHandler = new Handler(Looper.getMainLooper());
+        packagesRepository = new ServicePackagesRepository(requireContext());
 
         // Buat adapter dengan list kosong dan listener
         paketAdapter = new PaketAdapter(new ArrayList<>(), new PaketAdapter.OnPaketClickListener() {
@@ -122,9 +119,9 @@ public class PaketFragment extends Fragment {
         // Setup timeout (10 detik)
         startTimeout();
 
-        conn.fetchServicePackages(getContext(), new conn.PackagesCallback() {
+        packagesRepository.fetchPackages(new ServicePackagesRepository.PackagesCallback() {
             @Override
-            public void onSuccess(JSONArray data) {
+            public void onSuccess(List<Paket> paketList) {
                 if (getActivity() == null) return;
                 getActivity().runOnUiThread(() -> {
                     // Cancel timeout karena data sudah berhasil dimuat
@@ -136,8 +133,8 @@ public class PaketFragment extends Fragment {
                         swipeRefresh.setRefreshing(false);
                     }
 
-                    if (data != null && data.length() > 0) {
-                        bindToCards(data);
+                    if (paketList != null && !paketList.isEmpty()) {
+                        paketAdapter.updateData(paketList);
                         showData();
                     } else {
                         showError("Tidak ada paket tersedia");
@@ -194,60 +191,6 @@ public class PaketFragment extends Fragment {
         }
     }
 
-    private void bindToCards(JSONArray arr) {
-        List<Paket> paketList = new ArrayList<>();
-
-        for (int i = 0; i < arr.length(); i++) {
-            JSONObject o = arr.optJSONObject(i);
-            if (o != null) {
-                int id = o.optInt("id");
-                String name = ns(o.optString("name"));
-                String description = ns(o.optString("description"));
-                String speed = ns(o.optString("speed"));
-                double priceValue = resolvePrice(o);
-                boolean isPopuler = o.optBoolean("is_popular", false);
-                String duration = formatDuration(o.optString("duration", ""));
-                String quota = ns(o.optString("quota"));
-                String phone = ns(o.optString("phone"));
-                String originalPriceFormatted = formatCurrency(o.optString("original_price"));
-
-                // Bangun objek Paket dengan data dari database
-                Paket paket = new Paket(id, name, description, speed, priceValue, true, duration);
-                paket.setPopuler(isPopuler);
-                if (!quota.isEmpty()) {
-                    paket.setQuota(quota);
-                }
-                if (!phone.isEmpty()) {
-                    paket.setPhone(phone);
-                }
-                if (!originalPriceFormatted.isEmpty()) {
-                    paket.setHargaAsli(originalPriceFormatted);
-                }
-
-                paketList.add(paket);
-            }
-        }
-
-        paketAdapter.updateData(paketList);
-    }
-    private String formatDuration(String duration) {
-        if (duration == null || duration.isEmpty()) {
-            return "";
-        }
-
-        // Jika duration dalam format angka (misalnya "30")
-        try {
-            int days = Integer.parseInt(duration);
-            if (days == 1) {
-                return "1 Day";
-            }
-            return days + " Days";
-        } catch (NumberFormatException e) {
-            // Jika sudah dalam format string yang benar, return as is
-            return duration;
-        }
-    }
-
     // Method untuk show/hide views
     private void showLoading() {
         if (loadingAnimation != null) {
@@ -278,43 +221,6 @@ public class PaketFragment extends Fragment {
         if (errorLayout != null) errorLayout.setVisibility(View.GONE);
         if (recyclerViewPaket != null) recyclerViewPaket.setVisibility(View.VISIBLE);
         if (swipeRefresh != null) swipeRefresh.setEnabled(true);
-    }
-
-    private String ns(String s) {
-        return s == null ? "" : s;
-    }
-
-    private double resolvePrice(JSONObject o) {
-        if (o == null) return 0.0;
-
-        Object priceObj = o.opt("price");
-        if (priceObj instanceof Number) {
-            return ((Number) priceObj).doubleValue();
-        }
-
-        String priceStr = ns(o.optString("price"));
-        if (!priceStr.isEmpty()) {
-            try {
-                return Double.parseDouble(priceStr);
-            } catch (NumberFormatException ignored) {
-            }
-        }
-
-        return 0.0;
-    }
-
-    private String formatCurrency(String rawValue) {
-        if (rawValue == null || rawValue.isEmpty()) {
-            return "";
-        }
-
-        try {
-            double value = Double.parseDouble(rawValue);
-            NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
-            return nf.format(value).replace(",00", "");
-        } catch (NumberFormatException e) {
-            return rawValue;
-        }
     }
 
     private void openDetailFragment(Paket paket) {

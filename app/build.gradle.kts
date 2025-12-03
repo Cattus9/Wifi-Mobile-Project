@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -69,6 +70,7 @@ dependencies {
 //    implementation("com.midtrans:corekit:2.0.0")
 //    implementation("com.midtrans:uikit:2.0.0")
     implementation("com.midtrans:java-library:3.2.1")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
 
 
@@ -77,6 +79,13 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.airbnb.android:lottie:6.1.0")
+
+    // Glide for image loading
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Circle ImageView
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
 
 }
