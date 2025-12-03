@@ -29,10 +29,12 @@ public class AuthInterceptor implements Interceptor {
     private static final String TAG = "AUTH_DEBUG";
     private final TokenStorage tokenStorage;
     private final SupabaseAuthService authService;
+    private final String supabaseAnonKey;
 
-    public AuthInterceptor(TokenStorage tokenStorage, SupabaseAuthService authService) {
+    public AuthInterceptor(TokenStorage tokenStorage, SupabaseAuthService authService, String supabaseAnonKey) {
         this.tokenStorage = tokenStorage;
         this.authService = authService;
+        this.supabaseAnonKey = supabaseAnonKey;
     }
 
     @Nullable
@@ -66,15 +68,21 @@ public class AuthInterceptor implements Interceptor {
         Request.Builder builder = original.newBuilder()
                 .header("Content-Type", "application/json");
 
+        // Add Supabase apikey header (required for PostgREST)
+        if (supabaseAnonKey != null && !supabaseAnonKey.isEmpty()) {
+            builder.header("apikey", supabaseAnonKey);
+            Log.d(TAG, "apikey header added: " + previewToken(supabaseAnonKey));
+        }
+
         AuthSession session = currentSession();
         if (session == null) {
             session = tryRefreshSession();
         }
         if (session != null) {
-            String tokenType = session.getTokenType() != null ? session.getTokenType() : "Bearer";
-            String authHeader = tokenType + " " + session.getAccessToken();
+            // Always use "Bearer" with capital B (Supabase Edge Functions requirement)
+            String authHeader = "Bearer " + session.getAccessToken();
             builder.header("Authorization", authHeader.trim());
-            Log.d(TAG, "Authorization header added: " + tokenType + " " + previewToken(session.getAccessToken()));
+            Log.d(TAG, "Authorization header added: Bearer " + previewToken(session.getAccessToken()));
         } else {
             Log.w(TAG, "Proceeding WITHOUT Authorization header");
         }

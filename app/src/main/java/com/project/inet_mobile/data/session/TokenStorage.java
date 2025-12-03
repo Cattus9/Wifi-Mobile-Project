@@ -2,6 +2,7 @@ package com.project.inet_mobile.data.session;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -17,6 +18,7 @@ import java.util.Map;
  */
 public class TokenStorage {
 
+    private static final String TAG = "TokenStorage";
     private static final String PREFS_NAME_LEGACY = "SupabaseSession";
     private static final String PREFS_NAME_SECURE = "SupabaseSessionSecure";
     private static final String KEY_ACCESS_TOKEN = "access_token";
@@ -50,8 +52,15 @@ public class TokenStorage {
 
     public void saveSession(AuthSession session) {
         if (session == null) {
+            Log.w(TAG, "saveSession: session is null, not saving");
             return;
         }
+
+        Log.d(TAG, "=== SAVING SESSION ===");
+        Log.d(TAG, "Access token length: " + (session.getAccessToken() != null ? session.getAccessToken().length() : 0));
+        Log.d(TAG, "Auth user ID: " + session.getAuthUserId());
+        Log.d(TAG, "Expires at: " + session.getExpiresAtMillis());
+        Log.d(TAG, "=== END SAVING SESSION ===");
 
         preferences.edit()
                 .putString(KEY_ACCESS_TOKEN, session.getAccessToken())
@@ -64,21 +73,35 @@ public class TokenStorage {
 
     @Nullable
     public AuthSession getSession() {
+        Log.d(TAG, "=== GETTING SESSION ===");
+
         String accessToken = preferences.getString(KEY_ACCESS_TOKEN, null);
         String refreshToken = preferences.getString(KEY_REFRESH_TOKEN, null);
         long expiresAt = preferences.getLong(KEY_EXPIRES_AT, 0L);
         String tokenType = preferences.getString(KEY_TOKEN_TYPE, "bearer");
         String authUserId = preferences.getString(KEY_AUTH_USER_ID, null);
 
+        Log.d(TAG, "Access token exists: " + (accessToken != null));
+        Log.d(TAG, "Access token length: " + (accessToken != null ? accessToken.length() : 0));
+        Log.d(TAG, "Auth user ID: " + authUserId);
+        Log.d(TAG, "Expires at: " + expiresAt);
+        Log.d(TAG, "Current time: " + System.currentTimeMillis());
+
         if (accessToken == null || accessToken.isEmpty() || authUserId == null || authUserId.isEmpty()) {
+            Log.w(TAG, "getSession: returning null - missing accessToken or authUserId");
+            Log.d(TAG, "=== END GETTING SESSION (NULL) ===");
             return null;
         }
 
         if (expiresAt == 0L) {
             // fallback: anggap token sudah kedaluwarsa
+            Log.w(TAG, "getSession: returning null - expiresAt is 0");
+            Log.d(TAG, "=== END GETTING SESSION (NULL) ===");
             return null;
         }
 
+        Log.d(TAG, "getSession: returning valid session");
+        Log.d(TAG, "=== END GETTING SESSION (SUCCESS) ===");
         return new AuthSession(accessToken, refreshToken, expiresAt, tokenType, authUserId);
     }
 

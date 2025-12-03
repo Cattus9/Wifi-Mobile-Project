@@ -134,6 +134,10 @@ public class ChangePackageFragment extends Fragment {
                 if (!isAdded()) return;
                 adapter.setCurrentPackageId(currentPackageId == null ? -1 : currentPackageId);
                 adapter.setItems(paketList);
+
+                // Display current package name at top
+                updateCurrentPackageDisplay(paketList);
+
                 setLoading(false);
                 updateSubmitState();
             }
@@ -145,6 +149,24 @@ public class ChangePackageFragment extends Fragment {
                 Toast.makeText(requireContext(), "Gagal memuat paket: " + message, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void updateCurrentPackageDisplay(List<Paket> paketList) {
+        if (currentPackageId == null) {
+            binding.textCurrentPackage.setText("Tidak ada paket aktif");
+            return;
+        }
+
+        // Find current package in list
+        for (Paket paket : paketList) {
+            if (paket.getId() == currentPackageId) {
+                binding.textCurrentPackage.setText(paket.getNama());
+                return;
+            }
+        }
+
+        // Fallback if not found
+        binding.textCurrentPackage.setText("Paket ID: " + currentPackageId);
     }
 
     private void loadStatus() {

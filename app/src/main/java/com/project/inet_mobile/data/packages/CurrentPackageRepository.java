@@ -44,13 +44,25 @@ public class CurrentPackageRepository {
      */
     public void getCurrentPackageId(@NonNull CurrentPackageCallback callback) {
         AuthSession session = tokenStorage.getSession();
-        if (session == null || session.isExpired() || session.getAccessToken() == null) {
+
+        // DEBUG: Log session state
+        if (session == null) {
+            Log.e(TAG, "getCurrentPackageId: session is NULL");
             callback.onError("User not logged in.");
             return;
         }
 
-        String authHeader = "Bearer " + session.getAccessToken();
-        String authUserId = session.getUserId();
+        Log.d(TAG, "Session found - Expired: " + session.isExpired());
+        Log.d(TAG, "Session - Access Token exists: " + (session.getAccessToken() != null));
+        Log.d(TAG, "Session - Auth User ID: " + session.getAuthUserId());
+
+        if (session.isExpired() || session.getAccessToken() == null) {
+            Log.e(TAG, "getCurrentPackageId: session expired or no access token");
+            callback.onError("User not logged in.");
+            return;
+        }
+
+        String authUserId = session.getAuthUserId();
 
         if (authUserId == null || authUserId.isEmpty()) {
             callback.onError("User ID not found in session");
@@ -60,7 +72,9 @@ public class CurrentPackageRepository {
         Log.d(TAG, "Fetching current package for user: " + authUserId);
 
         // Query users table untuk get customer_id, lalu join ke customers untuk get service_package_id
-        service.getCurrentPackage(authHeader, authUserId, "customer_id,customers(service_package_id)")
+        // AuthInterceptor will automatically add Authorization header
+        // PostgREST filter format: auth_user_id=eq.{uuid}
+        service.getCurrentPackage("eq." + authUserId, "customer_id,customers(service_package_id)")
             .enqueue(new Callback<List<UserWithCustomer>>() {
                 @Override
                 public void onResponse(Call<List<UserWithCustomer>> call, Response<List<UserWithCustomer>> response) {
@@ -99,10 +113,10 @@ public class CurrentPackageRepository {
         /**
          * Get user dengan customer info (embedded join)
          * Query: users?auth_user_id=eq.xxx&select=customer_id,customers(service_package_id)
+         * Authorization header will be added automatically by AuthInterceptor
          */
         @GET("rest/v1/users")
         Call<List<UserWithCustomer>> getCurrentPackage(
-            @Header("Authorization") String authHeader,
             @Query("auth_user_id") String authUserId,
             @Query("select") String select
         );

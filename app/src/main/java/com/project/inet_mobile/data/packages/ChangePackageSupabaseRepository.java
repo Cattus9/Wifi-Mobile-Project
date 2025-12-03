@@ -43,28 +43,37 @@ public class ChangePackageSupabaseRepository {
     }
 
     /**
-     * Get Bearer token dari session
-     */
-    private String bearer() {
-        AuthSession session = tokenStorage.getSession();
-        if (session == null || session.isExpired() || session.getAccessToken() == null || session.getAccessToken().isEmpty()) {
-            return null;
-        }
-        return "Bearer " + session.getAccessToken();
-    }
-
-    /**
      * Submit change package request via Supabase Edge Function
+     * Authorization is handled automatically by AuthInterceptor
      *
      * @param targetPackageId Package ID yang ingin diubah
      * @param note Catatan dari customer (optional)
      * @param callback Callback untuk handle success/error
      */
     public void submitChangePackage(long targetPackageId, String note, SubmitCallback callback) {
-        String auth = bearer();
-        if (auth == null) {
-            callback.onError("User not logged in.");
-            Log.e(TAG, "submitChangePackage: User not authenticated");
+        // Verify user is logged in (session check)
+        AuthSession session = tokenStorage.getSession();
+
+        // DEBUG: Detailed session logging
+        if (session == null) {
+            Log.e(TAG, "submitChangePackage: session is NULL");
+            callback.onError("Sesi telah berakhir. Silakan login kembali.");
+            return;
+        }
+
+        Log.d(TAG, "=== SESSION DEBUG ===");
+        Log.d(TAG, "Session exists: true");
+        Log.d(TAG, "Session expired: " + session.isExpired());
+        Log.d(TAG, "Expires at: " + session.getExpiresAtMillis());
+        Log.d(TAG, "Current time: " + System.currentTimeMillis());
+        Log.d(TAG, "Access token exists: " + (session.getAccessToken() != null));
+        Log.d(TAG, "Access token length: " + (session.getAccessToken() != null ? session.getAccessToken().length() : 0));
+        Log.d(TAG, "Auth user ID: " + session.getAuthUserId());
+        Log.d(TAG, "=== END SESSION DEBUG ===");
+
+        if (session.isExpired() || session.getAccessToken() == null) {
+            Log.e(TAG, "submitChangePackage: session expired or no access token");
+            callback.onError("Sesi telah berakhir. Silakan login kembali.");
             return;
         }
 
@@ -74,7 +83,8 @@ public class ChangePackageSupabaseRepository {
         Log.d(TAG, "Submitting change package request to Supabase Edge Function");
         Log.d(TAG, "Package ID: " + targetPackageId + ", Notes: " + note);
 
-        service.submitChangePackage(auth, body).enqueue(new Callback<SupabaseChangePackageResponse>() {
+        // AuthInterceptor will automatically add Authorization header
+        service.submitChangePackage(body).enqueue(new Callback<SupabaseChangePackageResponse>() {
             @Override
             public void onResponse(Call<SupabaseChangePackageResponse> call, Response<SupabaseChangePackageResponse> response) {
                 long elapsed = System.currentTimeMillis() - start;

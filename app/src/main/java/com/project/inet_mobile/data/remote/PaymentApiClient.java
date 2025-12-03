@@ -29,7 +29,8 @@ public class PaymentApiClient {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new AuthInterceptor(storage, authService))
+                // Note: PHP backend doesn't need apikey header, so pass null
+                .addInterceptor(new AuthInterceptor(storage, authService, null))
                 .addInterceptor(loggingInterceptor)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

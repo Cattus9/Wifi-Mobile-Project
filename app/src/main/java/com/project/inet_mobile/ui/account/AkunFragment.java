@@ -80,7 +80,7 @@ public class AkunFragment extends Fragment {
                 editFragment.setArguments(args);
 
                 getParentFragmentManager().beginTransaction()
-                        .replace(getId(), editFragment)
+                        .replace(R.id.dashboardFragmentContainer, editFragment)
                         .addToBackStack(null)
                         .commit();
             } else {
@@ -91,7 +91,7 @@ public class AkunFragment extends Fragment {
         binding.buttonChangePackage.setOnClickListener(v -> {
             ChangePackageFragment changeFragment = new ChangePackageFragment();
             getParentFragmentManager().beginTransaction()
-                    .replace(getId(), changeFragment)
+                    .replace(R.id.dashboardFragmentContainer, changeFragment)
                     .addToBackStack(null)
                     .commit();
         });

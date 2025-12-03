@@ -66,6 +66,7 @@ public class ChangePackageAdapter extends RecyclerView.Adapter<ChangePackageAdap
         TextView name;
         TextView desc;
         TextView price;
+        TextView activeStatus;
         RadioButton radio;
 
         PackageViewHolder(@NonNull View itemView) {
@@ -73,6 +74,7 @@ public class ChangePackageAdapter extends RecyclerView.Adapter<ChangePackageAdap
             name = itemView.findViewById(R.id.textPackageName);
             desc = itemView.findViewById(R.id.textPackageDesc);
             price = itemView.findViewById(R.id.textPackagePrice);
+            activeStatus = itemView.findViewById(R.id.textActiveStatus);
             radio = itemView.findViewById(R.id.radioSelect);
         }
 
@@ -85,14 +87,31 @@ public class ChangePackageAdapter extends RecyclerView.Adapter<ChangePackageAdap
             desc.setText(detail);
             price.setText(paket.getHarga());
 
-            boolean disabled = currentPackageId == paket.getId();
-            itemView.setAlpha(disabled ? 0.5f : 1f);
-            itemView.setEnabled(!disabled);
-            radio.setEnabled(!disabled);
-            radio.setChecked(selectedPosition == position);
+            // Check if this is the current active package
+            boolean isCurrent = currentPackageId == paket.getId();
 
+            // Show "PAKET AKTIF" badge for current package
+            activeStatus.setVisibility(isCurrent ? View.VISIBLE : View.GONE);
+
+            // Disable interaction & visual feedback for current package
+            itemView.setAlpha(isCurrent ? 0.6f : 1f);
+            itemView.setEnabled(!isCurrent);
+            itemView.setClickable(!isCurrent);
+            radio.setEnabled(!isCurrent);
+            radio.setClickable(!isCurrent);
+            radio.setChecked(selectedPosition == position && !isCurrent);
+
+            // Click handler (disabled if current package)
             View.OnClickListener onClick = v -> {
-                if (disabled) return;
+                if (isCurrent) {
+                    // Show toast to inform user
+                    android.widget.Toast.makeText(
+                        itemView.getContext(),
+                        "Ini adalah paket aktif Anda saat ini",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show();
+                    return;
+                }
                 int oldPos = selectedPosition;
                 selectedPosition = position;
                 notifyItemChanged(position);

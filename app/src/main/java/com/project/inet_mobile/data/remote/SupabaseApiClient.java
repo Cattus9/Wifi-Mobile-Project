@@ -34,10 +34,11 @@ public class SupabaseApiClient {
             // Instantiate TokenStorage and SupabaseAuthService
             TokenStorage tokenStorage = new TokenStorage(context.getApplicationContext());
             // SupabaseAuthService requires Supabase URL and Key
-            SupabaseAuthService authService = new SupabaseAuthService(conn.getSupabaseUrl(), conn.getSupabaseKey());
+            String supabaseAnonKey = conn.getSupabaseKey();
+            SupabaseAuthService authService = new SupabaseAuthService(conn.getSupabaseUrl(), supabaseAnonKey);
 
             okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new AuthInterceptor(tokenStorage, authService)) // Pass both dependencies
+                    .addInterceptor(new AuthInterceptor(tokenStorage, authService, supabaseAnonKey)) // Pass anon key for apikey header
                     .addInterceptor(loggingInterceptor)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)

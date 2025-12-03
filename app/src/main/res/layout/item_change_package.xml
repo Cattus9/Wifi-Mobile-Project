@@ -24,16 +24,39 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/textPackageName"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Paket Nama"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/clrTextPrimary"
-                android:fontFamily="@font/poppins" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textPackageName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Paket Nama"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/clrTextPrimary"
+                    android:fontFamily="@font/poppins" />
+
+                <TextView
+                    android:id="@+id/textActiveStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="PAKET AKTIF"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@color/register_primary"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:fontFamily="@font/poppins"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <RadioButton
                 android:id="@+id/radioSelect"

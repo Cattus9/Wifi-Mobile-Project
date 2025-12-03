@@ -17,8 +17,8 @@ public interface SupabaseChangePackageService {
 
     /**
      * Submit change package request via Supabase Edge Function
+     * Authorization header will be added automatically by AuthInterceptor
      *
-     * @param authHeader JWT token (format: "Bearer xxx")
      * @param request Request body containing package_id and notes
      * @return Response from Edge Function wrapping RPC result
      */
@@ -28,7 +28,6 @@ public interface SupabaseChangePackageService {
     })
     @POST("functions/v1/change-package")
     Call<SupabaseChangePackageResponse> submitChangePackage(
-        @Header("Authorization") String authHeader,
         @Body ChangePackageRequest request
     );
 }
