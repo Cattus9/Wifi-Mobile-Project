@@ -20,10 +20,14 @@ import com.project.inet_mobile.data.auth.AuthException;
 import com.project.inet_mobile.data.auth.AuthSession;
 import com.project.inet_mobile.data.auth.AuthRepository;
 import com.project.inet_mobile.data.auth.SignInResult;
+import com.project.inet_mobile.data.auth.SessionManager;
 import com.project.inet_mobile.data.auth.SupabaseAuthService;
 import com.project.inet_mobile.data.auth.UserProfile;
 import com.project.inet_mobile.data.session.TokenStorage;
 import com.project.inet_mobile.util.conn;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,6 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private TokenStorage tokenStorage;
     private AuthRepository authRepository;
+    private SessionManager sessionManager;
+    private SupabaseAuthService authService;
+    private final ExecutorService sessionExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private static final String PREF_NAME = "LoginPrefs";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
@@ -52,17 +60,15 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         tokenStorage = new TokenStorage(getApplicationContext());
-        authRepository = new AuthRepository(new SupabaseAuthService(conn.getSupabaseUrl(), conn.getSupabaseKey()));
-
-        // Hanya cek SharedPreferences, tanpa validasi session expired
-        if (isUserLoggedIn()) {
-            navigateToDashboard();
-            return;
-        }
+        authService = new SupabaseAuthService(conn.getSupabaseUrl(), conn.getSupabaseKey());
+        authRepository = new AuthRepository(authService);
+        sessionManager = new SessionManager(getApplicationContext(), authService, 2 * 60 * 1000L); // refresh when <2 minutes remaining
 
         setContentView(R.layout.activity_login);
         initViews();
         setListeners();
+
+        maybeAutoLoginWithRefresh();
     }
 
     @Override
@@ -71,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         if (authRepository != null) {
             authRepository.shutdown();
         }
+        sessionExecutor.shutdownNow();
     }
 
     private void initViews() {
@@ -92,6 +99,50 @@ public class LoginActivity extends AppCompatActivity {
         });
         textViewForgotPassword.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, AuthFlowActivity.class));
+        });
+    }
+
+    /**
+     * Try to reuse existing session; refresh if needed. Falls back to manual login when invalid.
+     */
+    private void maybeAutoLoginWithRefresh() {
+        AuthSession cached = tokenStorage.getSession();
+        if (cached == null) {
+            clearLoginSession();
+            return;
+        }
+
+        showLoading(true);
+        sessionExecutor.execute(() -> {
+            try {
+                AuthSession valid = sessionManager.getValidSession();
+                if (valid == null) {
+                    sessionManager.clearSession();
+                    clearLoginSession();
+                    mainHandler.post(() -> showLoading(false));
+                    return;
+                }
+
+                // Fetch profile to repopulate name/email before navigating
+                UserProfile profile = authService.fetchUserProfile(valid);
+                tokenStorage.saveSession(valid);
+
+                mainHandler.post(() -> {
+                    saveLoginSession(
+                            String.valueOf(profile.getUserId()),
+                            TextUtils.isEmpty(profile.getDisplayName()) ? profile.getEmail() : profile.getDisplayName(),
+                            profile.getEmail()
+                    );
+                    navigateToDashboard();
+                });
+            } catch (Exception ex) {
+                sessionManager.clearSession();
+                clearLoginSession();
+                mainHandler.post(() -> {
+                    showLoading(false);
+                    Toast.makeText(LoginActivity.this, "Sesi kadaluarsa, silakan login kembali", Toast.LENGTH_SHORT).show();
+                });
+            }
         });
     }
 
@@ -155,6 +206,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isUserLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
+    private void clearLoginSession() {
+        sharedPreferences.edit()
+                .putBoolean(KEY_IS_LOGGED_IN, false)
+                .remove(KEY_USER_ID)
+                .remove(KEY_USER_NAME)
+                .remove(KEY_USER_EMAIL)
+                .apply();
+        tokenStorage.clear();
     }
 
     private void saveLoginSession(String userId, String userName, String userEmail) {

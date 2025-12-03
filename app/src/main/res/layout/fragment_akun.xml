@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_profile_background"
-    android:fillViewport="true"
     tools:context=".ui.account.AkunFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="0dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp">
 
         <TextView
             android:id="@+id/akunTitle"
@@ -85,220 +90,222 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profileInfo">
 
-                <LinearLayout
-                    android:id="@+id/cardIdentitasPaket"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_card_profil"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/iconIdentitasPaket"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_profile_icon_circle"
-                            android:backgroundTint="@color/profile_icon_bg_primary"
-                            android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_wifi_tethering_24px"
-                            app:tint="@color/register_primary" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textTitleIdentitasPaket"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins"
-                                android:text="Identitas Paket"
-                                android:textColor="@color/clrTextPrimary"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/textSubtitleIdentitasPaket"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="Unlimited Fiber 50 Mbps"
-                                android:textColor="@color/clrTextSecondary"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/badgeStatusPaket"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:background="@drawable/bg_profile_badge"
-                            android:fontFamily="@font/poppins"
-                            android:text="Aktif"
-                            android:textColor="@color/profile_badge_text_primary"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/poppins"
-                        android:text="Tagihan berikutnya: 12 Des 2024"
-                        android:textColor="@color/clrTextSecondary"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/poppins"
-                        android:text="Status: Aktif • ID Paket FBR-0021"
-                        android:textColor="@color/clrTextSecondary"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonChangePackage"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Ubah Paket"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_wifi_tethering_24px"
-                        app:iconGravity="textStart"
-                        app:iconPadding="8dp"
-                        app:iconTint="@color/register_primary" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/cardIdentitasPengguna"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/bg_card_profil"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/iconIdentitasPengguna"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_profile_icon_circle"
-                            android:backgroundTint="@color/profile_icon_bg_secondary"
-                            android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_person_24px"
-                            app:tint="@color/profile_badge_text_secondary" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textTitleIdentitasPengguna"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins"
-                                android:text="Identitas Pengguna"
-                                android:textColor="@color/clrTextPrimary"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/textSubtitleIdentitasPengguna"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="user.email@example.com"
-                                android:textColor="@color/clrTextSecondary"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/badgeCustomerId"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:background="@drawable/bg_profile_badge"
-                            android:backgroundTint="@color/profile_icon_bg_secondary"
-                            android:fontFamily="@font/poppins"
-                            android:text="#88920123"
-                            android:textColor="@color/profile_badge_text_secondary"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/poppins"
-                        android:text="Nama: Nama Pengguna"
-                        android:textColor="@color/clrTextSecondary"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/poppins"
-                        android:text="Email: user.email@example.com"
-                        android:textColor="@color/clrTextSecondary"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/poppins"
-                        android:text="No. Telp: 0812-3456-7890"
-                        android:textColor="@color/clrTextSecondary"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonEditProfile"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Edit Profil"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_person_24px"
-                        app:iconGravity="textStart"
-                        app:iconPadding="8dp"
-                        app:iconTint="@color/profile_badge_text_secondary" />
-
-                </LinearLayout>
-
+                                    <LinearLayout
+                                        android:id="@+id/cardIdentitasPengguna"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:background="@drawable/bg_card_profil"
+                                        android:orientation="vertical"
+                                        android:padding="20dp">
+                
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical">
+                
+                                            <ImageView
+                                                android:id="@+id/iconIdentitasPengguna"
+                                                android:layout_width="40dp"
+                                                android:layout_height="40dp"
+                                                android:background="@drawable/bg_profile_icon_circle"
+                                                android:backgroundTint="@color/profile_icon_bg_secondary"
+                                                android:contentDescription="@null"
+                                                android:importantForAccessibility="no"
+                                                android:padding="8dp"
+                                                android:src="@drawable/ic_person_24px"
+                                                app:tint="@color/profile_badge_text_secondary" />
+                
+                                            <LinearLayout
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="12dp"
+                                                android:layout_weight="1"
+                                                android:orientation="vertical">
+                
+                                                <TextView
+                                                    android:id="@+id/textTitleIdentitasPengguna"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/poppins"
+                                                    android:text="Identitas Pengguna"
+                                                    android:textColor="@color/clrTextPrimary"
+                                                    android:textSize="16sp"
+                                                    android:textStyle="bold" />
+                
+                                                <TextView
+                                                    android:id="@+id/textSubtitleIdentitasPengguna"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="2dp"
+                                                    android:fontFamily="@font/poppins"
+                                                    android:text="user.email@example.com"
+                                                    android:textColor="@color/clrTextSecondary"
+                                                    android:textSize="14sp" />
+                
+                                            </LinearLayout>
+                
+                                            <TextView
+                                                android:id="@+id/badgeCustomerId"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="12dp"
+                                                android:background="@drawable/bg_profile_badge"
+                                                android:backgroundTint="@color/profile_icon_bg_secondary"
+                                                android:fontFamily="@font/poppins"
+                                                android:text="#88920123"
+                                                android:textColor="@color/profile_badge_text_secondary"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+                
+                                        </LinearLayout>
+                
+                                        <TextView
+                                            android:id="@+id/textNameIdentitasPengguna"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/poppins"
+                                            android:text="Nama: Nama Pengguna"
+                                            android:textColor="@color/clrTextSecondary"
+                                            android:textSize="14sp" />
+                
+                                        <TextView
+                                            android:id="@+id/textEmailIdentitasPengguna"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:fontFamily="@font/poppins"
+                                            android:text="Email: user.email@example.com"
+                                            android:textColor="@color/clrTextSecondary"
+                                            android:textSize="14sp" />
+                
+                                        <TextView
+                                            android:id="@+id/textPhoneIdentitasPengguna"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:fontFamily="@font/poppins"
+                                            android:text="No. Telp: 0812-3456-7890"
+                                            android:textColor="@color/clrTextSecondary"
+                                            android:textSize="14sp" />
+                
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/buttonEditProfile"
+                                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:text="Edit Profil"
+                                            android:textAllCaps="false"
+                                            app:icon="@drawable/ic_person_24px"
+                                            app:iconGravity="textStart"
+                                            app:iconPadding="8dp"
+                                            app:iconTint="@color/profile_badge_text_secondary" />
+                
+                                    </LinearLayout>
+                
+                                    <LinearLayout
+                                        android:id="@+id/cardIdentitasPaket"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:background="@drawable/bg_card_profil"
+                                        android:orientation="vertical"
+                                        android:padding="20dp">
+                
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical">
+                
+                                            <ImageView
+                                                android:id="@+id/iconIdentitasPaket"
+                                                android:layout_width="40dp"
+                                                android:layout_height="40dp"
+                                                android:background="@drawable/bg_profile_icon_circle"
+                                                android:backgroundTint="@color/profile_icon_bg_primary"
+                                                android:contentDescription="@null"
+                                                android:importantForAccessibility="no"
+                                                android:padding="8dp"
+                                                android:src="@drawable/ic_wifi_tethering_24px"
+                                                app:tint="@color/register_primary" />
+                
+                                            <LinearLayout
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="12dp"
+                                                android:layout_weight="1"
+                                                android:orientation="vertical">
+                
+                                                <TextView
+                                                    android:id="@+id/textTitleIdentitasPaket"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/poppins"
+                                                    android:text="Identitas Paket"
+                                                    android:textColor="@color/clrTextPrimary"
+                                                    android:textSize="16sp"
+                                                    android:textStyle="bold" />
+                
+                                                <TextView
+                                                    android:id="@+id/textSubtitleIdentitasPaket"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="2dp"
+                                                    android:fontFamily="@font/poppins"
+                                                    android:text="Unlimited Fiber 50 Mbps"
+                                                    android:textColor="@color/clrTextSecondary"
+                                                    android:textSize="14sp" />
+                
+                                            </LinearLayout>
+                
+                                            <TextView
+                                                android:id="@+id/badgeStatusPaket"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="12dp"
+                                                android:background="@drawable/bg_profile_badge"
+                                                android:fontFamily="@font/poppins"
+                                                android:text="Aktif"
+                                                android:textColor="@color/profile_badge_text_primary"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+                
+                                        </LinearLayout>
+                
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:fontFamily="@font/poppins"
+                                            android:text="Tagihan berikutnya: 12 Des 2024"
+                                            android:textColor="@color/clrTextSecondary"
+                                            android:textSize="14sp" />
+                
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:fontFamily="@font/poppins"
+                                            android:text="Status: Aktif • ID Paket FBR-0021"
+                                            android:textColor="@color/clrTextSecondary"
+                                            android:textSize="14sp" />
+                
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/buttonChangePackage"
+                                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:text="Ubah Paket"
+                                            android:textAllCaps="false"
+                                            app:icon="@drawable/ic_wifi_tethering_24px"
+                                            app:iconGravity="textStart"
+                                            app:iconPadding="8dp"
+                                            app:iconTint="@color/register_primary" />
+                
+                                    </LinearLayout>
                 <LinearLayout
                     android:id="@+id/cardLayananBantuan"
                     android:layout_width="match_parent"
@@ -418,27 +425,28 @@
                     app:cornerRadius="14dp"
                     app:icon="@drawable/ic_logout_24px"
                     app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    app:iconTint="@color/logout_button_text" />
+                app:iconPadding="12dp"
+                app:iconTint="@color/logout_button_text" />
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileAvatar"
-            android:layout_width="112dp"
-            android:layout_height="112dp"
-            android:background="@drawable/bg_profile_placeholder"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
             android:contentDescription="@string/akun_profile_photo_desc"
-            android:padding="16dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_user"
             android:translationY="-70dp"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@android:color/white"
             app:layout_constraintEnd_toEndOf="@id/profileCard"
             app:layout_constraintStart_toStartOf="@id/profileCard"
-            app:layout_constraintTop_toTopOf="@id/profileCard" />
+            app:layout_constraintTop_toTopOf="@id/profileCard"
+            app:srcCompat="@drawable/ic_user" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+    </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

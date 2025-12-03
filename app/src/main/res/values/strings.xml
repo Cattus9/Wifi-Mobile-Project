@@ -38,6 +38,7 @@
     <string name="akun_profile_photo_desc">Foto profil akun</string>
     <string name="profile_name_placeholder">Nama Pengguna</string>
     <string name="profile_email_placeholder">user.email@example.com</string>
+    <string name="profile_phone_placeholder">No. Telepon</string>
     <string name="logout_failed">Tidak dapat keluar. Coba lagi.</string>
     <string name="logout_dialog_title">Keluar Akun</string>
     <string name="logout_dialog_message">Apakah Anda yakin ingin keluar?</string>

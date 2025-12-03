@@ -19,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PaymentApiClient {
 
     private final PaymentApiService apiService;
+    private final ChangePackageService changePackageService;
 
     public PaymentApiClient(Context context) {
         TokenStorage storage = new TokenStorage(context.getApplicationContext());
@@ -42,9 +43,14 @@ public class PaymentApiClient {
                 .build();
 
         apiService = retrofit.create(PaymentApiService.class);
+        changePackageService = retrofit.create(ChangePackageService.class);
     }
 
     public PaymentApiService getApiService() {
         return apiService;
+    }
+
+    public ChangePackageService getChangePackageService() {
+        return changePackageService;
     }
 }

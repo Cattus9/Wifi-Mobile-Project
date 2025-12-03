@@ -2,6 +2,7 @@ package com.project.inet_mobile.data.auth;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,6 +12,7 @@ import java.util.concurrent.Executors;
  */
 public class AuthRepository {
 
+    private static final String TAG = "AuthRepository";
     private final SupabaseAuthService authService;
     private final ExecutorService executorService;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -27,15 +29,23 @@ public class AuthRepository {
 
     public void signIn(final String email, final String password, final SignInCallback callback) {
         executorService.execute(() -> {
+            long start = System.currentTimeMillis();
             try {
+                Log.d(TAG, "signIn start email=" + email);
                 AuthSession session = authService.signIn(email, password);
                 UserProfile profile = authService.fetchUserProfile(session);
                 SignInResult result = new SignInResult(session, profile);
+                long elapsed = System.currentTimeMillis() - start;
+                Log.d(TAG, "signIn success latencyMs=" + elapsed);
                 mainHandler.post(() -> callback.onSuccess(result));
             } catch (AuthException ex) {
+                long elapsed = System.currentTimeMillis() - start;
+                Log.e(TAG, "signIn failed latencyMs=" + elapsed + " msg=" + ex.getMessage());
                 mainHandler.post(() -> callback.onError(ex));
             } catch (Exception ex) {
                 AuthException wrapped = new AuthException("Terjadi kesalahan tak terduga: " + ex.getMessage(), ex);
+                long elapsed = System.currentTimeMillis() - start;
+                Log.e(TAG, "signIn unexpected error latencyMs=" + elapsed + " msg=" + ex.getMessage());
                 mainHandler.post(() -> callback.onError(wrapped));
             }
         });

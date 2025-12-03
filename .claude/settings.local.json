@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(if not exist supabasemigrations mkdir supabasemigrations)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
