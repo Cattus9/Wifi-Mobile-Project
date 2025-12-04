@@ -3,31 +3,83 @@ package com.project.inet_mobile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.project.inet_mobile.data.auth.AuthException;
+import com.project.inet_mobile.data.auth.AuthSession;
+import com.project.inet_mobile.data.auth.SupabaseAuthService;
+import com.project.inet_mobile.data.auth.UserRepository;
+import com.project.inet_mobile.data.remote.SupabaseUserService;
+import com.project.inet_mobile.util.conn;
+
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText editTextNIK, editTextName, editTextPhone, editTextEmail, editTextPassword, editTextAddress;
+    private static final String TAG = "RegisterActivity";
+
+    private TextInputEditText editTextName, editTextPhone, editTextEmail, editTextPassword, editTextAddress;
     private Button buttonRegister;
     private TextView textViewLogin;
+    private LottieAnimationView loadingAnimation;
+    private CardView cardLoadingAnimation;
+    private View overlayBackground;
+
+    private SupabaseAuthService supabaseAuthService;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        initServices();
         initViews();
         setListeners();
     }
 
+    private void initServices() {
+        String baseUrl = conn.getSupabaseUrl();
+        String apiKey = conn.getSupabaseKey();
+        supabaseAuthService = new SupabaseAuthService(baseUrl, apiKey);
+
+        // Create simple Retrofit instance without authentication interceptor
+        // (for anonymous registration call)
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl + "/")
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SupabaseUserService supabaseUserService = retrofit.create(SupabaseUserService.class);
+        userRepository = new UserRepository(supabaseUserService, new com.project.inet_mobile.data.session.TokenStorage(this));
+    }
+
     private void initViews() {
-//        editTextNIK = findViewById(R.id.editTextNIK);
         editTextName = findViewById(R.id.editTextName);
         editTextPhone = findViewById(R.id.editTextPhone);
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -35,6 +87,9 @@ public class RegisterActivity extends AppCompatActivity {
         editTextAddress = findViewById(R.id.editTextAddress);
         buttonRegister = findViewById(R.id.buttonRegister);
         textViewLogin = findViewById(R.id.textViewLogin);
+        loadingAnimation = findViewById(R.id.loadingAnimation);
+        cardLoadingAnimation = findViewById(R.id.cardLoadingAnimation);
+        overlayBackground = findViewById(R.id.overlayBackground);
     }
 
     private void setListeners() {
@@ -57,86 +112,158 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void performRegister() {
-        String nik = editTextNIK.getText().toString().trim();
-        String name = editTextName.getText().toString().trim();
-        String phone = editTextPhone.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        String address = editTextAddress.getText().toString().trim();
-
-        // Validate NIK field
-        if (nik.isEmpty()) {
-            editTextNIK.setError("NIK is required");
-            editTextNIK.requestFocus();
-            return;
-        }
-
-        if (nik.length() != 16) {
-            editTextNIK.setError("NIK must be 16 digits");
-            editTextNIK.requestFocus();
-            return;
-        }
-
-        if (!TextUtils.isDigitsOnly(nik)) {
-            editTextNIK.setError("NIK must contain only numbers");
-            editTextNIK.requestFocus();
-            return;
-        }
+        final String name = editTextName.getText().toString().trim();
+        final String phone = editTextPhone.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
+        final String password = editTextPassword.getText().toString().trim();
+        final String address = editTextAddress.getText().toString().trim();
 
         // Validate Name field
         if (name.isEmpty()) {
-            editTextName.setError("Name is required");
+            editTextName.setError("Nama wajib diisi");
             editTextName.requestFocus();
             return;
         }
 
         // Validate Phone field
         if (phone.isEmpty()) {
-            editTextPhone.setError("Phone number is required");
+            editTextPhone.setError("Nomor telepon wajib diisi");
             editTextPhone.requestFocus();
             return;
         }
 
         if (!Patterns.PHONE.matcher(phone).matches()) {
-            editTextPhone.setError("Please enter a valid phone number");
+            editTextPhone.setError("Nomor telepon tidak valid");
             editTextPhone.requestFocus();
             return;
         }
 
         // Validate Email field
         if (email.isEmpty()) {
-            editTextEmail.setError("Email is required");
+            editTextEmail.setError("Email wajib diisi");
             editTextEmail.requestFocus();
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            editTextEmail.setError("Please enter a valid email address");
+            editTextEmail.setError("Email tidak valid");
             editTextEmail.requestFocus();
             return;
         }
 
         // Validate Password field
         if (password.isEmpty() || password.length() < 6) {
-            editTextPassword.setError("Password must be at least 6 characters");
+            editTextPassword.setError("Password minimal 6 karakter");
             editTextPassword.requestFocus();
             return;
         }
 
         // Validate Address field
         if (address.isEmpty()) {
-            editTextAddress.setError("Address is required");
+            editTextAddress.setError("Alamat wajib diisi");
             editTextAddress.requestFocus();
             return;
         }
 
-        // If validation passes
-        Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
-        
-        // Here you would normally send the data to your server
-        // For now, we'll just finish the activity and return to login
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        // Show loading
+        showLoading(true);
+
+        // Perform registration in background thread
+        new Thread(() -> {
+            try {
+                // STEP 1: Sign up with Supabase Auth
+                Log.d(TAG, "Starting Supabase Auth signup...");
+                AuthSession authSession = supabaseAuthService.signUp(email, password);
+                final String authUserId = authSession.getAuthUserId();
+
+                if (authUserId == null || authUserId.isEmpty()) {
+                    throw new AuthException(500, "Auth user ID tidak ditemukan setelah signup");
+                }
+
+                Log.d(TAG, "Supabase Auth signup successful. auth_user_id: " + authUserId);
+
+                // STEP 2: Create customer and user records in database
+                runOnUiThread(() -> {
+                    userRepository.registerUser(authUserId, email, phone, name, address, new UserRepository.RegisterCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            showLoading(false);
+                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+
+                            // Navigate to login
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            intent.putExtra("registered_email", email);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            showLoading(false);
+                            Log.e(TAG, "Register user error: " + errorMessage);
+
+                            // Parse error message
+                            String userMessage = parseErrorMessage(errorMessage);
+                            Toast.makeText(RegisterActivity.this, userMessage, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                });
+
+            } catch (AuthException e) {
+                Log.e(TAG, "Signup error: " + e.getMessage(), e);
+                runOnUiThread(() -> {
+                    showLoading(false);
+                    String userMessage = parseAuthError(e);
+                    Toast.makeText(RegisterActivity.this, userMessage, Toast.LENGTH_LONG).show();
+                });
+            }
+        }).start();
+    }
+
+    private String parseAuthError(AuthException e) {
+        String message = e.getMessage();
+        if (message == null) {
+            return "Terjadi kesalahan saat registrasi";
+        }
+
+        // Parse common Supabase Auth errors
+        if (message.contains("already registered") || message.contains("already exists")) {
+            return "Email sudah terdaftar";
+        } else if (message.contains("invalid email")) {
+            return "Email tidak valid";
+        } else if (message.contains("password")) {
+            return "Password tidak memenuhi syarat";
+        } else {
+            return "Registrasi gagal: " + message;
+        }
+    }
+
+    private String parseErrorMessage(String errorMessage) {
+        if (errorMessage == null) {
+            return "Terjadi kesalahan saat registrasi";
+        }
+
+        // Parse RPC function errors
+        if (errorMessage.contains("EMAIL_ALREADY_EXISTS")) {
+            return "Email sudah terdaftar dalam sistem";
+        } else if (errorMessage.contains("AUTH_USER_ALREADY_LINKED")) {
+            return "User sudah terhubung dengan akun lain";
+        } else {
+            return errorMessage;
+        }
+    }
+
+    private void showLoading(boolean show) {
+        if (show) {
+            cardLoadingAnimation.setVisibility(View.VISIBLE);
+            overlayBackground.setVisibility(View.VISIBLE);
+            loadingAnimation.playAnimation();
+            buttonRegister.setEnabled(false);
+        } else {
+            cardLoadingAnimation.setVisibility(View.GONE);
+            overlayBackground.setVisibility(View.GONE);
+            loadingAnimation.cancelAnimation();
+            buttonRegister.setEnabled(true);
+        }
     }
 }

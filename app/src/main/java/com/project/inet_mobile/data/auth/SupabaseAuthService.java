@@ -30,6 +30,51 @@ public class SupabaseAuthService {
         this.apiKey = apiKey;
     }
 
+    /**
+     * Sign up new user with email and password in Supabase Auth
+     */
+    public AuthSession signUp(String email, String password) throws AuthException {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("email", email);
+            body.put("password", password);
+
+            Request request = new Request.Builder()
+                    .url(baseUrl + "/auth/v1/signup")
+                    .post(RequestBody.create(body.toString(), MEDIA_TYPE_JSON))
+                    .header("apikey", apiKey)
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            Response response = httpClient.newCall(request).execute();
+            String raw = response.body() != null ? response.body().string() : "";
+            if (!response.isSuccessful()) {
+                throw buildAuthException(response.code(), raw);
+            }
+
+            JSONObject json = new JSONObject(raw);
+            String accessToken = json.optString("access_token", "");
+            String refreshToken = json.optString("refresh_token", "");
+            long expiresIn = json.optLong("expires_in", 3600L);
+            String tokenType = json.optString("token_type", "bearer");
+
+            JSONObject userObj = json.optJSONObject("user");
+            String authUserId = userObj != null ? userObj.optString("id", "") : "";
+
+            if (authUserId == null || authUserId.isEmpty()) {
+                throw new AuthException(response.code(), "Respons signup tidak lengkap dari server");
+            }
+
+            // Access token might be empty if email confirmation is required
+            long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
+            return new AuthSession(accessToken, refreshToken, expiresAtMillis, tokenType, authUserId);
+        } catch (JSONException e) {
+            throw new AuthException("Gagal mem-parsing respons signup", e);
+        } catch (IOException e) {
+            throw new AuthException("Koneksi ke server gagal: " + e.getMessage(), e);
+        }
+    }
+
     public AuthSession signIn(String email, String password) throws AuthException {
         try {
             JSONObject body = new JSONObject();

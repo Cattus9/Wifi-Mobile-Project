@@ -5,6 +5,8 @@ import android.util.Log;
 import com.project.inet_mobile.data.remote.SupabaseUserService;
 import com.project.inet_mobile.data.session.TokenStorage; // Import TokenStorage
 import com.project.inet_mobile.data.remote.UpdateProfileRequest; // Added missing import
+import com.project.inet_mobile.data.remote.RegisterRequest;
+import com.project.inet_mobile.data.remote.RegisterResponse;
 import com.project.inet_mobile.util.conn;
 
 import java.util.List;
@@ -123,14 +125,60 @@ public class UserRepository {
             });
     }
 
+    /**
+     * Register new user by creating customer and user records in database
+     * Should be called AFTER Supabase Auth signup
+     */
+    public void registerUser(String authUserId, String email, String phone, String name, String address, RegisterCallback callback) {
+        String anonKey = getSupabaseAnonKey();
+
+        RegisterRequest requestBody = new RegisterRequest(authUserId, email, phone, name, address);
+
+        supabaseUserService.registerUser(anonKey, requestBody)
+                .enqueue(new Callback<RegisterResponse>() {
+                    @Override
+                    public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            RegisterResponse registerResponse = response.body();
+                            if (registerResponse.isSuccess()) {
+                                callback.onSuccess(registerResponse.getMessage());
+                            } else {
+                                callback.onError("Registrasi gagal: " + registerResponse.getMessage());
+                            }
+                        } else {
+                            String error = "Failed to register user: " + response.code() + " " + response.message();
+                            if (response.errorBody() != null) {
+                                try {
+                                    error += " - " + response.errorBody().string();
+                                } catch (Exception e) {
+                                    Log.e(TAG, "Error reading error body", e);
+                                }
+                            }
+                            callback.onError(error);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                        callback.onError("Network error during registration: " + t.getMessage());
+                    }
+                });
+    }
+
     public interface UserProfileCallback {
         void onSuccess(User user);
         void onError(String message);
     }
-    
+
     // New, simpler callback for update operations that don't return data
     public interface UpdateCallback {
         void onSuccess();
+        void onError(String message);
+    }
+
+    // Callback for registration
+    public interface RegisterCallback {
+        void onSuccess(String message);
         void onError(String message);
     }
 }

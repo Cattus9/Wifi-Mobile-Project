@@ -13,6 +13,8 @@ import retrofit2.http.Query;
 
 import retrofit2.http.POST; // Added for RPC call
 import com.project.inet_mobile.data.remote.UpdateProfileRequest; // Added request body model
+import com.project.inet_mobile.data.remote.RegisterRequest;
+import com.project.inet_mobile.data.remote.RegisterResponse;
 
 public interface SupabaseUserService {
 
@@ -53,5 +55,16 @@ public interface SupabaseUserService {
         @Header("Prefer") String prefer,
         @Query("id") String userIdFilter,
         @Body java.util.Map<String, Object> payload // expects { "avatar_url": "<url or null>" }
+    );
+
+    // NEW Method to call the 'register_user' RPC function
+    @Headers({
+        "Accept: application/json",
+        "Content-Type: application/json"
+    })
+    @POST("rest/v1/rpc/register_user")
+    Call<RegisterResponse> registerUser(
+        @Header("apikey") String apiKey,
+        @Body RegisterRequest body
     );
 }
