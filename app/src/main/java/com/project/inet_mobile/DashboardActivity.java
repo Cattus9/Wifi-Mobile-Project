@@ -250,4 +250,5 @@ public class DashboardActivity extends AppCompatActivity {
             bottomNavigationView.setVisibility(View.VISIBLE);
         }
     }
+
 }

@@ -108,6 +108,12 @@ public class InvoiceDetailResponseData {
     public static class CustomerInfo {
         private String name;
         private String email;
+        private String phone;
+        private String address;
+        @SerializedName("customer_id")
+        private String customerId;
+        @SerializedName("service_package")
+        private ServicePackageInfo servicePackage;
 
         public String getName() {
             return name;
@@ -115,6 +121,63 @@ public class InvoiceDetailResponseData {
 
         public String getEmail() {
             return email;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public String getCustomerId() {
+            return customerId;
+        }
+
+        public ServicePackageInfo getServicePackage() {
+            return servicePackage;
+        }
+    }
+
+    public static class ServicePackageInfo {
+        @SerializedName("package_code")
+        private String packageCode;
+        @SerializedName("package_name")
+        private String packageName;
+        private double price;
+        private double speed;
+        private String duration;
+        private String type;
+        @SerializedName("equipment_rental_fee")
+        private double equipmentRentalFee;
+
+        public String getPackageCode() {
+            return packageCode;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public double getSpeed() {
+            return speed;
+        }
+
+        public String getDuration() {
+            return duration;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public double getEquipmentRentalFee() {
+            return equipmentRentalFee;
         }
     }
 

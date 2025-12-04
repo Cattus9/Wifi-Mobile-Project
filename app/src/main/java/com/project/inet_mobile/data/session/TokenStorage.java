@@ -109,6 +109,13 @@ public class TokenStorage {
         preferences.edit().clear().apply();
     }
 
+    /**
+     * Check if user is logged in (has valid session)
+     */
+    public boolean isLoggedIn() {
+        return getSession() != null;
+    }
+
     private void migrateLegacyIfNeeded(Context context, SharedPreferences targetPrefs) {
         // Read from legacy plain prefs (older builds) and move into secure prefs.
         SharedPreferences legacyPrefs = context.getSharedPreferences(PREFS_NAME_LEGACY, Context.MODE_PRIVATE);

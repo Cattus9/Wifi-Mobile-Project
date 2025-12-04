@@ -4,9 +4,23 @@
     android:installLocation="auto">
     <!-- ===== PERMISSIONS ===== -->
     <!-- Internet dibutuhkan untuk akses API Supabase -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- Opsional: cek status koneksi sebelum request (misal tampilkan “No Connection”) -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Opsional: cek status koneksi sebelum request (misal tampilkan "No Connection") -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Opsional: jika kamu ingin mendeteksi perubahan jaringan -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Permission untuk akses gambar/galeri -->
+    <!-- Untuk Android 12 ke bawah (API ≤ 32) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <!-- Untuk Android 13+ (API 33+) - granular permission -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <!-- Permission untuk kamera (jika butuh ambil foto langsung) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Permission untuk notifikasi -->
+    <!-- Untuk Android 13+ (API 33+) butuh runtime permission -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".util.MyApplication"

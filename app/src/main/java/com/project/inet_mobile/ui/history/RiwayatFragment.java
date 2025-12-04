@@ -1,5 +1,6 @@
 package com.project.inet_mobile.ui.history;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -59,6 +60,7 @@ public class RiwayatFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         initViews(view);
         setupRecyclerView();
         paymentDataSource = new PaymentRemoteDataSource(requireContext());
@@ -82,10 +84,22 @@ public class RiwayatFragment extends Fragment {
 
     private void setupRecyclerView() {
         riwayatAdapter = new RiwayatAdapter(item -> {
-            // Placeholder: ketika API siap, bisa arahkan ke detail invoice atau bukti bayar.
+            // Hanya buka invoice untuk item yang sudah PAID
+            if (item.getStatus().isPaid()) {
+                openInvoiceActivity(item);
+            } else {
+                Toast.makeText(requireContext(), "Invoice belum dibayar", Toast.LENGTH_SHORT).show();
+            }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(riwayatAdapter);
+    }
+
+    private void openInvoiceActivity(PaymentHistoryItem item) {
+        android.content.Intent intent = new android.content.Intent(requireContext(), com.project.inet_mobile.util.InvoiceActivity.class);
+        intent.putExtra("invoice_id", item.getInvoiceId());
+        intent.putExtra("invoice_number", item.getInvoiceNumber());
+        startActivity(intent);
     }
 
     private void loadHistoryFromApi() {
@@ -157,6 +171,7 @@ public class RiwayatFragment extends Fragment {
 
             String date = inv.getPaidAt() != null ? inv.getPaidAt() : inv.getDueDate();
             mapped.add(new PaymentHistoryItem(
+                    inv.getInvoiceId(),
                     inv.getMonthLabel() != null ? inv.getMonthLabel() : inv.getInvoiceNumber(),
                     date != null ? formatDate(date) : "",
                     "—",

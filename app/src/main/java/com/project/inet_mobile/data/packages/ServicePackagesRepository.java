@@ -43,9 +43,11 @@ public class ServicePackagesRepository {
 
     public void fetchPackages(@NonNull PackagesCallback callback) {
         long start = System.currentTimeMillis();
+
         AuthSession session = tokenStorage.getSession();
         if (session == null || session.isExpired() || session.getAccessToken() == null || session.getAccessToken().isEmpty()) {
-            callback.onError("User not logged in.");
+            Log.w(TAG, "fetchPackages: session not valid");
+            callback.onError("Session tidak valid. Silakan login kembali.");
             return;
         }
 

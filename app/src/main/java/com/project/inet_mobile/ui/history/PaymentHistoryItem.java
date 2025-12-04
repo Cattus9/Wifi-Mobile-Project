@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
  */
 public class PaymentHistoryItem {
 
+    private final long invoiceId;
     private final String monthLabel;
     private final String paymentDate;
     private final String method;
@@ -24,6 +25,7 @@ public class PaymentHistoryItem {
     private final int statusBackgroundColor;
 
     public PaymentHistoryItem(
+            long invoiceId,
             @NonNull String monthLabel,
             @NonNull String paymentDate,
             @NonNull String method,
@@ -34,6 +36,7 @@ public class PaymentHistoryItem {
             @ColorInt int statusTextColor,
             @ColorInt int statusBackgroundColor
     ) {
+        this.invoiceId = invoiceId;
         this.monthLabel = monthLabel;
         this.paymentDate = paymentDate;
         this.method = method;
@@ -44,6 +47,10 @@ public class PaymentHistoryItem {
         this.statusTextColor = statusTextColor;
         this.statusBackgroundColor = statusBackgroundColor;
         this.metaDescription = buildMeta(paymentDate, method, invoiceNumber);
+    }
+
+    public long getInvoiceId() {
+        return invoiceId;
     }
 
     public String getMonthLabel() {

@@ -94,7 +94,7 @@
                             android:layout_below="@id/divider"
                             android:layout_marginTop="16dp"
                             android:layout_marginBottom="24dp"
-                            android:text="Paket Kebelet 90 Mbps"
+                            android:text="-"
                             android:textColor="@android:color/black"
                             android:textSize="24sp"
                             android:textStyle="bold" />
@@ -137,7 +137,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
-                                        android:text="90 Mbps"
+                                        android:text="-"
                                         android:textColor="@android:color/black"
                                         android:textSize="18sp"
                                         android:textStyle="bold" />
@@ -173,7 +173,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
-                                        android:text="Unlimited"
+                                        android:text="-"
                                         android:textColor="@android:color/black"
                                         android:textSize="18sp"
                                         android:textStyle="bold" />
@@ -209,7 +209,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
-                                        android:text="15 Hari"
+                                        android:text="-"
                                         android:textColor="@android:color/black"
                                         android:textSize="18sp"
                                         android:textStyle="bold" />
@@ -245,7 +245,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
-                                        android:text="Active"
+                                        android:text="-"
                                         android:textColor="#4CAF50"
                                         android:textSize="18sp"
                                         android:textStyle="bold" />
@@ -460,7 +460,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="15 Nov 2025"
+                                    android:text="-"
                                     android:textColor="@android:color/black"
                                     android:textSize="15sp"
                                     android:textStyle="bold" />
@@ -521,7 +521,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="Rp 500.000"
+                                    android:text="-"
                                     android:textColor="@android:color/black"
                                     android:textSize="15sp"
                                     android:textStyle="bold" />

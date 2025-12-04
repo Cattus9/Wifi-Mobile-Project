@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,9 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.project.inet_mobile.LoginActivity;
 import com.project.inet_mobile.R;
 import com.project.inet_mobile.Paket;
 import com.project.inet_mobile.PaketAdapter;
+import com.project.inet_mobile.data.session.TokenStorage;
 import com.project.inet_mobile.util.DetailPaketFragment;
 import com.project.inet_mobile.data.packages.ServicePackagesRepository;
 
@@ -41,6 +45,7 @@ public class PaketFragment extends Fragment {
     private boolean isDataLoaded = false;
     private static final int TIMEOUT_DURATION = 10000; // 10 detik
     private ServicePackagesRepository packagesRepository;
+    private TokenStorage tokenStorage;
 
     public PaketFragment() {
         super(R.layout.fragment_paket);
@@ -61,6 +66,7 @@ public class PaketFragment extends Fragment {
         // Inisialisasi Handler untuk timeout
         timeoutHandler = new Handler(Looper.getMainLooper());
         packagesRepository = new ServicePackagesRepository(requireContext());
+        tokenStorage = new TokenStorage(requireContext());
 
         // Buat adapter dengan list kosong dan listener
         paketAdapter = new PaketAdapter(new ArrayList<>(), new PaketAdapter.OnPaketClickListener() {
