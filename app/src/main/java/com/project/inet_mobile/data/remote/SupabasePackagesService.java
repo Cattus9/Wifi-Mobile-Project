@@ -20,6 +20,7 @@ public interface SupabasePackagesService {
     Call<List<ServicePackageDto>> getPackages(
             @Header("apikey") String apiKey,
             @Query("select") String select,
-            @Query("order") String order
+            @Query("order") String order,
+            @Query("is_active") String isActive
     );
 }

@@ -14,6 +14,7 @@
 --   p_phone: TEXT user's phone number
 --   p_name: TEXT user's full name
 --   p_address: TEXT user's address
+--   p_service_package_id: BIGINT selected service package (optional, can be NULL)
 --
 -- Returns: JSON object with success/error
 -- ============================================================================
@@ -23,7 +24,8 @@ CREATE OR REPLACE FUNCTION register_user(
   p_email TEXT,
   p_phone TEXT,
   p_name TEXT,
-  p_address TEXT
+  p_address TEXT,
+  p_service_package_id BIGINT DEFAULT NULL
 )
 RETURNS JSON
 LANGUAGE plpgsql
@@ -62,7 +64,20 @@ BEGIN
   END IF;
 
   -- =========================================================================
-  -- STEP 3: Create customer record
+  -- STEP 3: Validate service package if provided
+  -- =========================================================================
+  IF p_service_package_id IS NOT NULL THEN
+    -- Check if package exists and is active
+    IF NOT EXISTS (
+      SELECT 1 FROM service_packages
+      WHERE id = p_service_package_id AND is_active = true
+    ) THEN
+      RAISE EXCEPTION 'INVALID_PACKAGE: Paket layanan tidak valid atau tidak aktif';
+    END IF;
+  END IF;
+
+  -- =========================================================================
+  -- STEP 4: Create customer record
   -- =========================================================================
   INSERT INTO customers (
     name,
@@ -76,15 +91,15 @@ BEGIN
     p_name,
     p_phone,
     p_address,
-    'inactive', -- New customer starts as inactive until admin activates
-    NULL, -- No package assigned yet
+    'new', -- New customer starts as 'new' status (valid enum value: new/active/suspended/cancelled)
+    p_service_package_id, -- Package selected during registration (can be NULL)
     NOW(),
     NOW()
   )
   RETURNING id INTO v_customer_id;
 
   -- =========================================================================
-  -- STEP 4: Create user record
+  -- STEP 5: Create user record
   -- =========================================================================
   INSERT INTO users (
     auth_user_id,
@@ -110,7 +125,7 @@ BEGIN
   RETURNING id INTO v_user_id;
 
   -- =========================================================================
-  -- STEP 5: Build success response
+  -- STEP 6: Build success response
   -- =========================================================================
   v_result := json_build_object(
     'success', true,

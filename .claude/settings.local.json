@@ -9,7 +9,11 @@
       "Bash(mkdir:*)",
       "Bash(curl:*)",
       "Bash(gradlew.bat assembleDebug:*)",
-      "Bash(./gradlew assembleDebug:*)"
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(where:*)",
+      "Bash(.gradlew.bat assembleDebug)",
+      "Bash(cmd /c gradlew.bat assembleDebug)",
+      "Bash(adb logcat:*)"
     ],
     "deny": [],
     "ask": []

@@ -128,28 +128,46 @@ public class UserRepository {
     /**
      * Register new user by creating customer and user records in database
      * Should be called AFTER Supabase Auth signup
+     *
+     * @param packageId Selected service package ID (can be null)
      */
-    public void registerUser(String authUserId, String email, String phone, String name, String address, RegisterCallback callback) {
+    public void registerUser(String authUserId, String email, String phone, String name, String address, Long packageId, RegisterCallback callback) {
         String anonKey = getSupabaseAnonKey();
 
-        RegisterRequest requestBody = new RegisterRequest(authUserId, email, phone, name, address);
+        RegisterRequest requestBody = new RegisterRequest(authUserId, email, phone, name, address, packageId);
+
+        Log.d(TAG, "Sending registerUser RPC with packageId: " + packageId);
 
         supabaseUserService.registerUser(anonKey, requestBody)
                 .enqueue(new Callback<RegisterResponse>() {
                     @Override
                     public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
+                        Log.d(TAG, "RPC Response Code: " + response.code());
+
+                        if (response.isSuccessful()) {
                             RegisterResponse registerResponse = response.body();
-                            if (registerResponse.isSuccess()) {
-                                callback.onSuccess(registerResponse.getMessage());
+                            Log.d(TAG, "Response Body: " + (registerResponse != null ? "Not null" : "NULL"));
+
+                            if (registerResponse != null) {
+                                Log.d(TAG, "Success: " + registerResponse.isSuccess());
+                                Log.d(TAG, "Message: " + registerResponse.getMessage());
+
+                                if (registerResponse.isSuccess()) {
+                                    callback.onSuccess(registerResponse.getMessage());
+                                } else {
+                                    callback.onError("Registrasi gagal: " + registerResponse.getMessage());
+                                }
                             } else {
-                                callback.onError("Registrasi gagal: " + registerResponse.getMessage());
+                                Log.e(TAG, "Response body is null despite successful response");
+                                callback.onError("Response body is null");
                             }
                         } else {
                             String error = "Failed to register user: " + response.code() + " " + response.message();
                             if (response.errorBody() != null) {
                                 try {
-                                    error += " - " + response.errorBody().string();
+                                    String errorBody = response.errorBody().string();
+                                    Log.e(TAG, "Error body: " + errorBody);
+                                    error += " - " + errorBody;
                                 } catch (Exception e) {
                                     Log.e(TAG, "Error reading error body", e);
                                 }
@@ -160,9 +178,19 @@ public class UserRepository {
 
                     @Override
                     public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                        Log.e(TAG, "Network failure during registration", t);
                         callback.onError("Network error during registration: " + t.getMessage());
                     }
                 });
+    }
+
+    /**
+     * Backward compatibility method - register without package
+     * @deprecated Use registerUser with packageId parameter instead
+     */
+    @Deprecated
+    public void registerUser(String authUserId, String email, String phone, String name, String address, RegisterCallback callback) {
+        registerUser(authUserId, email, phone, name, address, null, callback);
     }
 
     public interface UserProfileCallback {

@@ -94,7 +94,8 @@ public class LoginActivity extends AppCompatActivity {
     private void setListeners() {
         buttonLogin.setOnClickListener(v -> performLogin());
         textViewRegister.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            // Navigate to package selection first, then to registration
+            startActivity(new Intent(LoginActivity.this, PackageSelectionActivity.class));
             finish();
         });
         textViewForgotPassword.setOnClickListener(v -> {

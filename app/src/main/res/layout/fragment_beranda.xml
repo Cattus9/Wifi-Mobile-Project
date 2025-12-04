@@ -308,7 +308,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Pembayaran"
+                                android:text="Bayar"
                                 android:textColor="@android:color/black"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />

@@ -2,6 +2,11 @@ package com.project.inet_mobile.data.remote.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * DTO for service_packages table
+ * Core fields: id, name, description, speed, price, is_active
+ * Optional fields: is_popular, duration, quota, phone, original_price (may not exist in DB)
+ */
 public class ServicePackageDto {
     @SerializedName("id")
     public int id;
@@ -18,6 +23,10 @@ public class ServicePackageDto {
     @SerializedName("price")
     public Double price;
 
+    @SerializedName("is_active")
+    public Boolean isActive;
+
+    // Optional fields - may not exist in all tables
     @SerializedName("is_popular")
     public Boolean isPopular;
 

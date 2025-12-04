@@ -42,10 +42,28 @@ public class RegisterActivity extends AppCompatActivity {
     private SupabaseAuthService supabaseAuthService;
     private UserRepository userRepository;
 
+    private Long selectedPackageId; // Package selected from PackageSelectionActivity
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // Get selected package ID from intent
+        if (getIntent().hasExtra("SELECTED_PACKAGE_ID")) {
+            int packageIdInt = getIntent().getIntExtra("SELECTED_PACKAGE_ID", -1);
+            if (packageIdInt > 0) {
+                selectedPackageId = Long.valueOf(packageIdInt);
+                Log.d(TAG, "Received selected package ID: " + selectedPackageId);
+            } else {
+                selectedPackageId = null;
+                Log.w(TAG, "Invalid package ID received: " + packageIdInt);
+            }
+        } else {
+            // Optional: Allow registration without package (backward compatibility)
+            selectedPackageId = null;
+            Log.w(TAG, "No package ID received - registering without package");
+        }
 
         initServices();
         initViews();
@@ -184,7 +202,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // STEP 2: Create customer and user records in database
                 runOnUiThread(() -> {
-                    userRepository.registerUser(authUserId, email, phone, name, address, new UserRepository.RegisterCallback() {
+                    // Pass selectedPackageId to RPC function
+                    Log.d(TAG, "Calling registerUser with package_id: " + selectedPackageId);
+                    userRepository.registerUser(authUserId, email, phone, name, address, selectedPackageId, new UserRepository.RegisterCallback() {
                         @Override
                         public void onSuccess(String message) {
                             showLoading(false);
@@ -215,6 +235,16 @@ public class RegisterActivity extends AppCompatActivity {
                     showLoading(false);
                     String userMessage = parseAuthError(e);
                     Toast.makeText(RegisterActivity.this, userMessage, Toast.LENGTH_LONG).show();
+                });
+            } catch (Exception e) {
+                // Catch any unexpected errors
+                Log.e(TAG, "Unexpected registration error: " + e.getMessage(), e);
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    showLoading(false);
+                    Toast.makeText(RegisterActivity.this,
+                        "Terjadi kesalahan tidak terduga: " + e.getMessage(),
+                        Toast.LENGTH_LONG).show();
                 });
             }
         }).start();
@@ -248,6 +278,8 @@ public class RegisterActivity extends AppCompatActivity {
             return "Email sudah terdaftar dalam sistem";
         } else if (errorMessage.contains("AUTH_USER_ALREADY_LINKED")) {
             return "User sudah terhubung dengan akun lain";
+        } else if (errorMessage.contains("INVALID_PACKAGE")) {
+            return "Paket layanan tidak valid atau tidak aktif";
         } else {
             return errorMessage;
         }

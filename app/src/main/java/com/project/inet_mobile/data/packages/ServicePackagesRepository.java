@@ -41,6 +41,9 @@ public class ServicePackagesRepository {
         void onError(String message);
     }
 
+    /**
+     * Fetch packages with authentication check (for authenticated users)
+     */
     public void fetchPackages(@NonNull PackagesCallback callback) {
         long start = System.currentTimeMillis();
 
@@ -51,12 +54,28 @@ public class ServicePackagesRepository {
             return;
         }
 
+        fetchPackagesInternal(callback, start);
+    }
+
+    /**
+     * Fetch packages without authentication (for anonymous users during registration)
+     */
+    public void fetchPackagesAnonymous(@NonNull PackagesCallback callback) {
+        long start = System.currentTimeMillis();
+        Log.d(TAG, "fetchPackagesAnonymous: fetching packages for registration");
+        fetchPackagesInternal(callback, start);
+    }
+
+    private void fetchPackagesInternal(@NonNull PackagesCallback callback, long startTime) {
         String apikey = conn.getSupabaseKey();
-        Call<List<ServicePackageDto>> call = service.getPackages(apikey, "*", "id.asc");
+        // Only select columns that exist in service_packages table
+        String select = "id,name,description,speed,price,is_active";
+        // Filter only active packages
+        Call<List<ServicePackageDto>> call = service.getPackages(apikey, select, "id.asc", "eq.true");
         call.enqueue(new Callback<List<ServicePackageDto>>() {
             @Override
             public void onResponse(Call<List<ServicePackageDto>> call, Response<List<ServicePackageDto>> response) {
-                long elapsed = System.currentTimeMillis() - start;
+                long elapsed = System.currentTimeMillis() - startTime;
                 if (response.isSuccessful() && response.body() != null) {
                     List<Paket> pakets = mapToPaket(response.body());
                     Log.d(TAG, "fetchPackages success size=" + pakets.size() + " latencyMs=" + elapsed);
@@ -70,7 +89,7 @@ public class ServicePackagesRepository {
 
             @Override
             public void onFailure(Call<List<ServicePackageDto>> call, Throwable t) {
-                long elapsed = System.currentTimeMillis() - start;
+                long elapsed = System.currentTimeMillis() - startTime;
                 String msg = "Network error: " + t.getMessage();
                 Log.e(TAG, msg + " latencyMs=" + elapsed);
                 callback.onError(msg);
