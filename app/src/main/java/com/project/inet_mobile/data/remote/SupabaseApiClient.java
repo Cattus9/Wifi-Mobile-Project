@@ -24,6 +24,7 @@ public class SupabaseApiClient {
     private static SupabaseStorageService supabaseStorageService;
     private static SupabasePackagesService supabasePackagesService;
     private static SupabaseChangePackageService supabaseChangePackageService;
+    private static SupabaseDashboardService supabaseDashboardService;
     private static com.project.inet_mobile.data.packages.CurrentPackageRepository.CurrentPackageService currentPackageService;
 
     public static void init(Context context) {
@@ -101,6 +102,16 @@ public class SupabaseApiClient {
             currentPackageService = retrofit.create(com.project.inet_mobile.data.packages.CurrentPackageRepository.CurrentPackageService.class);
         }
         return currentPackageService;
+    }
+
+    public static SupabaseDashboardService getSupabaseDashboardService() {
+        if (supabaseDashboardService == null) {
+            if (retrofit == null) {
+                throw new IllegalStateException("SupabaseApiClient belum diinisialisasi. Panggil init() terlebih dahulu.");
+            }
+            supabaseDashboardService = retrofit.create(SupabaseDashboardService.class);
+        }
+        return supabaseDashboardService;
     }
 
     // Anda bisa menambahkan service Supabase lainnya di sini jika diperlukan

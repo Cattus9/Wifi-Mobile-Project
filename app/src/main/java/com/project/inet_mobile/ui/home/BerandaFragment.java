@@ -1,5 +1,6 @@
-package com.project.inet_mobile.ui.home; // Ganti dengan package Anda
+package com.project.inet_mobile.ui.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.project.inet_mobile.databinding.FragmentBerandaBinding; // Impor class binding
+import com.project.inet_mobile.databinding.FragmentBerandaBinding;
 import com.project.inet_mobile.ui.payment.PembayaranFragment;
+import com.project.inet_mobile.data.dashboard.DashboardSupabaseRepository;
+import com.project.inet_mobile.data.remote.dto.SupabaseDashboardUserDto;
+import com.project.inet_mobile.data.remote.dto.SupabaseDashboardInvoiceDto;
+import com.project.inet_mobile.data.remote.dto.SupabaseCustomerDto;
+import com.project.inet_mobile.data.remote.dto.SupabaseServicePackageDto;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,8 +27,8 @@ import java.util.Locale;
 
 public class BerandaFragment extends Fragment {
 
-    // 1. Deklarasikan variabel View Binding
     private FragmentBerandaBinding binding;
+    private DashboardSupabaseRepository dashboardRepository;
 
     @Nullable
     @Override
@@ -36,10 +42,16 @@ public class BerandaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Panggil fungsi-fungsi untuk mengatur tampilan
+        // Initialize repository
+        dashboardRepository = new DashboardSupabaseRepository(requireContext());
+
+        // Setup UI
         setupDynamicGreeting();
         setupDynamicDate();
         setupClickListeners();
+
+        // Fetch real data from Supabase
+        fetchDashboardData();
     }
 
     /**
@@ -105,10 +117,6 @@ public class BerandaFragment extends Fragment {
         binding.cardTagihan.setOnClickListener(v -> {
             showToast("Info Tagihan diklik");
         });
-
-        binding.cardHotline.setOnClickListener(v -> {
-            showToast("Info Hotline diklik");
-        });
     }
 
     /**
@@ -134,10 +142,99 @@ public class BerandaFragment extends Fragment {
         }
     }
 
+    /**
+     * Fetch dashboard data from Supabase
+     */
+    private void fetchDashboardData() {
+        // Show loading state
+        setLoading(true);
+
+        dashboardRepository.fetchDashboardData(new DashboardSupabaseRepository.DashboardCallback() {
+            @Override
+            public void onSuccess(@NonNull SupabaseDashboardUserDto userData, @Nullable SupabaseDashboardInvoiceDto invoice) {
+                if (!isAdded()) return;
+
+                setLoading(false);
+                updateUIWithData(userData, invoice);
+            }
+
+            @Override
+            public void onError(String message) {
+                if (!isAdded()) return;
+
+                setLoading(false);
+                showToast(message);
+            }
+        });
+    }
+
+    /**
+     * Update all UI elements with fetched data
+     */
+    private void updateUIWithData(@NonNull SupabaseDashboardUserDto userData, @Nullable SupabaseDashboardInvoiceDto invoice) {
+        SupabaseCustomerDto customer = userData.getCustomer();
+        if (customer == null) return;
+
+        SupabaseServicePackageDto servicePackage = customer.getServicePackage();
+
+        // Update package info
+        if (servicePackage != null) {
+            binding.tvPackageName.setText(servicePackage.getName());
+            binding.tvPackageSpeed.setText(servicePackage.getSpeed() + " Mbps");
+            binding.tvPackageQuota.setText(servicePackage.getQuota());
+        } else {
+            binding.tvPackageName.setText("Tidak ada paket aktif");
+            binding.tvPackageSpeed.setText("-");
+            binding.tvPackageQuota.setText("-");
+        }
+
+        // Update user status
+        String statusDisplay = customer.getStatusDisplay();
+        binding.tvUserStatus.setText(statusDisplay);
+
+        // Set status color
+        if (customer.isActive()) {
+            binding.tvUserStatus.setTextColor(Color.parseColor("#4CAF50")); // Green
+        } else {
+            binding.tvUserStatus.setTextColor(Color.parseColor("#F44336")); // Red
+        }
+
+        // Update invoice info
+        if (invoice != null) {
+            binding.tvJatuhTempoDate.setText(invoice.getFormattedDueDate());
+            binding.tvTagihanAmount.setText(invoice.getFormattedAmount());
+
+            // Calculate and display masa aktif (days until due)
+            int daysUntilDue = invoice.getDaysUntilDue();
+            if (daysUntilDue >= 0) {
+                binding.tvMasaAktif.setText(daysUntilDue + " Hari");
+            } else {
+                binding.tvMasaAktif.setText("Terlambat " + Math.abs(daysUntilDue) + " Hari");
+                binding.tvMasaAktif.setTextColor(Color.parseColor("#F44336")); // Red if overdue
+            }
+        } else {
+            // No unpaid invoice
+            binding.tvJatuhTempoDate.setText("-");
+            binding.tvTagihanAmount.setText("Rp 0");
+            binding.tvMasaAktif.setText("-");
+        }
+    }
+
+    /**
+     * Show/hide loading state
+     */
+    private void setLoading(boolean isLoading) {
+        if (isLoading) {
+            binding.berandaPrimaryCardCard.setVisibility(View.GONE);
+            // You can add a ProgressBar to the layout and show it here
+        } else {
+            binding.berandaPrimaryCardCard.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // 3. Bersihkan binding untuk menghindari memory leak
         binding = null;
     }
 }

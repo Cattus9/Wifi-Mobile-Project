@@ -78,29 +78,6 @@
                             android:textColor="#888888"
                             android:textSize="12sp" />
 
-                        <LinearLayout
-                            android:id="@+id/status_active_container"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <View
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_marginEnd="4dp"
-                                android:background="@drawable/green_dot_background" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Active"
-                                android:textColor="#4CAF50"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
                         <View
                             android:id="@+id/divider"
                             android:layout_width="match_parent"
@@ -156,6 +133,7 @@
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/tv_package_speed"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
@@ -191,6 +169,7 @@
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/tv_package_quota"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
@@ -226,6 +205,7 @@
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/tv_masa_aktif"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
@@ -256,15 +236,16 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Status"
+                                        android:text="User Status"
                                         android:textColor="#888888"
                                         android:textSize="12sp" />
 
                                     <TextView
+                                        android:id="@+id/tv_user_status"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="4dp"
-                                        android:text="Connected"
+                                        android:text="Active"
                                         android:textColor="#4CAF50"
                                         android:textSize="18sp"
                                         android:textStyle="bold" />
@@ -475,6 +456,7 @@
                                     android:textSize="10sp" />
 
                                 <TextView
+                                    android:id="@+id/tv_jatuh_tempo_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
@@ -535,6 +517,7 @@
                                     android:textSize="10sp" />
 
                                 <TextView
+                                    android:id="@+id/tv_tagihan_amount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
@@ -554,66 +537,6 @@
                                 android:layout_weight="1"
                                 android:padding="15dp"
                                 android:text="Anda dapat melihat total tagihan anda secara realtime disini" />
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Hotline Card -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/card_hotline"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp"
-                        app:cardUseCompatPadding="true">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:orientation="vertical"
-                                android:padding="20dp">
-
-                                <ImageView
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:contentDescription="Online"
-                                    android:src="@drawable/ic_cally" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="Online"
-                                    android:textColor="@android:color/darker_gray"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="24/7 Jam"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/textOnline"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:padding="15dp"
-                                android:text="kami selalu aktif setiap saat, kapanpun anda ingin melakukan laporan. kami siap selalu untuk membantu anda." />
 
                         </LinearLayout>
 
