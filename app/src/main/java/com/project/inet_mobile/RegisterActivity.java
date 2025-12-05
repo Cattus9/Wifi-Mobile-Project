@@ -114,7 +114,13 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                performRegister();
+                try {
+                    performRegister();
+                } catch (Throwable t) {
+                    // Catch everything, including Errors, and show them in a dialog
+                    Log.e(TAG, "Crash caught in onClickListener", t);
+                    showErrorDialog(t);
+                }
             }
         });
 
@@ -129,7 +135,28 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private void showErrorDialog(Throwable t) {
+        // Ensure this runs on the UI thread
+        runOnUiThread(() -> {
+            new androidx.appcompat.app.AlertDialog.Builder(RegisterActivity.this)
+                .setTitle("Terjadi Error")
+                .setMessage(t.getClass().getName() + ":\n\n" + t.getMessage() + "\n\n" + android.util.Log.getStackTraceString(t))
+                .setPositiveButton("OK", null)
+                .show();
+            
+            // Also hide loading animation if it was showing
+            showLoading(false);
+        });
+    }
+
     private void performRegister() {
+        // Defensive UI element check
+        if (editTextName == null || editTextPhone == null || editTextEmail == null || 
+            editTextPassword == null || editTextAddress == null || buttonRegister == null) {
+            Toast.makeText(this, "Kesalahan inisialisasi UI. Elemen tidak ditemukan.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         final String name = editTextName.getText().toString().trim();
         final String phone = editTextPhone.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();

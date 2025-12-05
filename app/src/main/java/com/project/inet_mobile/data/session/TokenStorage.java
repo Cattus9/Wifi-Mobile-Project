@@ -12,10 +12,7 @@ import com.project.inet_mobile.data.auth.AuthSession;
 
 import java.util.Map;
 
-/**
- * Helper untuk menyimpan token Supabase secara lokal.
- * (Catatan: gunakan EncryptedSharedPreferences/DataStore pada iterasi berikutnya.)
- */
+
 public class TokenStorage {
 
     private static final String TAG = "TokenStorage";
