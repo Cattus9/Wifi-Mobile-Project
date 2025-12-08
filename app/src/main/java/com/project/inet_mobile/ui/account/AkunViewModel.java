@@ -59,10 +59,7 @@ public class AkunViewModel extends AndroidViewModel {
             this.application = application;
             // Membangun UserRepository dengan dependensi yang benar (TokenStorage)
             TokenStorage tokenStorage = new TokenStorage(application.getApplicationContext());
-            this.userRepository = new UserRepository(
-                SupabaseApiClient.getSupabaseUserService(),
-                tokenStorage
-            );
+                    this.userRepository = new UserRepository(SupabaseApiClient.getSupabaseUserService(), tokenStorage);
         }
 
         @NonNull

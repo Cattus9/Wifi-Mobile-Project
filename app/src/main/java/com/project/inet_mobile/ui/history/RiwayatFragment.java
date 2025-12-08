@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.project.inet_mobile.R;
 import com.project.inet_mobile.data.payment.PaymentRemoteDataSource;
@@ -46,6 +47,7 @@ public class RiwayatFragment extends Fragment {
     private TextView txtStatus;
     private TextView txtTunggakan;
     private View chipContainer;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private RiwayatAdapter riwayatAdapter;
     private final List<PaymentHistoryItem> fullData = new ArrayList<>();
@@ -79,7 +81,10 @@ public class RiwayatFragment extends Fragment {
         txtStatus = view.findViewById(R.id.txtStatus);
         txtTunggakan = view.findViewById(R.id.txtTunggakan);
         chipContainer = view.findViewById(R.id.chipContainer);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
         setupFilterChips();
+        swipeRefreshLayout.setOnRefreshListener(this::loadHistoryFromApi);
     }
 
     private void setupRecyclerView() {
@@ -103,13 +108,16 @@ public class RiwayatFragment extends Fragment {
     }
 
     private void loadHistoryFromApi() {
-        showLoading(true);
+        if (!swipeRefreshLayout.isRefreshing()) {
+            showLoading(true);
+        }
         Call<ApiResponse<InvoiceListResponseData>> call = paymentDataSource.getInvoices(50, 0, null);
         call.enqueue(new Callback<ApiResponse<InvoiceListResponseData>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<InvoiceListResponseData>> call,
                                    @NonNull Response<ApiResponse<InvoiceListResponseData>> response) {
                 showLoading(false);
+                swipeRefreshLayout.setRefreshing(false);
                 dataLoaded = true;
                 if (!response.isSuccessful() || response.body() == null || response.body().getData() == null) {
                     showEmpty(true);
@@ -129,6 +137,7 @@ public class RiwayatFragment extends Fragment {
                                   @NonNull Throwable t) {
                 if (!call.isCanceled()) {
                     showLoading(false);
+                    swipeRefreshLayout.setRefreshing(false);
                     dataLoaded = true;
                     showEmpty(true);
                     bindSummaryPlaceholder();

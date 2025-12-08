@@ -19,27 +19,26 @@ public class SupabaseApiClient {
     private static OkHttpClient okHttpClient;
     private static HttpLoggingInterceptor loggingInterceptor;
 
-    // Instance SupabaseUserService
+    // Service instances
     private static SupabaseUserService supabaseUserService;
     private static SupabaseStorageService supabaseStorageService;
     private static SupabasePackagesService supabasePackagesService;
     private static SupabaseChangePackageService supabaseChangePackageService;
     private static SupabaseDashboardService supabaseDashboardService;
     private static com.project.inet_mobile.data.packages.CurrentPackageRepository.CurrentPackageService currentPackageService;
+    private static SupabaseTicketService supabaseTicketService; // The new service
 
     public static void init(Context context) {
         if (retrofit == null) {
             loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // Instantiate TokenStorage and SupabaseAuthService
             TokenStorage tokenStorage = new TokenStorage(context.getApplicationContext());
-            // SupabaseAuthService requires Supabase URL and Key
             String supabaseAnonKey = conn.getSupabaseKey();
             SupabaseAuthService authService = new SupabaseAuthService(conn.getSupabaseUrl(), supabaseAnonKey);
 
             okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new AuthInterceptor(tokenStorage, authService, supabaseAnonKey)) // Pass anon key for apikey header
+                    .addInterceptor(new AuthInterceptor(tokenStorage, authService, supabaseAnonKey))
                     .addInterceptor(loggingInterceptor)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
@@ -47,7 +46,7 @@ public class SupabaseApiClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(conn.getSupabaseUrl() + "/") // Supabase URL from conn.java
+                    .baseUrl(conn.getSupabaseUrl() + "/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -113,7 +112,15 @@ public class SupabaseApiClient {
         }
         return supabaseDashboardService;
     }
-
-    // Anda bisa menambahkan service Supabase lainnya di sini jika diperlukan
-    // contoh: SupabaseStorageService, dll.
+    
+    // Getter for the new Ticket Service
+    public static SupabaseTicketService getSupabaseTicketService() {
+        if (supabaseTicketService == null) {
+            if (retrofit == null) {
+                throw new IllegalStateException("SupabaseApiClient belum diinisialisasi. Panggil init() terlebih dahulu.");
+            }
+            supabaseTicketService = retrofit.create(SupabaseTicketService.class);
+        }
+        return supabaseTicketService;
+    }
 }

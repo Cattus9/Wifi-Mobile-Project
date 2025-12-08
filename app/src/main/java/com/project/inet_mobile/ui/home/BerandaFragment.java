@@ -21,6 +21,7 @@ import com.project.inet_mobile.data.dashboard.DashboardSupabaseRepository;
 import com.project.inet_mobile.data.remote.dto.SupabaseDashboardUserDto;
 import com.project.inet_mobile.data.remote.dto.SupabaseDashboardInvoiceDto;
 import com.project.inet_mobile.data.remote.dto.SupabaseCustomerDto;
+import com.project.inet_mobile.ui.ticket.TicketListFragment;
 import com.project.inet_mobile.data.remote.dto.SupabaseServicePackageDto;
 
 import java.text.SimpleDateFormat;
@@ -54,6 +55,7 @@ public class BerandaFragment extends Fragment {
         setupDynamicGreeting();
         setupDynamicDate();
         setupClickListeners();
+
 
         // Fetch real data from Supabase
         fetchDashboardData();
@@ -105,8 +107,8 @@ public class BerandaFragment extends Fragment {
         });
 
         binding.cardCs.setOnClickListener(v -> {
-            // TODO: Tambahkan logika untuk pindah ke halaman Customer Service
-            showToast("Membuka Customer Service...");
+            // Navigasi ke TicketListFragment
+            navigateToTicketList();
         });
 
         binding.cardHistory.setOnClickListener(v -> {
@@ -152,6 +154,20 @@ public class BerandaFragment extends Fragment {
     }
 
     /**
+     * Navigasi ke TicketListFragment
+     */
+    private void navigateToTicketList() {
+        if (getActivity() != null) {
+            TicketListFragment ticketListFragment = new TicketListFragment();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            // Assuming the main container in activity_dashboard.xml or activity_main.xml has this id
+            transaction.replace(com.project.inet_mobile.R.id.dashboardFragmentContainer, ticketListFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    /**
      * Fetch dashboard data from Supabase
      */
     private void fetchDashboardData() {
@@ -189,7 +205,13 @@ public class BerandaFragment extends Fragment {
         // Update package info
         if (servicePackage != null) {
             binding.tvPackageName.setText(servicePackage.getName());
-            binding.tvPackageSpeed.setText(servicePackage.getSpeed() + " Mbps");
+            
+            String speed = servicePackage.getSpeed();
+            if (speed != null && speed.toLowerCase(Locale.ROOT).contains("mbps")) {
+                speed = speed.toLowerCase(Locale.ROOT).replace("mbps", "").trim();
+            }
+            binding.tvPackageSpeed.setText(speed + " Mbps");
+            
             binding.tvPackageQuota.setText(servicePackage.getQuota());
         } else {
             binding.tvPackageName.setText("Tidak ada paket aktif");

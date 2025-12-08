@@ -25,6 +25,7 @@ import com.project.inet_mobile.data.auth.User; // Added User model
 import com.project.inet_mobile.databinding.FragmentAkunBinding; // Added ViewBinding
 import com.project.inet_mobile.ui.account.EditProfileFragment;
 import com.project.inet_mobile.ui.account.ChangePackageFragment;
+import com.project.inet_mobile.ui.ticket.TicketListFragment;
 
 import com.google.android.material.button.MaterialButton; // Added MaterialButton import
 import com.google.android.material.dialog.MaterialAlertDialogBuilder; // Added MaterialAlertDialogBuilder import
@@ -92,6 +93,14 @@ public class AkunFragment extends Fragment {
             ChangePackageFragment changeFragment = new ChangePackageFragment();
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.dashboardFragmentContainer, changeFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        binding.buttonTicketStatus.setOnClickListener(v -> {
+            TicketListFragment ticketListFragment = new TicketListFragment();
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.dashboardFragmentContainer, ticketListFragment)
                     .addToBackStack(null)
                     .commit();
         });

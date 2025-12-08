@@ -51,4 +51,17 @@
     <color name="profile_badge_text_support">#D66A16</color>
     <color name="chip_selected_bg">#EAE4FF</color>
     <color name="chip_selected_text">#622AFF</color>
+
+    <!-- Ticket Status Colors -->
+    <color name="status_open_bg">#E8F5E9</color> <!-- Light Green -->
+    <color name="status_open_text">#1B5E20</color> <!-- Dark Green -->
+    <color name="status_inprogress_bg">#E3F2FD</color> <!-- Light Blue -->
+    <color name="status_inprogress_text">#0D47A1</color> <!-- Dark Blue -->
+    <color name="status_closed_bg">#F5F5F5</color> <!-- Light Gray -->
+    <color name="status_closed_text">#616161</color> <!-- Dark Gray -->
+    <color name="status_default_bg">#E0E0E0</color> <!-- Gray -->
+    <color name="status_default_text">#212121</color> <!-- Almost Black -->
+
+    <!-- Emergency Button Soft Red -->
+    <color name="button_emergency_soft_red">#D32F2F</color>
 </resources>
