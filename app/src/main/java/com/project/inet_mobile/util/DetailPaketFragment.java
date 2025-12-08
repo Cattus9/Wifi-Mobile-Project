@@ -275,7 +275,6 @@ public class DetailPaketFragment extends Fragment {
         terms.append("• Kuota akan hangus jika tidak digunakan dalam masa aktif\n\n");
         terms.append("• FUP (Fair Usage Policy) berlaku untuk unlimited quota\n\n");
         terms.append("• Tidak dapat digabungkan dengan promo lain\n\n");
-        terms.append("• Harga sudah termasuk PPN 11%\n\n");
         terms.append("• Pembayaran dapat dilakukan via transfer, e-wallet, atau kartu kredit\n\n");
         terms.append("• Pembatalan tidak dapat dilakukan setelah pembayaran berhasil");
 
