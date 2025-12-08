@@ -15,490 +15,464 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/invoiceContainer"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@android:color/white"
-        android:elevation="20dp"
-        android:orientation="vertical">
-
-        <!-- Header dengan Gradient -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_gradient_cyan"
-            android:padding="30dp">
-
-            <!-- Logo Section -->
-            <LinearLayout
-                android:id="@+id/logoSection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="8dp"
-                    app:cardBackgroundColor="@android:color/white">
-
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="0dp"
-                        android:scaleType="fitCenter"
-                        android:contentDescription="NSI Logo"
-                        android:src="@drawable/ic_nsi" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!-- Invoice Title & Status -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:gravity="end"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-black"
-                    android:text="INVOICE"
-                    android:textColor="@android:color/white"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="15dp"
-                    app:cardBackgroundColor="#4CAF50"
-                    app:cardCornerRadius="25dp"
-                    app:cardElevation="6dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingStart="20dp"
-                        android:paddingTop="10dp"
-                        android:paddingEnd="20dp"
-                        android:paddingBottom="10dp">
-
-                        <TextView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginEnd="8dp"
-                            android:background="@drawable/circle_white"
-                            android:gravity="center"
-                            android:text="✓"
-                            android:textColor="#4CAF50"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvPaymentStatus"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="SUDAH BAYAR"
-                            android:textColor="@android:color/white"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/tvInvoiceNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.9"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="No: INV-992599251338"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <!-- Body -->
-
-        <!-- Footer -->
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/invoiceContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="30dp">
+            android:layout_margin="16dp"
+            android:background="@android:color/white"
+            android:elevation="20dp"
+            android:orientation="vertical">
 
-            <!-- Info Cards -->
+            <!-- Header dengan Gradient -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_gradient_cyan"
+                android:padding="24dp">
+
+                <!-- Logo Section -->
+                <LinearLayout
+                    android:id="@+id/logoSection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="6dp"
+                        app:cardBackgroundColor="@android:color/white">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="8dp"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="NSI Logo"
+                            android:src="@drawable/ic_nsi" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <!-- Invoice Title & Status -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="INVOICE"
+                        android:textColor="@android:color/white"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:cardBackgroundColor="#4CAF50"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="16dp"
+                            android:paddingTop="6dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="6dp">
+
+                            <TextView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="6dp"
+                                android:background="@drawable/circle_white"
+                                android:gravity="center"
+                                android:text="✓"
+                                android:textColor="#4CAF50"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPaymentStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="SUDAH BAYAR"
+                                android:textColor="@android:color/white"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/tvInvoiceNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.9"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="No: INV-992599251338"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- Body -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="vertical"
+                android:padding="24dp">
 
-                <!-- Card: Ditagihkan Kepada -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#F8F9FA"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="0.05"
-                            android:text="DITAGIHKAN KEPADA"
-                            android:textColor="#6C757D"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:id="@+id/tvCustomerName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="6dp"
-                            android:fontFamily="sans-serif-black"
-                            android:text="Leon Abbad Bari Geovano"
-                            android:textColor="#212529"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvCustomerDetails"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.8"
-                            android:text="ID: 256103279258\nPerum Grand Kaliwining Cluster\n📞 085855047825"
-                            android:textColor="#495057"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Card: Dibayarkan Kepada -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#F8F9FA"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="0.05"
-                            android:text="DIBAYARKAN KEPADA"
-                            android:textColor="#6C757D"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:id="@+id/tvCompanyName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="6dp"
-                            android:fontFamily="sans-serif-black"
-                            android:text="PT. NSI INDONESIA"
-                            android:textColor="#212529"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvCompanyDetails"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.8"
-                            android:text="Jl. Teknologi No. 123\nJakarta Selatan, DKI Jakarta 12345\n📞 021-1234567"
-                            android:textColor="#495057"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!-- Section: Ringkasan Layanan -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="sans-serif-black"
-                android:paddingStart="15dp"
-                android:text="Ringkasan Layanan"
-                android:textColor="#212529"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <!-- Service Card -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="3dp">
-
+                <!-- Info Cards -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <!-- Service Header -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <!-- Card: Ditagihkan Kepada -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_gradient_light"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="#F8F9FA"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp">
 
-                        <TextView
-                            android:id="@+id/tvServiceName"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:fontFamily="sans-serif-black"
-                            android:text="JBR-01A-MGLI-FH-BRONZE"
-                            android:textColor="#212529"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvServiceDescription"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontStyle="italic"
-                            android:text="High Speed Internet Package Service"
-                            android:textColor="#6C757D"
-                            android:textSize="12sp" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:cardBackgroundColor="#2FB5ED"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="0dp">
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
                             <TextView
-                                android:id="@+id/tvServiceType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
                                 android:fontFamily="sans-serif-medium"
                                 android:letterSpacing="0.05"
-                                android:paddingStart="12dp"
-                                android:paddingTop="4dp"
-                                android:paddingEnd="12dp"
-                                android:paddingBottom="4dp"
-                                android:text="REGULAR PREPAID"
-                                android:textColor="@android:color/white"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-
-                    <!-- Service Details Grid -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="20dp"
-                        android:weightSum="3">
-
-                        <!-- Jatuh Tempo -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                android:text="DITAGIHKAN KEPADA"
+                                android:textColor="#6C757D"
+                                android:textSize="10sp" />
 
                             <TextView
+                                android:id="@+id/tvCustomerName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:letterSpacing="0.05"
-                                android:text="JATUH TEMPO"
-                                android:textColor="#6C757D"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tvDueDate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-black"
-                                android:text="18 Oct 2025"
+                                android:text="Leon Abbad Bari Geovano"
                                 android:textColor="#212529"
-                                android:textSize="15sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvCustomerDetails"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingMultiplier="1.5"
+                                android:text="ID: 256103279258\nPerum Grand Kaliwining Cluster\n📞 085855047825"
+                                android:textColor="#495057"
+                                android:textSize="12sp" />
                         </LinearLayout>
+                    </androidx.cardview.widget.CardView>
 
-                        <!-- Periode Aktif -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:letterSpacing="0.05"
-                                android:text="PERIODE AKTIF"
-                                android:textColor="#6C757D"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tvPeriod"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-black"
-                                android:text="1 Bulan"
-                                android:textColor="#212529"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Harga -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:fontFamily="sans-serif-medium"
-                                android:letterSpacing="0.05"
-                                android:text="HARGA"
-                                android:textColor="#6C757D"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tvServicePrice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-black"
-                                android:text="Rp 100.000"
-                                android:textColor="#2FB5ED"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Equipment Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <!-- Card: Dibayarkan Kepada -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#F8F9FA"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingStart="20dp"
-                        android:paddingTop="15dp"
-                        android:paddingEnd="20dp"
-                        android:paddingBottom="15dp">
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="#F8F9FA"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp">
 
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="🔌 Biaya Sewa Perangkat (Modem/Router, dll)"
-                            android:textColor="#495057"
-                            android:textSize="13sp" />
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                        <TextView
-                            android:id="@+id/tvEquipmentPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Rp 0"
-                            android:textColor="#6C757D"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.05"
+                                android:text="DIBAYARKAN KEPADA"
+                                android:textColor="#6C757D"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tvCompanyName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:fontFamily="sans-serif-black"
+                                android:text="PT. NSI INDONESIA"
+                                android:textColor="#212529"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvCompanyDetails"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingMultiplier="1.5"
+                                android:text="Jl. Teknologi No. 123\nJakarta Selatan, DKI Jakarta 12345\n📞 021-1234567"
+                                android:textColor="#495057"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
-            <!-- Summary Box -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                app:cardBackgroundColor="#F8F9FA"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="2dp">
+                <!-- Section: Ringkasan Layanan -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Ringkasan Layanan"
+                    android:textColor="#212529"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+                <!-- Service Card -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="3dp">
 
-                    <!-- Subtotal -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Subtotal"
-                            android:textColor="#495057"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tvSubtotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 100.000"
-                            android:textColor="#495057"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <!-- PPN -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <!-- Service Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_gradient_light"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:id="@+id/tvServiceName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="sans-serif-black"
+                                android:text="JBR-01A-MGLI-FH-BRONZE"
+                                android:textColor="#212529"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvServiceDescription"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontStyle="italic"
+                                android:text="High Speed Internet Package Service"
+                                android:textColor="#6C757D"
+                                android:textSize="11sp" />
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:cardBackgroundColor="#2FB5ED"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="0dp">
+
+                                <TextView
+                                    android:id="@+id/tvServiceType"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="0.05"
+                                    android:paddingStart="12dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingEnd="12dp"
+                                    android:paddingBottom="4dp"
+                                    android:text="REGULAR PREPAID"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="9sp"
+                                    android:textStyle="bold" />
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <!-- Service Details Grid -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:weightSum="3">
+
+                            <!-- Jatuh Tempo -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="6dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="0.05"
+                                    android:text="JATUH TEMPO"
+                                    android:textColor="#6C757D"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/tvDueDate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="18 Oct 2025"
+                                    android:textColor="#212529"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Periode Aktif -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="6dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="0.05"
+                                    android:text="PERIODE AKTIF"
+                                    android:textColor="#6C757D"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/tvPeriod"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="1 Bulan"
+                                    android:textColor="#212529"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <!-- Harga -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="6dp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:letterSpacing="0.05"
+                                    android:text="HARGA"
+                                    android:textColor="#6C757D"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/tvServicePrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-black"
+                                    android:text="Rp 100.000"
+                                    android:textColor="#2FB5ED"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Equipment Row -->
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Summary Box -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="#F8F9FA"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Subtotal -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Subtotal"
+                                android:textColor="#495057"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/tvSubtotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rp 100.000"
+                                android:textColor="#495057"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="#2FB5ED" />
+
+                        <!-- Total -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -508,283 +482,242 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="PPN (11%)"
-                                android:textColor="#6C757D"
-                                android:textSize="13sp" />
+                                android:fontFamily="sans-serif-black"
+                                android:text="TOTAL PEMBAYARAN"
+                                android:textColor="#212529"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/tvPpn"
+                                android:id="@+id/tvTotal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rp 11.000"
-                                android:textColor="#6C757D"
-                                android:textSize="13sp" />
+                                android:fontFamily="sans-serif-black"
+                                android:text="Rp 100.000"
+                                android:textColor="#2FB5ED"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:fontStyle="italic"
-                            android:gravity="end"
-                            android:text="based on company &amp; country regulation"
-                            android:textColor="#ADB5BD"
-                            android:textSize="10sp" />
                     </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:background="#2FB5ED" />
+                <!-- Transaction Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Informasi Transaksi"
+                    android:textColor="#212529"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                    <!-- Total -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-black"
-                            android:text="TOTAL PEMBAYARAN"
-                            android:textColor="#212529"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-black"
-                            android:text="Rp 111.000"
-                            android:textColor="#2FB5ED"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Transaction Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="sans-serif-black"
-                android:paddingStart="15dp"
-                android:text="Informasi Transaksi"
-                android:textColor="#212529"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="3dp">
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Table Header -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_gradient_cyan"
-                        android:orientation="horizontal"
-                        android:paddingStart="15dp"
-                        android:paddingTop="12dp"
-                        android:paddingEnd="15dp"
-                        android:paddingBottom="12dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="0.05"
-                            android:text="TANGGAL"
-                            android:textColor="@android:color/white"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="0.05"
-                            android:text="GATEWAY"
-                            android:textColor="@android:color/white"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="0.05"
-                            android:text="TRANSACTION ID"
-                            android:textColor="@android:color/white"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="0.05"
-                            android:text="AMOUNT"
-                            android:textColor="@android:color/white"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Table Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingStart="15dp"
-                        android:paddingTop="15dp"
-                        android:paddingEnd="15dp"
-                        android:paddingBottom="15dp">
-
-                        <TextView
-                            android:id="@+id/tvTransactionDate"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="18 Sept 2025"
-                            android:textColor="#495057"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/tvGateway"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Manual"
-                            android:textColor="#495057"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/tvTransactionId"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="INV-992599251338"
-                            android:textColor="#495057"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/tvAmount"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Rp 111.000"
-                            android:textColor="#495057"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Notes -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="#FFFBF0"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
-
-                    <View
-                        android:layout_width="3dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="17dp"
-                        android:background="#FFC107" />
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="3dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <!-- Table Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.8"
-                            android:text="• Pembayaran sudah diterima, terima kasih sudah melunasi tagihan anda"
-                            android:textColor="#856404"
-                            android:textSize="12sp" />
+                            android:background="@drawable/bg_gradient_cyan"
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="12dp"
+                            android:paddingBottom="10dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.05"
+                                android:text="TANGGAL"
+                                android:textColor="@android:color/white"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.05"
+                                android:text="GATEWAY"
+                                android:textColor="@android:color/white"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.05"
+                                android:text="TRANSACTION ID"
+                                android:textColor="@android:color/white"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.05"
+                                android:text="AMOUNT"
+                                android:textColor="@android:color/white"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Table Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.8"
-                            android:text="• Jika informasi pada bukti pembayaran ini ada kesalahan, silahkan hubungi kami"
-                            android:textColor="#856404"
-                            android:textSize="12sp" />
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingTop="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/tvTransactionDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="18 Sept 2025"
+                                android:textColor="#495057"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvGateway"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Manual"
+                                android:textColor="#495057"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvTransactionId"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="INV-992599251338"
+                                android:textColor="#495057"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvAmount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Rp 111.000"
+                                android:textColor="#495057"
+                                android:textSize="12sp" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F8F9FA"
-            android:orientation="vertical"
-            android:padding="25dp">
+                <!-- Notes -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#FFFBF0"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="sans-serif-black"
-                android:text="PT. NSI INDONESIA"
-                android:textColor="#212529"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.8"
-                android:text="Jl. Teknologi No. 123, Jakarta Selatan, DKI Jakarta 12345\n📞 021-1234567 | 📧 info@nsi.co.id"
-                android:textColor="#6C757D"
-                android:textSize="12sp" />
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:background="#FFC107" />
 
-            <View
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingMultiplier="1.5"
+                                android:text="• Pembayaran sudah diterima, terima kasih sudah melunasi tagihan anda"
+                                android:textColor="#856404"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:text="• Jika informasi pada bukti pembayaran ini ada kesalahan, silahkan hubungi kami"
+                                android:textColor="#856404"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- Footer -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"
-                android:background="#DEE2E6" />
-
-            <TextView
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontStyle="italic"
-                android:gravity="center"
-                android:text="NOTE: This is computer generated receipt and does not require physical signature."
-                android:textColor="#ADB5BD"
-                android:textSize="10sp" />
-        </LinearLayout>
-    </LinearLayout>
+                android:background="#F8F9FA"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-</ScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="PT. NSI INDONESIA"
+                    android:textColor="#212529"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.5"
+                    android:text="Jl. Teknologi No. 123, Jakarta Selatan, DKI Jakarta 12345\n📞 021-1234567 | 📧 info@nsi.co.id"
+                    android:textColor="#6C757D"
+                    android:textSize="11sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#DEE2E6" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontStyle="italic"
+                    android:gravity="center"
+                    android:text="NOTE: This is computer generated receipt and does not require physical signature."
+                    android:textColor="#ADB5BD"
+                    android:textSize="9sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

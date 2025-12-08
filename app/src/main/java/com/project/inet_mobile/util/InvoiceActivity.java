@@ -49,11 +49,9 @@ public class InvoiceActivity extends AppCompatActivity {
     private TextView tvDueDate;
     private TextView tvPeriod;
     private TextView tvServicePrice;
-    private TextView tvEquipmentPrice;
 
     // Summary
     private TextView tvSubtotal;
-    private TextView tvPpn;
     private TextView tvTotal;
 
     // Transaction
@@ -109,11 +107,9 @@ public class InvoiceActivity extends AppCompatActivity {
         tvDueDate = findViewById(R.id.tvDueDate);
         tvPeriod = findViewById(R.id.tvPeriod);
         tvServicePrice = findViewById(R.id.tvServicePrice);
-        tvEquipmentPrice = findViewById(R.id.tvEquipmentPrice);
 
         // Summary
         tvSubtotal = findViewById(R.id.tvSubtotal);
-        tvPpn = findViewById(R.id.tvPpn);
         tvTotal = findViewById(R.id.tvTotal);
 
         // Transaction
@@ -130,7 +126,7 @@ public class InvoiceActivity extends AppCompatActivity {
         call.enqueue(new Callback<ApiResponse<InvoiceDetailResponseData>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<InvoiceDetailResponseData>> call,
-                                 @NonNull Response<ApiResponse<InvoiceDetailResponseData>> response) {
+                                   @NonNull Response<ApiResponse<InvoiceDetailResponseData>> response) {
                 showLoading(false);
 
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
@@ -181,19 +177,15 @@ public class InvoiceActivity extends AppCompatActivity {
             tvServiceType.setText(pkg.getType() != null ? pkg.getType().toUpperCase() : "REGULAR PREPAID");
             tvPeriod.setText(pkg.getDuration() != null ? pkg.getDuration() : "-");
             tvServicePrice.setText(formatCurrency(pkg.getPrice()));
-            tvEquipmentPrice.setText(formatCurrency(pkg.getEquipmentRentalFee()));
         }
 
         // Dates
         tvDueDate.setText(formatDate(data.getDueDate()));
 
-        // Calculate subtotal (amount sebelum PPN)
+        // Set total directly
         double total = data.getAmount();
-        double subtotal = total / 1.11; // Reverse calculation from total
-        double ppn = total - subtotal;
 
-        tvSubtotal.setText(formatCurrency(subtotal));
-        tvPpn.setText(formatCurrency(ppn));
+        tvSubtotal.setText(formatCurrency(total));
         tvTotal.setText(formatCurrency(total));
 
         // Transaction Info
